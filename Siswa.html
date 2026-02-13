@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Siswa - Smart CBT</title>
+    <style>
+        :root { 
+            --bg-body: #f1f5f9; --bg-card: #ffffff; --text-main: #1e293b; --text-sub: #64748b; 
+            --primary: #2563eb; --border: #e2e8f0; --danger: #ef4444; --success: #10b981;
+        }
+        [data-theme="dark"] { 
+            --bg-body: #0a0f1d; --bg-card: #161e31; --text-main: #f1f5f9; 
+            --text-sub: #94a3b8; --border: #2d3748; 
+        }
+        
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 0; transition: 0.3s; overflow-x: hidden; user-select: none; }
+        .hidden { display: none !important; }
+
+        /* HAPUS SPINNER ANGKA */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* MODAL ELEGAN */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+            display: none; align-items: center; justify-content: center; z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-box { 
+            background: var(--bg-card); padding: 35px; border-radius: 24px; 
+            max-width: 380px; width: 90%; text-align: center; 
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            transform: scale(0.9); animation: popUp 0.3s forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popUp { to { transform: scale(1); } }
+
+        /* HEADER & TIMER */
+        .exam-header {
+            position: fixed; top: 0; left: 0; right: 0; height: 65px;
+            background: var(--bg-card); border-bottom: 2px solid var(--primary);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 25px; z-index: 1000;
+        }
+        .timer-container { background: var(--danger); color: white; padding: 8px 18px; border-radius: 12px; font-weight: 800; font-size: 1.2rem; }
+
+        .container { max-width: 800px; margin: 100px auto 40px auto; padding: 0 20px; }
+        #loginBox { max-width: 340px; margin: 60px auto; padding: 40px; text-align: center; }
+        
+        .card { background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
+        input, select { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-body); color: var(--text-main); text-align: center; font-size: 1rem; outline: none; box-sizing: border-box; transition: 0.3s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; background: var(--primary); color: white; transition: 0.2s; font-size: 1rem; }
+        .btn:active { transform: scale(0.98); }
+
+        .opsi-btn { padding: 18px; border: 1px solid var(--border); border-radius: 15px; margin-top: 12px; cursor: pointer; display: flex; align-items: center; transition: 0.2s; }
+        .opsi-btn:hover { background: var(--bg-body); }
+        .opsi-btn.selected { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div id="smartModal" class="modal-overlay">
+    <div class="modal-box">
+        <div id="mIcon" style="font-size: 4rem; margin-bottom: 15px;">🔔</div>
+        <h3 id="mTitle" style="margin: 0 0 10px 0;">Pesan</h3>
+        <p id="mText" style="color: var(--text-sub); margin-bottom: 30px; line-height: 1.5;">...</p>
+        <div id="mFooter" style="display: flex; gap: 12px; justify-content: center;"></div>
+    </div>
+</div>
+
+<div id="headerExam" class="exam-header hidden">
+    <div>
+        <div id="displayNama" style="font-weight: 800; color: var(--primary); font-size: 1.1rem;">-</div>
+        <div id="displayInfo" style="font-size: 0.8rem; color: var(--text-sub); font-weight: 600;">-</div>
+    </div>
+    <div class="timer-container" id="timer">00:00</div>
+</div>
+
+<div class="container">
+    <div id="loginBox" class="card">
+        <div style="font-size: 3.5rem; margin-bottom: 15px;">🚀</div>
+        <h2 style="margin: 0 0 25px 0;">Smart CBT</h2>
+        <input type="number" id="nisInput" placeholder="Masukkan NIS" inputmode="numeric" autocomplete="off">
+        <select id="mapelInput">
+                    <option value="" disabled selected>Pilih Mapel</option>
+                    <option value="PAI">Pendidikan Agama</option>
+                    <option value="PP">Pendidikan Pancasila</option>
+                    <option value="B.Indo">Bahasa Indonesia</option>                     
+                    <option value="Matematika">Matematika</option>
+                    <option value="IPA">IPA</option>
+                    <option value="IPS">IPS</option>
+                    <option value="B.Inggris">Bahasa Inggris</option>
+                    <option value="PJOK">PJOK</option>
+                    <option value="Seni Budaya">Seni Budaya</option>
+                    <option value="Informatika">Informatika</option>
+        </select>
+        <button class="btn" id="btnLogin" onclick="handleLogin()">MULAI UJIAN</button>
+    </div>
+
+    <div id="examBox" class="hidden">
+        <div id="questionArea"></div>
+        <button class="btn" style="background:var(--success); margin: 40px 0 100px 0; height: 60px;" onclick="konfirmasiKirim()">KIRIM SEMUA JAWABAN</button>
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmljSITqN2I2v6GdPychFyfQlILRKFk9LEqpyDfRaUyZjhHEDv-Zt6emPFSQb4EJAv/exec"; 
+    let currentUser, examData, answers = {}, timerInterval, cheatCount = 0;
+
+    // --- MODAL SYSTEM ---
+    function showMsg(title, text, icon = '🔔', type = 'alert', onConfirm = null) {
+        document.getElementById('mTitle').innerText = title;
+        document.getElementById('mText').innerText = text;
+        document.getElementById('mIcon').innerText = icon;
+        const footer = document.getElementById('mFooter');
+        footer.innerHTML = '';
+
+        if (type === 'confirm') {
+            footer.innerHTML = `
+                <button class="btn" onclick="closeMsg()" style="background:var(--border); color:var(--text-main); flex:1;">Batal</button>
+                <button class="btn" id="btnConfirmAction" style="flex:1;">Ya, Kirim</button>
+            `;
+            document.getElementById('btnConfirmAction').onclick = () => { onConfirm(); closeMsg(); };
+        } else if (type === 'cheat') {
+            footer.innerHTML = `<button class="btn" onclick="kembaliKeUjian()">SAYA MENGERTI</button>`;
+        } else {
+            footer.innerHTML = `<button class="btn" onclick="closeMsg()" style="max-width:150px;">Oke</button>`;
+        }
+        document.getElementById('smartModal').style.display = 'flex';
+    }
+    function closeMsg() { document.getElementById('smartModal').style.display = 'none'; }
+
+    // --- FULLSCREEN ---
+    async function openFullscreen() {
+        const elem = document.documentElement;
+        try {
+            if (elem.requestFullscreen) await elem.requestFullscreen();
+            else if (elem.webkitRequestFullscreen) await elem.webkitRequestFullscreen();
+        } catch(e) {}
+    }
+
+    function kembaliKeUjian() { openFullscreen(); closeMsg(); }
+
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement && examData) {
+            cheatCount++;
+            showMsg("Peringatan!", `Dilarang keluar layar penuh! Pelanggaran: ${cheatCount}/3`, "🚫", "cheat");
+            if(cheatCount >= 3) kirimJawaban(true);
+        }
+    });
+
+    // --- LOGIN & DATA ---
+    async function handleLogin() {
+        const nis = document.getElementById('nisInput').value;
+        const mapel = document.getElementById('mapelInput').value;
+        if(!nis || !mapel) return showMsg("Peringatan", "NIS dan Mapel harus diisi!", "⚠️");
+
+        await openFullscreen();
+        const btn = document.getElementById('btnLogin');
+        btn.disabled = true; btn.innerText = "Mengecek Data...";
+
+        try {
+            const res = await fetch(`${SCRIPT_URL}?target=dbSiswa`);
+            const siswa = await res.json();
+            currentUser = siswa.find(s => (s.nis || s.NIS).toString() === nis);
+            
+            if(!currentUser) {
+                showMsg("Gagal", "NIS tidak ditemukan.", "❌");
+                btn.disabled = false; btn.innerText = "MULAI UJIAN";
+                return;
+            }
+            startExam(mapel);
+        } catch(e) { 
+            showMsg("Error", "Koneksi ke server gagal.", "📡");
+            btn.disabled = false; btn.innerText = "MULAI UJIAN";
+        }
+    }
+
+    async function startExam(mapel) {
+        const res = await fetch(`${SCRIPT_URL}?target=bankSoal`);
+        const allSoal = await res.json();
+        const kls = (currentUser.kelas || currentUser.KELAS || "").toString().toUpperCase();
+
+        examData = allSoal.filter(s => (s.kelas || s.KELAS || "").toString().toUpperCase().includes(kls) && (s.mapel || s.MAPEL) === mapel);
+
+        if(examData.length === 0) {
+            showMsg("Maaf", "Soal belum tersedia.", "📁");
+            setTimeout(() => location.reload(), 2000); return;
+        }
+
+        document.getElementById('loginBox').classList.add('hidden');
+        document.getElementById('headerExam').classList.remove('hidden');
+        document.getElementById('examBox').classList.remove('hidden');
+        renderSoal();
+        startTimer(parseInt(examData[0].durasi || 60));
+    }
+
+    function renderSoal() {
+        document.getElementById('displayNama').innerText = currentUser.nama || currentUser.NAMA;
+        document.getElementById('displayInfo').innerText = `${document.getElementById('mapelInput').value} | KELAS ${currentUser.kelas || currentUser.KELAS}`;
+        document.getElementById('questionArea').innerHTML = examData.map((s, i) => `
+            <div class="card">
+                <div style="font-weight:bold; color:var(--primary); margin-bottom:10px;">PERTANYAAN ${i+1}</div>
+                <div style="font-size:1.1rem; line-height:1.6; margin-bottom:20px;">${s.tanya || s.TANYA}</div>
+                ${['A','B','C','D'].map(opt => `
+                    <div class="opsi-btn" onclick="pilihOpsi(this, ${i}, '${opt}')">
+                        <b style="width:30px">${opt}.</b> ${s['opt'+opt.toLowerCase()] || s['OPT'+opt] || '-'}
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
+    }
+
+    function pilihOpsi(el, qIdx, val) {
+        el.parentElement.querySelectorAll('.opsi-btn').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+        answers[qIdx] = val;
+    }
+
+    function startTimer(min) {
+        let sec = min * 60;
+        timerInterval = setInterval(() => {
+            let m = Math.floor(sec / 60), s = sec % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+            if (sec-- <= 0) { clearInterval(timerInterval); kirimJawaban(true); }
+        }, 1000);
+    }
+
+    function konfirmasiKirim() {
+        showMsg("Kirim Sekarang?", "Jawaban tidak bisa diubah setelah dikirim.", "🚀", "confirm", () => kirimJawaban());
+    }
+
+    async function kirimJawaban(auto = false) {
+        clearInterval(timerInterval);
+        let benar = 0;
+        examData.forEach((s, i) => { if(answers[i] === (s.kunci || s.KUNCI)) benar++; });
+        const skor = Math.round((benar / examData.length) * 100);
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({
+                    target: "logJawaban",
+                    values: [new Date().toLocaleString(), currentUser.nis || currentUser.NIS, currentUser.nama || currentUser.NAMA, currentUser.kelas || currentUser.KELAS, document.getElementById('mapelInput').value, skor, cheatCount]
+                })
+            });
+            showMsg("Berhasil", "Jawaban terkirim! Skor: " + skor, "✅");
+            setTimeout(() => location.reload(), 3000);
+        } catch(e) { showMsg("Gagal", "Koneksi terputus saat mengirim.", "❌"); }
+    }
+</script>
+</body>
+</html>

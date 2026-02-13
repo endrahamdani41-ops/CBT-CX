@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Admin - Smart CBT</title>
+    <style>
+        :root { --bg-body: #f8fafc; --bg-card: #ffffff; --text-main: #0f172a; --text-sub: #64748b; --border: #e2e8f0; --input-bg: #ffffff; --primary: #2563eb; --success: #10b981; --danger: #ef4444; }
+        [data-theme="dark"] { --bg-body: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8; --border: #334155; --input-bg: #0f172a; }
+        
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 0; transition: 0.3s; }
+
+        /* HEADER FIXED */
+        header {
+            background: var(--bg-card); height: 70px; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; border-bottom: 1px solid var(--border); position: fixed; top: 0; left: 0; right: 0; z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-title { font-size: 1.3rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .header-subtitle { color: var(--text-main); font-weight: 400; font-size: 0.9rem; border-left: 2px solid var(--border); padding-left: 10px; }
+        .header-actions { display: flex; gap: 10px; }
+
+        .container { max-width: 1100px; margin: 100px auto 40px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 20px; }
+        .full-width { grid-column: span 2; }
+        
+        .card { background: var(--bg-card); padding: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid var(--border); }
+        h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
+        
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg); color: var(--text-main); box-sizing: border-box; outline: none; font-size: 0.9rem; }
+        label { font-size: 0.7rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; margin-left: 4px; }
+        
+        .btn { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+        .btn-save { background: var(--primary); color: white; width: 100%; }
+        .btn-danger { background: var(--danger); color: white; padding: 6px 10px; font-size: 0.8rem; }
+        
+        .action-btn { background: var(--bg-card); color: var(--text-main); width: 42px; height: 42px; border-radius: 10px; cursor: pointer; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border); text-align: left; font-size: 0.85rem; }
+        th { color: var(--text-sub); text-transform: uppercase; font-size: 0.7rem; }
+
+        /* TARGET KELAS BERKELOMPOK */
+        .multi-select { position: relative; }
+        .select-box { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg); cursor: pointer; display: flex; justify-content: space-between; margin: 8px 0; font-size: 0.9rem; }
+        
+        .checkbox-area { 
+            display: none; position: absolute; top: 100%; left: 0; right: 0; 
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; 
+            z-index: 10; max-height: 400px; overflow-y: auto; padding: 15px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            flex-direction: column; gap: 15px;
+        }
+        .kls-group { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .kls-group:last-child { border-bottom: none; }
+        .kls-group-title { font-size: 0.75rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; }
+        .kls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 8px; }
+
+        .checkbox-item { 
+            display: flex; align-items: center; gap: 5px; padding: 6px; 
+            border: 1px solid var(--border); border-radius: 6px; background: var(--bg-body); cursor: pointer;
+        }
+        .checkbox-item input { width: auto !important; margin: 0 !important; }
+        .checkbox-item label { font-size: 0.75rem; color: var(--text-main); margin: 0; cursor: pointer; }
+        
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter: blur(5px); display:none; align-items:center; justify-content:center; z-index:9999; }
+        .modal-content { background:var(--bg-card); padding:30px; border-radius:20px; max-width:400px; width:90%; border: 1px solid var(--border); text-align: center; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-title">Smart CBT <span class="header-subtitle">Dashboard Guru</span></div>
+    <div class="header-actions">
+        <button class="action-btn" style="background:var(--primary); color:white; border:none;" onclick="openSiswaModal()">👤</button>
+        <button class="action-btn" onclick="toggleDarkMode()">☀️</button>
+    </div>
+</header>
+
+<div id="infoModal" class="modal-overlay">
+    <div class="modal-content">
+        <span id="mIcon" style="font-size: 3rem; display: block; margin-bottom: 10px;">🔔</span>
+        <h3 id="mTitle" style="justify-content: center;">Pesan</h3>
+        <p id="mText" style="color: var(--text-sub); margin-bottom: 20px;">...</p>
+        <div id="mFooter" style="display: flex; gap: 10px; justify-content: center;"></div>
+    </div>
+</div>
+
+<div id="siswaModal" class="modal-overlay">
+    <div class="modal-content" style="text-align: left;">
+        <h3 style="justify-content: center;">Registrasi Siswa</h3>
+        <label>NIS</label><input type="number" id="nisBaru" placeholder="2024001">
+        <label>Nama Siswa</label><input type="text" id="namaBaru" placeholder="Nama Lengkap">
+        <label>Kelas</label><select id="kelasBaru"></select>
+        <button class="btn btn-save" onclick="tambahSiswa()" id="btnSiswa">SIMPAN SISWA</button>
+        <button class="btn" onclick="closeSiswaModal()" style="width:100%; background:none; color:var(--text-sub);">Batal</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card full-width">
+        <h3>📝 Buat Soal Ujian</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+            <div><label>Mata Pelajaran</label>
+                <select id="mapelSoal">
+                    <option value="" disabled selected>Pilih Mapel</option>
+                    <option value="PAI">Pendidikan Agama</option>
+                    <option value="PP">Pendidikan Pancasila</option>
+                    <option value="B.Indo">Bahasa Indonesia</option>                     
+                    <option value="Matematika">Matematika</option>
+                    <option value="IPA">IPA</option>
+                    <option value="IPS">IPS</option>
+                    <option value="B.Inggris">Bahasa Inggris</option>
+                    <option value="PJOK">PJOK</option>
+                    <option value="Seni Budaya">Seni Budaya</option>
+                    <option value="Informatika">Informatika</option>
+                </select>
+            </div>
+            <div><label>Target Kelas</label>
+                <div class="multi-select">
+                    <div class="select-box" onclick="toggleKls()"><span id="txtKls">Pilih Kelas</span><span>▼</span></div>
+                    <div id="areaKls" class="checkbox-area"></div>
+                </div>
+            </div>
+            <div><label>Durasi (Menit)</label><input type="number" id="durasiSoal" value="60"></div>
+        </div>
+        <label>Pertanyaan</label>
+        <textarea id="tanya" style="height: 60px;" placeholder="Tulis soal di sini..."></textarea>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <input type="text" id="opta" placeholder="Opsi A"><input type="text" id="optb" placeholder="Opsi B">
+            <input type="text" id="optc" placeholder="Opsi C"><input type="text" id="optd" placeholder="Opsi D">
+        </div>
+        <div style="display: flex; gap: 15px; align-items: center; margin-top: 10px;">
+            <div style="flex: 1;"><label>Kunci</label>
+                <select id="kunci"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
+            </div>
+            <div style="flex: 2; padding-top: 20px;">
+                <button class="btn btn-save" style="background:var(--success)" onclick="simpanSoal()" id="btnSoal">💾 SIMPAN SOAL</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card full-width">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3>📊 Rekap Nilai & Pelanggaran</h3>
+            <button class="btn" style="background:var(--bg-body); border:1px solid var(--border);" onclick="loadNilai()">🔄</button>
+        </div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Mapel</th><th>Skor</th><th>ESC</th><th>Aksi</th></tr>
+                </thead>
+                <tbody id="tabelNilai"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxmljSITqN2I2v6GdPychFyfQlILRKFk9LEqpyDfRaUyZjhHEDv-Zt6emPFSQb4EJAv/exec";
+
+    function showMsg(title, text, icon, type = 'info', onConfirm = null) {
+        document.getElementById('mTitle').innerText = title;
+        document.getElementById('mText').innerText = text;
+        document.getElementById('mIcon').innerText = icon;
+        const footer = document.getElementById('mFooter');
+        footer.innerHTML = type === 'confirm' ? 
+            `<button class="btn" onclick="closeMsg()">Batal</button><button class="btn" id="mCfm" style="background:var(--danger); color:white">Ya, Hapus</button>` :
+            `<button class="btn btn-save" onclick="closeMsg()">Oke</button>`;
+        if(type === 'confirm') document.getElementById('mCfm').onclick = () => { onConfirm(); closeMsg(); };
+        document.getElementById('infoModal').style.display = 'flex';
+    }
+    function closeMsg() { document.getElementById('infoModal').style.display = 'none'; }
+    function toggleDarkMode() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+    function openSiswaModal() { document.getElementById('siswaModal').style.display = 'flex'; }
+    function closeSiswaModal() { document.getElementById('siswaModal').style.display = 'none'; }
+
+    // --- RENDER KELAS BERKELOMPOK ---
+    const tingkat = ['7', '8', '9'];
+    const subKelas = ['A', 'B', 'C', 'D', 'E', 'F'];
+    let htmlKls = '';
+    tingkat.forEach(t => {
+        htmlKls += `<div class="kls-group"><div class="kls-group-title">Kelas ${t}</div><div class="kls-grid">`;
+        subKelas.forEach(s => {
+            const k = t + s;
+            htmlKls += `<div class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="${k}" onchange="updKls()"><label>${k}</label></div>`;
+        });
+        htmlKls += `</div></div>`;
+    });
+    document.getElementById('areaKls').innerHTML = htmlKls;
+
+    // Linear list untuk modal registrasi siswa
+    const linearKls = []; tingkat.forEach(t => subKelas.forEach(s => linearKls.push(t+s)));
+    document.getElementById('kelasBaru').innerHTML = linearKls.map(k => `<option value="${k}">${k}</option>`).join('');
+
+    function toggleKls() { 
+        const el = document.getElementById('areaKls'); 
+        el.style.display = el.style.display === 'flex' ? 'none' : 'flex'; 
+    }
+    function toggleCheck(el) {
+        const cb = el.querySelector('input');
+        if (event.target !== cb) { cb.checked = !cb.checked; updKls(); }
+    }
+    function updKls() {
+        const checked = Array.from(document.querySelectorAll('#areaKls input:checked')).map(el => el.value);
+        document.getElementById('txtKls').innerText = checked.length > 0 ? checked.join(',') : 'Pilih Kelas...';
+    }
+
+    async function loadNilai() {
+        const tbody = document.getElementById('tabelNilai');
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Memuat...</td></tr>';
+        try {
+            const res = await fetch(`${SCRIPT_URL}?target=logJawaban`);
+            const data = await res.json();
+            const rawData = [...data];
+            tbody.innerHTML = data.reverse().map(n => {
+                const idx = rawData.indexOf(n);
+                return `<tr><td>${n.timestamp}</td><td>${n.nama}</td><td>${n.kelas}</td><td>${n.mapel}</td><td><b>${n.skor}</b></td><td style="color:${n.cheatcount > 0 ? 'red':'green'}">${n.cheatcount || 0}</td><td><button class="btn btn-danger" onclick="hapusLog(${idx})">🗑️</button></td></tr>`;
+            }).join('');
+        } catch(e) { tbody.innerHTML = '<tr><td colspan="7">Gagal memuat.</td></tr>'; }
+    }
+
+    async function simpanSoal() {
+        const kls = Array.from(document.querySelectorAll('#areaKls input:checked')).map(el => el.value).join(', ');
+        if(!kls || !document.getElementById('tanya').value) return showMsg("Peringatan", "Lengkapi data soal!", "⚠️");
+        const btn = document.getElementById('btnSoal');
+        btn.disabled = true; btn.innerText = "Menyimpan...";
+        const data = { target: "tambahSoal", values: [kls, document.getElementById('mapelSoal').value, document.getElementById('tanya').value, document.getElementById('opta').value, document.getElementById('optb').value, document.getElementById('optc').value, document.getElementById('optd').value, document.getElementById('kunci').value, document.getElementById('durasiSoal').value] };
+        try {
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
+            showMsg('Berhasil', 'Soal disimpan.', '✅');
+            setTimeout(() => location.reload(), 1000);
+        } catch(e) { alert("Gagal."); btn.disabled = false; }
+    }
+
+    async function tambahSiswa() {
+        const data = { target: "dbSiswa", values: [document.getElementById('nisBaru').value, document.getElementById('namaBaru').value, document.getElementById('kelasBaru').value] };
+        try {
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
+            showMsg('Berhasil', 'Siswa terdaftar.', '👤');
+            closeSiswaModal();
+        } catch(e) { alert("Gagal."); }
+    }
+
+    function hapusLog(idx) {
+        showMsg('Hapus Nilai?', 'Data akan dihapus permanen.', '🗑️', 'confirm', async () => {
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ target: "hapusLog", values: idx }) });
+            loadNilai();
+        });
+    }
+
+    window.onload = loadNilai;
+</script>
+</body>
+</html>
