@@ -3,277 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru - Smart CBT</title>
+    <title>Smart CBT - Dashboard Guru</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-body: #f8fafc; --bg-card: #ffffff; --text-main: #0f172a; --text-sub: #64748b; --border: #e2e8f0; --input-bg: #ffffff; --primary: #2563eb; --success: #10b981; --danger: #ef4444; }
-        [data-theme="dark"] { --bg-body: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8; --border: #334155; --input-bg: #0f172a; }
+        :root { --bg-body: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8; --border: #334155; --primary: #2563eb; --success: #10b981; --danger: #ef4444; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; }
+        .card { background: var(--bg-card); padding: 25px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; }
+        h3 { margin-top: 0; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
         
-        html, body { height: 100%; margin: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); display: flex; flex-direction: column; transition: 0.3s; }
+        /* TABS */
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 15px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: var(--text-sub); cursor: pointer; border-radius: 10px; font-weight: 600; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
 
-        header { background: var(--bg-card); display: flex; align-items: center; justify-content: space-between; padding: 15px 30px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        
-        .container { flex: 1; max-width: 1100px; width: 100%; margin: 20px auto; padding: 0 20px; box-sizing: border-box; }
-        .card { background: var(--bg-card); padding: 25px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
-        .tabs { display: flex; gap: 10px; margin-bottom: 25px; background: var(--bg-card); padding: 8px; border-radius: 15px; border: 1px solid var(--border); }
-        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: var(--text-sub); cursor: pointer; font-weight: 600; border-radius: 10px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .tab-btn.active { background: var(--primary); color: white; }
+        /* TABLE */
+        .table-container { overflow-x: auto; margin-top: 20px; border-radius: 15px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; text-align: center; background: rgba(0,0,0,0.1); }
+        th { background: var(--primary); color: white; padding: 15px; font-size: 0.75rem; text-transform: uppercase; }
+        td { padding: 14px; border-bottom: 1px solid var(--border); font-size: 0.85rem; vertical-align: middle; }
+        tr:hover { background: rgba(255,255,255,0.03); }
 
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 10px; background: var(--input-bg); color: var(--text-main); box-sizing: border-box; outline: none; }
-        label { font-size: 0.75rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; display: block; margin-top: 15px; }
+        /* BUTTONS */
+        .btn { padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; color: white; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-status { width: 95px; font-size: 0.65rem; text-transform: uppercase; }
+        .btn-danger { background: var(--danger); }
+        .btn-success { background: var(--success); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* Area Ceklis Rapat */
-        .area-kls-check { background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; max-height: 150px; overflow-y: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
-        .check-item { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; cursor: pointer; }
-        .check-item input { width: auto; margin: 0; cursor: pointer; }
-
-        .btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .btn-success { background: var(--success); color: white; width: 100%; margin-top: 20px; }
-        .btn-danger { background: var(--danger); color: white; font-size: 0.75rem; padding: 6px 12px; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { color: var(--primary); text-align: left; padding: 12px; border-bottom: 2px solid var(--border); font-size: 0.8rem; }
-        td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        
-        footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 15px 20px; text-align: center; color: var(--text-sub); font-size: 0.8rem; }
-        .footer-brand { font-weight: 700; color: var(--primary); margin-bottom: 2px; }
-
-        /* Custom Modal */
-        #customModal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
-        .modal-content { background: var(--bg-card); margin: 15vh auto; padding: 25px; border: 1px solid var(--border); width: 90%; max-width: 400px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-btns { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
-        .btn-modal { padding: 10px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; border: none; }
+        /* FORM */
+        .form-box { max-width: 650px; margin: auto; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: #0f172a; color: white; text-align: center; font-family: inherit; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--primary); }
     </style>
 </head>
 <body>
 
-<header>
-    <div style="font-weight: 800; font-size: 1.3rem; color: var(--primary);">Smart CBT - Guru</div>
-    <div style="font-size: 0.75rem; color: var(--success); font-weight: 600;">● Server Online</div>
-</header>
-
 <div class="container">
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('tab-rekap')">📊 Rekap Nilai</button>
-        <button class="tab-btn" onclick="openTab('tab-input')">📝 Buat Soal</button>
-        <button class="tab-btn" onclick="openTab('tab-bank')">📚 Bank Soal</button>
+        <button class="tab-btn active" onclick="openTab('rekap')">📊 Rekap Nilai</button>
+        <button class="tab-btn" onclick="openTab('input')">📝 Buat Soal</button>
+        <button class="tab-btn" onclick="openTab('bank')">📚 Bank Soal</button>
     </div>
 
-    <div id="tab-rekap" class="tab-content">
+    <div id="rekap" class="tab-content">
         <div class="card">
-            <h3 style="margin-top: 0;">📊 Hasil Ujian Siswa</h3>
-            <div style="overflow-x: auto;">
+            <h3>📊 Hasil Ujian Siswa</h3>
+            <div class="table-container">
                 <table>
                     <thead>
-                        <tr><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Mapel</th><th>Skor</th><th>Aksi</th></tr>
+                        <tr>
+                            <th>No</th>
+                            <th>NIS</th>
+                            <th>Nama Siswa</th>
+                            <th>Kelas</th>
+                            <th>Mapel</th>
+                            <th>Skor</th>
+                        </tr>
                     </thead>
-                    <tbody id="tabelNilai"><tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr></tbody>
+                    <tbody id="tabelNilai">
+                        <tr><td colspan="6">⏳ Memuat data siswa...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <div id="tab-input" class="tab-content" style="display:none;">
+    <div id="input" class="tab-content" style="display:none;">
         <div class="card">
-            <h3 style="margin-top: 0;">📝 Buat Soal Baru</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div>
-                    <label>Pilih Kelompok Kelas</label>
-                    <select id="pilihKelompok" onchange="updateDaftarKelas()">
-                        <option value="" disabled selected>Pilih Kelas</option>
-                        <option value="7">Kelas 7</option><option value="8">Kelas 8</option><option value="9">Kelas 9</option>
-                    </select>
-                    <div id="areaKls" class="area-kls-check">
-                        <div style="grid-column: span 3; text-align: center; font-size: 0.8rem; padding: 10px;">Pilih tingkat kelas</div>
-                    </div>
+            <h3>📝 Input Soal Baru</h3>
+            <div class="form-box">
+                <input type="text" id="mapel" placeholder="Mata Pelajaran (Contoh: IPA)">
+                <input type="text" id="kelas" placeholder="Target Kelas (Contoh: 8A, 8B)">
+                <textarea id="tanya" placeholder="Tulis Pertanyaan Di Sini..." style="height: 100px; text-align: left;"></textarea>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <input type="text" id="opta" placeholder="Opsi A">
+                    <input type="text" id="optb" placeholder="Opsi B">
+                    <input type="text" id="optc" placeholder="Opsi C">
+                    <input type="text" id="optd" placeholder="Opsi D">
                 </div>
-                <div>
-                    <label>Mata Pelajaran</label>
-                    <select id="mapelSoal">
-                    <option value="" disabled selected>Pilih Mata Pelajaran</option>
-                    <option value="PAI">Pendidikan Agama</option>
-                    <option value="PP">Pendidikan Pancasila</option>
-                    <option value="B.Indo">Bahasa Indonesia</option>                     
-                    <option value="Matematika">Matematika</option>
-                    <option value="IPA">IPA</option>
-                    <option value="IPS">IPS</option>
-                    <option value="B.Inggris">Bahasa Inggris</option>
-                    <option value="PJOK">PJOK</option>
-                    <option value="Seni Budaya">Seni Budaya</option>
-                    <option value="Informatika">Informatika</option>
-                    </select>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="number" id="durasiSoal" value="60" placeholder="Menit">
-                        <input type="number" id="limitSoal" value="10" placeholder="Limit">
-                    </div>
-                </div>
+                <select id="kunci">
+                    <option value="" disabled selected>Pilih Kunci Jawaban</option>
+                    <option value="A">A</option><option value="B">B</option>
+                    <option value="C">C</option><option value="D">D</option>
+                </select>
+                <button class="btn btn-success" style="width: 100%; padding: 15px; margin-top: 10px;" onclick="simpanSoal()">
+                    💾 Simpan Soal
+                </button>
             </div>
-            <textarea id="tanya" placeholder="Tulis soal di sini..." style="height: 100px; margin-top: 10px;"></textarea>
-            <input type="file" id="fileGambar" accept="image/*">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <input type="text" id="opta" placeholder="Pilihan A"><input type="text" id="optb" placeholder="Pilihan B">
-                <input type="text" id="optc" placeholder="Pilihan C"><input type="text" id="optd" placeholder="Pilihan D">
-            </div>
-            <select id="kunci">
-                <option value="A">Kunci: A</option><option value="B">Kunci: B</option><option value="C">Kunci: C</option><option value="D">Kunci: D</option>
-            </select>
-            <button class="btn btn-success" id="btnSoal" onclick="simpanSoal()">💾 Simpan Soal</button>
         </div>
     </div>
 
-    <div id="tab-bank" class="tab-content" style="display:none;">
+    <div id="bank" class="tab-content" style="display:none;">
         <div class="card">
-            <h3 style="margin-top: 0;">📚 Bank Soal Aktif</h3>
-            <div style="overflow-x: auto;">
+            <h3>📚 Bank Soal</h3>
+            <div class="table-container">
                 <table>
-                    <thead><tr><th>Mapel</th><th>Kelas</th><th>Pertanyaan</th><th>Kunci</th><th>Aksi</th></tr></thead>
-                    <tbody id="tabelBankSoal"></tbody>
+                    <thead>
+                        <tr>
+                            <th>Mapel/Kelas</th>
+                            <th>Pertanyaan & Opsi</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelBank">
+                        <tr><td colspan="4">⏳ Memuat bank soal...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
-    </div>
-</div>
-
-<footer>
-    <div class="footer-brand">SMPN 110 JAKARTA @ 2026</div>
-    <div>Created by Endra</div>
-</footer>
-
-<div id="customModal">
-    <div class="modal-content">
-        <h3 id="modalTitle" style="margin-top:0; color:var(--primary);">Pemberitahuan</h3>
-        <p id="modalMsg" style="color:var(--text-sub); line-height:1.5;"></p>
-        <div class="modal-btns" id="modalBtns"></div>
     </div>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2Q6LgxLl2yYXPqKUj3jSFZ38VT94ZCu-eUfcBGvNQfr_qp_kNNCM-NYL2Xb5gqy6V/exec"; 
-    const databaseKelas = { "7": ["7A","7B","7C","7D","7E","7F"], "8": ["8A","8B","8C","8D","8E","8F"], "9": ["9A","9B","9C","9D","9E","9F"] };
+    // GANTI URL DI BAWAH INI DENGAN URL WEB APP ANDA DARI GOOGLE APPS SCRIPT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6dnRL3lyVyPRrpXP6B4pENE9tVIvmd2hatRJytSQRhcI2VLnrUjVSmz8OEU3qbfqm/exec"; 
 
-    function showModal(msg, type = 'alert', onConfirm = null) {
-        const modal = document.getElementById('customModal');
-        document.getElementById('modalMsg').innerText = msg;
-        const btnArea = document.getElementById('modalBtns');
-        btnArea.innerHTML = "";
-        modal.style.display = "block";
+    function openTab(id) {
+        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).style.display = 'block';
+        event.currentTarget.classList.add('active');
+        if(id === 'rekap') loadNilai();
+        if(id === 'bank') loadBank();
+    }
 
-        if(type === 'alert') {
-            const btn = document.createElement('button');
-            btn.className = "btn-modal btn-primary";
-            btn.innerText = "Oke";
-            btn.style.background = "var(--primary)"; btn.style.color = "white";
-            btn.onclick = () => modal.style.display = "none";
-            btnArea.appendChild(btn);
-        } else {
-            const btnNo = document.createElement('button');
-            btnNo.className = "btn-modal"; btnNo.innerText = "Batal";
-            btnNo.style.background = "#334155"; btnNo.style.color = "white";
-            btnNo.onclick = () => modal.style.display = "none";
-            const btnYes = document.createElement('button');
-            btnYes.className = "btn-modal"; btnYes.innerText = "Ya, Hapus";
-            btnYes.style.background = "var(--danger)"; btnYes.style.color = "white";
-            btnYes.onclick = () => { modal.style.display = "none"; onConfirm(); };
-            btnArea.appendChild(btnNo); btnArea.appendChild(btnYes);
+    // --- LOAD REKAP NILAI (OTOMATIS) ---
+    async function loadNilai() {
+        const tbody = document.getElementById('tabelNilai');
+        try {
+            const res = await fetch(`${SCRIPT_URL}?target=dbNilai`);
+            const data = await res.json();
+            tbody.innerHTML = data.reverse().map((r, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td style="color:var(--success); font-weight:bold;">${r.nis || '-'}</td>
+                    <td style="text-align:left;">${r.nama}</td>
+                    <td>${r.kelas}</td>
+                    <td>${r.mapel}</td>
+                    <td><b style="color:var(--primary); font-size:1.1rem;">${r.skor}</b></td>
+                </tr>
+            `).join('');
+        } catch (e) {
+            tbody.innerHTML = "<tr><td colspan='6'>Gagal memuat data rekap.</td></tr>";
         }
     }
 
-    function openTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).style.display = 'block';
-        event.currentTarget.classList.add('active');
-        if(tabId === 'tab-rekap') loadNilai();
-        if(tabId === 'tab-bank') loadBankSoal();
-    }
-
-    function updateDaftarKelas() {
-        const tingkat = document.getElementById('pilihKelompok').value;
-        const area = document.getElementById('areaKls');
-        area.innerHTML = "";
-        (databaseKelas[tingkat] || []).forEach(kls => {
-            const item = document.createElement('label');
-            item.className = "check-item";
-            item.innerHTML = `<input type="checkbox" value="${kls}" checked> ${kls}`;
-            area.appendChild(item);
-        });
-    }
-
-    async function loadNilai() {
-        const tbody = document.getElementById('tabelNilai');
-        // Ikon ⏳ dihapus
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr>';
-        try {
-            const res = await fetch(`${SCRIPT_URL}?target=rekap`);
-            const data = await res.json();
-            tbody.innerHTML = data.reverse().map(row => `
-                <tr><td><small>${row[0]}</small></td><td><b>${row[1]}</b></td><td>${row[2]}</td><td>${row[3]}</td>
-                <td><b style="color:var(--success)">${row[4]}</b></td>
-                <td><button class="btn btn-danger" onclick="showModal('Gunakan Google Sheets untuk hapus rekap.')">🗑️</button></td></tr>
-            `).join('');
-        } catch(e) { tbody.innerHTML = '<tr><td colspan="6">Gagal memuat.</td></tr>'; }
-    }
-
-    async function loadBankSoal() {
-        const tbody = document.getElementById('tabelBankSoal');
-        // Ikon ⏳ dihapus
-        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center'>Memuat...</td></tr>";
+    // --- LOAD BANK SOAL & TOGGLE ---
+    async function loadBank() {
+        const tbody = document.getElementById('tabelBank');
         try {
             const res = await fetch(`${SCRIPT_URL}?target=dbSoal`);
             const data = await res.json();
-            tbody.innerHTML = data.map((row, index) => `
-                <tr><td>${row.mapel}</td><td><small>${row.kelas}</small></td><td>${row.pertanyaan.substring(0,40)}...</td>
-                <td><b>${row.kunci}</b></td><td><button class="btn btn-danger" onclick="confirmHapus(${index})">🗑️ Hapus</button></td></tr>
-            `).join('');
-        } catch(e) { tbody.innerHTML = "<tr><td colspan='5' style='text-align:center'>Data kosong.</td></tr>"; }
+            tbody.innerHTML = data.map((r, i) => {
+                const statusStr = (r.status || 'AKTIF').toUpperCase();
+                const isAktif = statusStr === 'AKTIF';
+                return `
+                <tr>
+                    <td><b>${r.mapel}</b><br><small>${r.kelas}</small></td>
+                    <td style="text-align:left;">
+                        <b>${r.pertanyaan}</b><br>
+                        <small style="color:var(--text-sub)">A: ${r.a} | B: ${r.b} | C: ${r.c} | D: ${r.d}</small>
+                    </td>
+                    <td>
+                        <button class="btn btn-status" style="background:${isAktif ? 'var(--success)' : 'var(--danger)'}" 
+                        onclick="toggleStatus(${i}, '${statusStr}')">
+                            ${statusStr}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" style="padding:5px 10px;" onclick="hapusSoal(${i})">🗑️</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        } catch (e) {
+            tbody.innerHTML = "<tr><td colspan='4'>Gagal memuat bank soal.</td></tr>";
+        }
     }
 
-    function confirmHapus(index) {
-        showModal("Hapus soal ini dari database?", "confirm", async () => {
-            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ target: "hapusSoal", index: index }) });
-            loadBankSoal();
+    async function toggleStatus(idx, current) {
+        const next = (current === 'AKTIF') ? 'NONAKTIF' : 'AKTIF';
+        const btn = event.target;
+        btn.innerText = "⏳...";
+        btn.disabled = true;
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                body: JSON.stringify({ action: "updateStatus", index: idx, status: next })
+            });
+            // Beri jeda sebentar agar Google Sheet selesai proses
+            setTimeout(loadBank, 800);
+        } catch (e) {
+            alert("Terjadi kesalahan.");
+            loadBank();
+        }
+    }
+
+    async function hapusSoal(idx) {
+        if(!confirm("Hapus soal ini secara permanen?")) return;
+        await fetch(SCRIPT_URL, { 
+            method: "POST", 
+            mode: "no-cors",
+            body: JSON.stringify({ action: "hapusSoal", index: idx }) 
         });
+        setTimeout(loadBank, 800);
     }
 
     async function simpanSoal() {
-        const kls = Array.from(document.querySelectorAll('#areaKls input:checked')).map(el => el.value).join(', ');
-        if(!kls || !document.getElementById('tanya').value) return showModal("Mohon isi pertanyaan dan pilih kelas!");
-        
-        const btn = document.getElementById('btnSoal');
-        btn.disabled = true; 
-        // Ikon ⏳ dihapus
-        btn.innerText = "Menyimpan...";
-        
-        let base64 = "";
-        const file = document.getElementById('fileGambar').files[0];
-        if(file) {
-            base64 = await new Promise(r => {
-                const rd = new FileReader();
-                rd.onload = e => r(e.target.result);
-                rd.readAsDataURL(file);
-            });
-        }
-        
-        const payload = {
-            target: "tambahSoal",
-            values: [kls, document.getElementById('mapelSoal').value, document.getElementById('tanya').value, 
-                     document.getElementById('opta').value, document.getElementById('optb').value, 
-                     document.getElementById('optc').value, document.getElementById('optd').value, 
-                     document.getElementById('kunci').value, document.getElementById('durasiSoal').value, 
-                     base64, document.getElementById('limitSoal').value, "AKTIF"]
+        const btn = event.target;
+        const p = {
+            action: "tambahSoal",
+            mapel: document.getElementById('mapel').value,
+            kelas: document.getElementById('kelas').value,
+            pertanyaan: document.getElementById('tanya').value,
+            a: document.getElementById('opta').value,
+            b: document.getElementById('optb').value,
+            c: document.getElementById('optc').value,
+            d: document.getElementById('optd').value,
+            kunci: document.getElementById('kunci').value
         };
+        if(!p.mapel || !p.pertanyaan) return alert("Lengkapi data!");
+        btn.innerText = "⏳ Menyimpan..."; btn.disabled = true;
         
-        try {
-            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-            showModal("✅ Berhasil disimpan!");
-            setTimeout(() => location.reload(), 1200);
-        } catch(e) {
-            showModal("❌ Gagal simpan.");
-            btn.disabled = false; 
-            btn.innerText = "💾 Simpan Soal";
-        }
+        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(p) });
+        alert("Soal berhasil ditambah!");
+        location.reload();
     }
 
     window.onload = loadNilai;
