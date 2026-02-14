@@ -8,102 +8,91 @@
         :root { --bg-body: #f8fafc; --bg-card: #ffffff; --text-main: #0f172a; --text-sub: #64748b; --border: #e2e8f0; --input-bg: #ffffff; --primary: #2563eb; --success: #10b981; --danger: #ef4444; }
         [data-theme="dark"] { --bg-body: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8; --border: #334155; --input-bg: #0f172a; }
         
-        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 0; transition: 0.3s; }
+        html, body { height: 100%; margin: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); display: flex; flex-direction: column; transition: 0.3s; }
 
-        header {
-            background: var(--bg-card); height: 80px; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 30px; border-bottom: 1px solid var(--border); position: fixed; top: 0; left: 0; right: 0; z-index: 1001;
-        }
-        .header-title { font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+        header { background: var(--bg-card); display: flex; align-items: center; justify-content: space-between; padding: 15px 30px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         
-        .container { max-width: 1100px; margin: 110px auto 40px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 20px; }
-        .full-width { grid-column: span 2; }
+        .container { flex: 1; max-width: 1100px; width: 100%; margin: 20px auto; padding: 0 20px; box-sizing: border-box; }
+        .card { background: var(--bg-card); padding: 25px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        /* FIX: Overflow visible agar dropdown tidak terpotong */
-        .card { background: var(--bg-card); padding: 24px; border-radius: 16px; border: 1px solid var(--border); position: relative; overflow: visible !important; }
-        
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg); color: var(--text-main); box-sizing: border-box; font-size: 0.9rem; }
-        label { font-size: 0.7rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; display: block; margin-top: 10px; }
-        
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type=number] { -moz-appearance: textfield; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; background: var(--bg-card); padding: 8px; border-radius: 15px; border: 1px solid var(--border); }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: var(--text-sub); cursor: pointer; font-weight: 600; border-radius: 10px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .tab-btn.active { background: var(--primary); color: white; }
 
-        .btn { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
-        .btn-save { background: var(--primary); color: white; width: 100%; }
-        .btn-danger { background: var(--danger); color: white; padding: 6px 10px; font-size: 0.8rem; border-radius: 6px; }
-        
-        /* DROPDOWN MULTI-SELECT (Rapat & Layer Paling Depan) */
-        .multi-select { position: relative; width: 100%; }
-        .select-box { padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg); cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin: 8px 0; z-index: 50; position: relative; font-size: 0.85rem; }
-        
-        .checkbox-area { 
-            display: none; position: absolute; top: 100%; left: 0; right: 0; 
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; 
-            z-index: 9999 !important; /* Angka tinggi agar di atas tabel */
-            max-height: 300px; overflow-y: auto; padding: 10px; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6); flex-direction: column;
-        }
-        
-        .grup-label { font-size: 0.6rem; font-weight: 800; color: var(--primary); margin: 5px 0 3px 0; border-bottom: 1px solid var(--border); padding-bottom: 2px; text-align: left; }
-        .kls-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 8px; }
-        .checkbox-item { display: flex; align-items: center; gap: 4px; padding: 4px 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-body); cursor: pointer; font-size: 0.75rem; font-weight: 600; }
-        .checkbox-item input { width: 14px; height: 14px; margin: 0; cursor: pointer; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid var(--border); border-radius: 10px; background: var(--input-bg); color: var(--text-main); box-sizing: border-box; outline: none; }
+        label { font-size: 0.75rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; display: block; margin-top: 15px; }
 
-        /* TABLE */
-        .table-responsive { overflow-x: auto; margin-top: 10px; position: relative; z-index: 1; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; border-bottom: 1px solid var(--border); text-align: left; font-size: 0.85rem; }
-        thead th { position: relative; z-index: 1; background: var(--bg-card); }
-        
-        .refresh-indicator { font-size: 0.65rem; color: var(--success); font-weight: 700; display: flex; align-items: center; gap: 5px; margin-left: 10px; }
-        .dot { height: 6px; width: 6px; background-color: var(--success); border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        /* Area Ceklis Rapat */
+        .area-kls-check { background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; max-height: 150px; overflow-y: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
+        .check-item { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; cursor: pointer; }
+        .check-item input { width: auto; margin: 0; cursor: pointer; }
 
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter: blur(4px); display:none; align-items:center; justify-content:center; z-index:99999; }
-        .modal-content { background:var(--bg-card); padding:30px; border-radius:20px; max-width:400px; width:90%; border:1px solid var(--border); text-align: center; }
+        .btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .btn-success { background: var(--success); color: white; width: 100%; margin-top: 20px; }
+        .btn-danger { background: var(--danger); color: white; font-size: 0.75rem; padding: 6px 12px; }
         
-        @media (min-width: 601px) {
-            .filter-tengah { position: absolute; left: 50%; transform: translateX(-50%); width: auto !important; min-width: 180px; z-index: 100; }
-            #areaFilter { left: 50%; transform: translateX(-50%); min-width: 250px; }
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { color: var(--primary); text-align: left; padding: 12px; border-bottom: 2px solid var(--border); font-size: 0.8rem; }
+        td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        
+        footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 15px 20px; text-align: center; color: var(--text-sub); font-size: 0.8rem; }
+        .footer-brand { font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+
+        /* Custom Modal */
+        #customModal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+        .modal-content { background: var(--bg-card); margin: 15vh auto; padding: 25px; border: 1px solid var(--border); width: 90%; max-width: 400px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-btns { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        .btn-modal { padding: 10px 25px; border-radius: 10px; cursor: pointer; font-weight: 600; border: none; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="header-brand"><div class="header-title">Smart CBT</div></div>
-    <div style="display: flex; gap: 10px;">
-        <button class="btn" style="background:var(--bg-card); border:1px solid var(--border); color:var(--text-main)" onclick="openSiswaModal()">👤</button>
-        <button class="btn" style="background:var(--primary); color:white" onclick="toggleDarkMode()">☀️</button>
-    </div>
+    <div style="font-weight: 800; font-size: 1.3rem; color: var(--primary);">Smart CBT - Guru</div>
+    <div style="font-size: 0.75rem; color: var(--success); font-weight: 600;">● Server Online</div>
 </header>
 
-<div id="infoModal" class="modal-overlay">
-    <div class="modal-content">
-        <span id="mIcon" style="font-size: 2rem;">🔔</span>
-        <h3 id="mTitle">Pesan</h3>
-        <p id="mText" style="color: var(--text-sub);"></p>
-        <div id="mFooter" style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;"></div>
-    </div>
-</div>
-
-<div id="siswaModal" class="modal-overlay">
-    <div class="modal-content" style="text-align: left;">
-        <h3>Registrasi Siswa</h3>
-        <label>NIS</label><input type="number" id="nisBaru">
-        <label>Nama Siswa</label><input type="text" id="namaBaru">
-        <label>Kelas</label><select id="kelasBaru"></select>
-        <button class="btn btn-save" onclick="tambahSiswa()">SIMPAN SISWA</button>
-        <button class="btn" onclick="closeSiswaModal()" style="width:100%; margin-top:10px; background:none; color:var(--text-sub)">Batal</button>
-    </div>
-</div>
-
 <div class="container">
-    <div class="card full-width">
-        <h3>📝 Buat Soal Ujian</h3>
-        <label>Mata Pelajaran</label>
-        <select id="mapelSoal">
-                    <option value="" disabled selected>Pilih Mapel</option>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('tab-rekap')">📊 Rekap Nilai</button>
+        <button class="tab-btn" onclick="openTab('tab-input')">📝 Buat Soal</button>
+        <button class="tab-btn" onclick="openTab('tab-bank')">📚 Bank Soal</button>
+    </div>
+
+    <div id="tab-rekap" class="tab-content">
+        <div class="card">
+            <h3 style="margin-top: 0;">📊 Hasil Ujian Siswa</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Mapel</th><th>Skor</th><th>Aksi</th></tr>
+                    </thead>
+                    <tbody id="tabelNilai"><tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-input" class="tab-content" style="display:none;">
+        <div class="card">
+            <h3 style="margin-top: 0;">📝 Buat Soal Baru</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label>Pilih Kelompok Kelas</label>
+                    <select id="pilihKelompok" onchange="updateDaftarKelas()">
+                        <option value="" disabled selected>Pilih Kelas</option>
+                        <option value="7">Kelas 7</option><option value="8">Kelas 8</option><option value="9">Kelas 9</option>
+                    </select>
+                    <div id="areaKls" class="area-kls-check">
+                        <div style="grid-column: span 3; text-align: center; font-size: 0.8rem; padding: 10px;">Pilih tingkat kelas</div>
+                    </div>
+                </div>
+                <div>
+                    <label>Mata Pelajaran</label>
+                    <select id="mapelSoal">
+                    <option value="" disabled selected>Pilih Mata Pelajaran</option>
                     <option value="PAI">Pendidikan Agama</option>
                     <option value="PP">Pendidikan Pancasila</option>
                     <option value="B.Indo">Bahasa Indonesia</option>                     
@@ -114,187 +103,180 @@
                     <option value="PJOK">PJOK</option>
                     <option value="Seni Budaya">Seni Budaya</option>
                     <option value="Informatika">Informatika</option>
-        </select>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div class="multi-select">
-                <label>Target Kelas</label>
-                <div class="select-box" onclick="toggleDrowdown('areaKls', event)">
-                    <span id="txtKls">Pilih Kelas</span><span>▼</span>
+                    </select>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="number" id="durasiSoal" value="60" placeholder="Menit">
+                        <input type="number" id="limitSoal" value="10" placeholder="Limit">
+                    </div>
                 </div>
-                <div id="areaKls" class="checkbox-area"></div>
             </div>
-            <div>
-                <label>Durasi (Menit)</label>
-                <input type="number" id="durasiSoal" value="60">
+            <textarea id="tanya" placeholder="Tulis soal di sini..." style="height: 100px; margin-top: 10px;"></textarea>
+            <input type="file" id="fileGambar" accept="image/*">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <input type="text" id="opta" placeholder="Pilihan A"><input type="text" id="optb" placeholder="Pilihan B">
+                <input type="text" id="optc" placeholder="Pilihan C"><input type="text" id="optd" placeholder="Pilihan D">
             </div>
-        </div>
-
-        <label>Pertanyaan</label>
-        <textarea id="tanya" style="height: 80px;" placeholder="Tulis soal..."></textarea>
-        
-        <input type="file" id="fileGambar" accept="image/*" style="margin-top: 10px;" onchange="previewFile()">
-        <img id="previewImg" style="max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 10px; display: none; border: 1px solid var(--border);">
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-            <input type="text" id="opta" placeholder="Pilihan A"><input type="text" id="optb" placeholder="Pilihan B">
-            <input type="text" id="optc" placeholder="Pilihan C"><input type="text" id="optd" placeholder="Pilihan D">
-        </div>
-
-        <div style="display: flex; gap: 15px; align-items: center; margin-top: 10px;">
-            <div style="flex: 1;"><label>Kunci</label>
-                <select id="kunci"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
-            </div>
-            <button class="btn btn-save" style="background:var(--success); flex: 2; margin-top: 25px;" onclick="simpanSoal()" id="btnSoal">💾 SIMPAN SOAL</button>
+            <select id="kunci">
+                <option value="A">Kunci: A</option><option value="B">Kunci: B</option><option value="C">Kunci: C</option><option value="D">Kunci: D</option>
+            </select>
+            <button class="btn btn-success" id="btnSoal" onclick="simpanSoal()">💾 Simpan Soal</button>
         </div>
     </div>
 
-    <div class="card full-width">
-        <div style="display: flex; justify-content: space-between; align-items: center; min-height: 50px;">
-            <div style="display: flex; align-items: center; min-width: 150px;">
-                <h3>📊 Rekap Nilai</h3>
-                <div class="refresh-indicator"><span class="dot"></span> Live</div>
+    <div id="tab-bank" class="tab-content" style="display:none;">
+        <div class="card">
+            <h3 style="margin-top: 0;">📚 Bank Soal Aktif</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead><tr><th>Mapel</th><th>Kelas</th><th>Pertanyaan</th><th>Kunci</th><th>Aksi</th></tr></thead>
+                    <tbody id="tabelBankSoal"></tbody>
+                </table>
             </div>
-
-            <div class="multi-select filter-tengah">
-                <div class="select-box" onclick="toggleDrowdown('areaFilter', event)" style="margin:0;">
-                    <span id="txtFilter">Semua Kelas</span><span style="margin-left:10px">▼</span>
-                </div>
-                <div id="areaFilter" class="checkbox-area"></div>
-            </div>
-
-            <div style="min-width: 150px;"></div>
-        </div>
-        <div class="table-responsive">
-            <table>
-                <thead><tr><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Mapel</th><th>Skor</th><th>ESC</th><th>Aksi</th></tr></thead>
-                <tbody id="tabelNilai"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="card full-width">
-        <h3>📚 Daftar Soal Aktif</h3>
-        <div class="table-responsive">
-            <table>
-                <thead><tr><th>Mapel</th><th>Kelas</th><th>Soal</th><th>Kunci</th><th>Aksi</th></tr></thead>
-                <tbody id="tabelDaftarSoal"></tbody>
-            </table>
         </div>
     </div>
 </div>
 
+<footer>
+    <div class="footer-brand">SMPN 110 JAKARTA @ 2026</div>
+    <div>Created by Endra</div>
+</footer>
+
+<div id="customModal">
+    <div class="modal-content">
+        <h3 id="modalTitle" style="margin-top:0; color:var(--primary);">Pemberitahuan</h3>
+        <p id="modalMsg" style="color:var(--text-sub); line-height:1.5;"></p>
+        <div class="modal-btns" id="modalBtns"></div>
+    </div>
+</div>
+
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5nxp2bZzENzuGCjlBMJ2r49JMOSoczCEtLHFilRGlyaCnbJhWGQQ5v5oktT4Upsji/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2Q6LgxLl2yYXPqKUj3jSFZ38VT94ZCu-eUfcBGvNQfr_qp_kNNCM-NYL2Xb5gqy6V/exec"; 
+    const databaseKelas = { "7": ["7A","7B","7C","7D","7E","7F"], "8": ["8A","8B","8C","8D","8E","8F"], "9": ["9A","9B","9C","9D","9E","9F"] };
 
-    function showMsg(title, text, icon, type = 'info', onConfirm = null) {
-        document.getElementById('mTitle').innerText = title;
-        document.getElementById('mText').innerText = text;
-        const footer = document.getElementById('mFooter');
-        footer.innerHTML = type === 'confirm' ? 
-            `<button class="btn" onclick="closeMsg()">Batal</button><button class="btn" id="mCfm" style="background:var(--danger); color:white">Hapus</button>` :
-            `<button class="btn btn-save" onclick="closeMsg()">Oke</button>`;
-        if(type === 'confirm') document.getElementById('mCfm').onclick = () => { onConfirm(); closeMsg(); };
-        document.getElementById('infoModal').style.display = 'flex';
-    }
-    function closeMsg() { document.getElementById('infoModal').style.display = 'none'; }
-    function toggleDarkMode() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
-    function openSiswaModal() { document.getElementById('siswaModal').style.display = 'flex'; }
-    function closeSiswaModal() { document.getElementById('siswaModal').style.display = 'none'; }
+    function showModal(msg, type = 'alert', onConfirm = null) {
+        const modal = document.getElementById('customModal');
+        document.getElementById('modalMsg').innerText = msg;
+        const btnArea = document.getElementById('modalBtns');
+        btnArea.innerHTML = "";
+        modal.style.display = "block";
 
-    const kelompokKelas = [
-        { nama: "KELAS 7", data: ['7A','7B','7C','7D','7E','7F'] },
-        { nama: "KELAS 8", data: ['8A','8B','8C','8D','8E','8F'] },
-        { nama: "KELAS 9", data: ['9A','9B','9C','9D','9E','9F'] }
-    ];
-
-    function initKelas() {
-        let htmlSoal = ''; let htmlFilter = '';
-        const selectSiswa = document.getElementById('kelasBaru');
-        kelompokKelas.forEach(grup => {
-            htmlSoal += `<div class="grup-label">${grup.nama}</div><div class="kls-grid">`;
-            htmlFilter += `<div class="grup-label">${grup.nama}</div><div class="kls-grid">`;
-            grup.data.forEach(k => {
-                htmlSoal += `<div class="checkbox-item" onclick="toggleCheck(this, event, 'soal')"><input type="checkbox" value="${k}" onchange="updTxt('soal')"><label>${k}</label></div>`;
-                htmlFilter += `<div class="checkbox-item" onclick="toggleCheck(this, event, 'filter')"><input type="checkbox" value="${k}" onchange="updTxt('filter')"><label>${k}</label></div>`;
-                selectSiswa.innerHTML += `<option value="${k}">${k}</option>`;
-            });
-            htmlSoal += `</div>`; htmlFilter += `</div>`;
-        });
-        document.getElementById('areaKls').innerHTML = htmlSoal;
-        document.getElementById('areaFilter').innerHTML = htmlFilter;
-    }
-
-    function toggleDrowdown(id, e) { 
-        e.stopPropagation(); 
-        const el = document.getElementById(id); 
-        document.querySelectorAll('.checkbox-area').forEach(a => { if(a.id !== id) a.style.display = 'none'; });
-        el.style.display = el.style.display === 'flex' ? 'none' : 'flex'; 
-    }
-
-    function toggleCheck(el, e, mode) { 
-        e.stopPropagation(); 
-        const cb = el.querySelector('input'); 
-        if (e.target !== cb) cb.checked = !cb.checked; 
-        updTxt(mode);
-    }
-
-    function updTxt(mode) {
-        if(mode === 'soal') {
-            const checked = Array.from(document.querySelectorAll('#areaKls input:checked')).map(el => el.value);
-            document.getElementById('txtKls').innerText = checked.length > 0 ? checked.join(',') : 'Pilih Kelas';
+        if(type === 'alert') {
+            const btn = document.createElement('button');
+            btn.className = "btn-modal btn-primary";
+            btn.innerText = "Oke";
+            btn.style.background = "var(--primary)"; btn.style.color = "white";
+            btn.onclick = () => modal.style.display = "none";
+            btnArea.appendChild(btn);
         } else {
-            const checked = Array.from(document.querySelectorAll('#areaFilter input:checked')).map(el => el.value);
-            document.getElementById('txtFilter').innerText = checked.length > 0 ? checked.join(',') : 'Semua Kelas';
-            loadNilai(); 
+            const btnNo = document.createElement('button');
+            btnNo.className = "btn-modal"; btnNo.innerText = "Batal";
+            btnNo.style.background = "#334155"; btnNo.style.color = "white";
+            btnNo.onclick = () => modal.style.display = "none";
+            const btnYes = document.createElement('button');
+            btnYes.className = "btn-modal"; btnYes.innerText = "Ya, Hapus";
+            btnYes.style.background = "var(--danger)"; btnYes.style.color = "white";
+            btnYes.onclick = () => { modal.style.display = "none"; onConfirm(); };
+            btnArea.appendChild(btnNo); btnArea.appendChild(btnYes);
         }
     }
-    
-    document.addEventListener('click', () => { document.querySelectorAll('.checkbox-area').forEach(a => a.style.display = 'none'); });
 
-    async function loadNilai() {
-        try {
-            const res = await fetch(`${SCRIPT_URL}?target=logJawaban`);
-            const data = await res.json();
-            const checkedFilter = Array.from(document.querySelectorAll('#areaFilter input:checked')).map(el => el.value);
-            const filtered = data.reverse().filter(n => checkedFilter.length === 0 || checkedFilter.includes(n.kelas));
-            document.getElementById('tabelNilai').innerHTML = filtered.map((n, i) => `<tr><td>${n.timestamp}</td><td><b>${n.nama}</b></td><td>${n.kelas}</td><td>${n.mapel}</td><td><b>${n.skor}</b></td><td style="color:${n.cheatcount>0?'red':'green'}">${n.cheatcount}</td><td><button class="btn btn-danger" onclick="hapusLog(${data.length-1-i})">🗑️</button></td></tr>`).join('');
-        } catch(e) {}
+    function openTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).style.display = 'block';
+        event.currentTarget.classList.add('active');
+        if(tabId === 'tab-rekap') loadNilai();
+        if(tabId === 'tab-bank') loadBankSoal();
     }
 
-    async function loadSoal() {
+    function updateDaftarKelas() {
+        const tingkat = document.getElementById('pilihKelompok').value;
+        const area = document.getElementById('areaKls');
+        area.innerHTML = "";
+        (databaseKelas[tingkat] || []).forEach(kls => {
+            const item = document.createElement('label');
+            item.className = "check-item";
+            item.innerHTML = `<input type="checkbox" value="${kls}" checked> ${kls}`;
+            area.appendChild(item);
+        });
+    }
+
+    async function loadNilai() {
+        const tbody = document.getElementById('tabelNilai');
+        // Ikon ⏳ dihapus
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr>';
+        try {
+            const res = await fetch(`${SCRIPT_URL}?target=rekap`);
+            const data = await res.json();
+            tbody.innerHTML = data.reverse().map(row => `
+                <tr><td><small>${row[0]}</small></td><td><b>${row[1]}</b></td><td>${row[2]}</td><td>${row[3]}</td>
+                <td><b style="color:var(--success)">${row[4]}</b></td>
+                <td><button class="btn btn-danger" onclick="showModal('Gunakan Google Sheets untuk hapus rekap.')">🗑️</button></td></tr>
+            `).join('');
+        } catch(e) { tbody.innerHTML = '<tr><td colspan="6">Gagal memuat.</td></tr>'; }
+    }
+
+    async function loadBankSoal() {
+        const tbody = document.getElementById('tabelBankSoal');
+        // Ikon ⏳ dihapus
+        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center'>Memuat...</td></tr>";
         try {
             const res = await fetch(`${SCRIPT_URL}?target=dbSoal`);
             const data = await res.json();
-            document.getElementById('tabelDaftarSoal').innerHTML = data.reverse().map((s, i) => `<tr><td>${s.mapel}</td><td><small>${s.kelas}</small></td><td style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s.pertanyaan}</td><td><b>${s.kunci}</b></td><td><button class="btn btn-danger" onclick="hapusSoal(${data.length-1-i})">🗑️</button></td></tr>`).join('');
-        } catch(e) {}
+            tbody.innerHTML = data.map((row, index) => `
+                <tr><td>${row.mapel}</td><td><small>${row.kelas}</small></td><td>${row.pertanyaan.substring(0,40)}...</td>
+                <td><b>${row.kunci}</b></td><td><button class="btn btn-danger" onclick="confirmHapus(${index})">🗑️ Hapus</button></td></tr>
+            `).join('');
+        } catch(e) { tbody.innerHTML = "<tr><td colspan='5' style='text-align:center'>Data kosong.</td></tr>"; }
+    }
+
+    function confirmHapus(index) {
+        showModal("Hapus soal ini dari database?", "confirm", async () => {
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ target: "hapusSoal", index: index }) });
+            loadBankSoal();
+        });
     }
 
     async function simpanSoal() {
         const kls = Array.from(document.querySelectorAll('#areaKls input:checked')).map(el => el.value).join(', ');
-        const mapel = document.getElementById('mapelSoal').value;
-        if(!kls || !mapel || !document.getElementById('tanya').value) return showMsg("Gagal", "Lengkapi semua data!", "⚠️");
-        const btn = document.getElementById('btnSoal'); btn.disabled = true; btn.innerText = "Menyimpan...";
+        if(!kls || !document.getElementById('tanya').value) return showModal("Mohon isi pertanyaan dan pilih kelas!");
+        
+        const btn = document.getElementById('btnSoal');
+        btn.disabled = true; 
+        // Ikon ⏳ dihapus
+        btn.innerText = "Menyimpan...";
+        
         let base64 = "";
         const file = document.getElementById('fileGambar').files[0];
-        if(file) base64 = await new Promise(r => { const rd = new FileReader(); rd.onload = e => r(e.target.result); rd.readAsDataURL(file); });
-        const payload = { target: "tambahSoal", values: [kls, mapel, document.getElementById('tanya').value, document.getElementById('opta').value, document.getElementById('optb').value, document.getElementById('optc').value, document.getElementById('optd').value, document.getElementById('kunci').value, document.getElementById('durasiSoal').value, base64] };
-        await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-        btn.disabled = false; btn.innerText = "💾 SIMPAN SOAL";
-        document.getElementById('tanya').value = ""; document.getElementById('previewImg').style.display = "none";
-        loadSoal();
+        if(file) {
+            base64 = await new Promise(r => {
+                const rd = new FileReader();
+                rd.onload = e => r(e.target.result);
+                rd.readAsDataURL(file);
+            });
+        }
+        
+        const payload = {
+            target: "tambahSoal",
+            values: [kls, document.getElementById('mapelSoal').value, document.getElementById('tanya').value, 
+                     document.getElementById('opta').value, document.getElementById('optb').value, 
+                     document.getElementById('optc').value, document.getElementById('optd').value, 
+                     document.getElementById('kunci').value, document.getElementById('durasiSoal').value, 
+                     base64, document.getElementById('limitSoal').value, "AKTIF"]
+        };
+        
+        try {
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+            showModal("✅ Berhasil disimpan!");
+            setTimeout(() => location.reload(), 1200);
+        } catch(e) {
+            showModal("❌ Gagal simpan.");
+            btn.disabled = false; 
+            btn.innerText = "💾 Simpan Soal";
+        }
     }
 
-    function hapusLog(idx) { showMsg('Hapus?', 'Hapus rekap nilai ini?', '🗑️', 'confirm', async () => { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ target: "hapusLog", values: idx }) }); loadNilai(); }); }
-    function hapusSoal(idx) { showMsg('Hapus?', 'Hapus soal ini dari daftar?', '🗑️', 'confirm', async () => { await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ target: "hapusSoal", values: idx }) }); loadSoal(); }); }
-
-    async function tambahSiswa() {
-        const payload = { target: "dbSiswa", values: [document.getElementById('nisBaru').value, document.getElementById('namaBaru').value, document.getElementById('kelasBaru').value] };
-        await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
-        showMsg("Berhasil", "Siswa telah terdaftar", "👤"); closeSiswaModal();
-    }
-
-    window.onload = () => { initKelas(); loadNilai(); loadSoal(); setInterval(() => { loadNilai(); loadSoal(); }, 10000); };
+    window.onload = loadNilai;
 </script>
 </body>
 </html>

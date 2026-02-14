@@ -3,247 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ujian Siswa - Smart CBT</title>
+    <title>Siswa - Smart CBT</title>
     <style>
-        :root { 
-            --bg-body: #0f172a; 
-            --bg-card: #1e293b; 
-            --text-main: #f1f5f9; 
-            --text-sub: #94a3b8; 
-            --border: rgba(255,255,255,0.1); 
-            --primary: #0ea5e9; 
-            --success: #10b981; 
-            --danger: #ef4444; 
-        }
-
-        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 0; overflow: hidden; }
-
-        /* --- LOGIN CARD DENGAN GAMBAR FULL --- */
-        .container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        
-        .login-box { 
-            text-align: center; 
-            max-width: 360px; 
-            width: 90%; 
-            padding: 40px 30px; 
-            border-radius: 24px; 
-            position: relative;
-            overflow: hidden;
-            /* Gambar Latar Belakang Full */
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.85), rgba(15, 23, 42, 0.95)), 
-                        url('https://images.unsplash.com/photo-1606326666333-440266006764?q=80&w=1000');
-            background-size: cover;
-            background-position: center;
-            border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        /* INPUT TANPA SPINNER */
-        input { 
-            width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.2); background: rgba(15, 23, 42, 0.6); 
-            color: white; text-align: center; font-size: 1rem; box-sizing: border-box;
-            backdrop-filter: blur(4px);
-        }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type=number] { -moz-appearance: textfield; }
-
-        .btn { 
-            width: 100%; padding: 14px; border: none; border-radius: 12px; cursor: pointer; 
-            font-weight: 800; background: #22c55e; color: white; transition: 0.3s; 
-        }
-
-        /* --- VIEW SOAL FULL SCREEN --- */
-        #viewSoal { position: fixed; inset: 0; background: #0f172a; z-index: 1000; display: none; flex-direction: column; }
-        .soal-header { height: 65px; background: #1e293b; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; }
-        .soal-content { flex: 1; overflow-y: auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
-        
-        /* Lebar Gambar Sama Dengan Kotak Pilihan */
-        .soal-wrapper { max-width: 800px; width: 100%; margin: 0 auto; }
-        .soal-img-container { width: 100%; border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--border); }
-        .soal-img { width: 100%; height: auto; display: block; object-fit: cover; }
-
-        .opsi { 
-            display: flex; align-items: center; gap: 15px; padding: 18px; border: 2px solid #334155; 
-            border-radius: 15px; margin-bottom: 12px; cursor: pointer; width: 100%; box-sizing: border-box; 
-        }
-        .opsi.selected { background: var(--primary); color: white; border-color: var(--primary); }
-
-        /* --- MODAL ELEGAN --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 99999; display: none; align-items: center; justify-content: center; }
-        .modal-box { background: #1e293b; padding: 35px; border-radius: 24px; max-width: 380px; width: 90%; text-align: center; border: 1px solid var(--border); transform: scale(0.9); transition: 0.3s; }
-        .modal-box.active { transform: scale(1); }
+        :root { --bg-body: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8; --primary: #2563eb; --success: #10b981; --danger: #ef4444; --border: #334155; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: var(--bg-card); padding: 15px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 800px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; box-sizing: border-box; }
+        .card { background: var(--bg-card); padding: 25px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .btn { padding: 12px 24px; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; width: 100%; }
+        .btn-primary { background: var(--primary); color: white; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-body); color: var(--text-main); }
+        .soal-img { max-width: 100%; border-radius: 12px; margin: 15px 0; border: 1px solid var(--border); }
+        .opsi-container { display: grid; gap: 10px; margin-top: 20px; }
+        .opsi-btn { padding: 15px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,0.05); cursor: pointer; text-align: left; transition: 0.2s; }
+        .opsi-btn:hover { background: rgba(37, 99, 235, 0.1); border-color: var(--primary); }
+        .opsi-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
     </style>
 </head>
 <body>
 
-<div id="customModal" class="modal-overlay">
-    <div class="modal-box" id="modalBox">
-        <div id="modalIcon" style="font-size: 4rem; margin-bottom: 15px;">🔔</div>
-        <h3 id="modalTitle">Judul</h3>
-        <p id="modalMsg">Pesan...</p>
-        <div style="display: flex; gap: 12px; margin-top: 25px;">
-            <button id="btnCancel" class="btn" style="background: transparent; border: 1px solid var(--border);" onclick="closeModal()">Batal</button>
-            <button id="btnConfirm" class="btn" style="background: var(--primary);">Oke</button>
+<header>
+    <div id="infoSiswa"><b>SMART CBT</b></div>
+    <div id="timer" style="font-weight: 800; color: var(--danger);">00:00</div>
+</header>
+
+<div class="container" id="mainArea">
+    <div class="card" id="loginArea">
+        <h2 style="text-align:center; color:var(--primary);">Login Siswa</h2>
+        <input type="text" id="nis" placeholder="Masukkan NIS">
+        <button class="btn btn-primary" onclick="login()">MASUK UJIAN</button>
+    </div>
+
+    <div id="ujianArea" style="display: none;">
+        <div class="card">
+            <div id="kontenSoal">
+                <div id="noSoal" style="font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;">Soal 1</div>
+                <div id="teksSoal" style="font-size: 1.1rem; line-height: 1.6;">Memuat soal...</div>
+                <div id="gambarSoal"></div>
+                <div class="opsi-container" id="opsiArea"></div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn" style="background:var(--border);" onclick="navigasi(-1)">KEMBALI</button>
+                <button class="btn btn-primary" id="btnNext" onclick="navigasi(1)">LANJUT</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="hasilArea" style="display: none; text-align: center;">
+        <div class="card">
+            <h1 style="color:var(--success);">Ujian Selesai!</h1>
+            <p>Terima kasih telah mengerjakan ujian dengan jujur.</p>
+            <div style="font-size: 4rem; font-weight: 900; margin: 20px 0;" id="skorDisplay">0</div>
+            <p id="statusKirim">Data sedang dikirim...</p>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div id="viewLogin" class="login-box">
-        <div style="font-size: 45px;">🎓</div>
-        <h2>Smart CBT</h2>
-        <p>Sistem Ujian Kehadiran Siswa</p>
-        <input type="number" id="nisInput" placeholder="Masukkan NIS">
-        <button class="btn" onclick="loginSiswa()" id="btnLogin">MASUK UJIAN</button>
-    </div>
-
-    <div id="viewListUjian" style="display: none; width: 90%; max-width: 550px;">
-        <h3 style="text-align: center;">Pilih Mata Pelajaran</h3>
-        <div id="listUjianContainer"></div>
-    </div>
-</div>
-
-<div id="viewSoal">
-    <div class="soal-header">
-        <div id="txtMapel" style="font-weight: 800; color: var(--primary);">UJIAN</div>
-        <div id="timerBox" style="background: var(--danger); padding: 5px 15px; border-radius: 20px;">00:00</div>
-        <div style="text-align: right; font-size: 0.8rem;"><b id="txtNamaSiswa">NAMA</b><br><span id="txtKelasSiswa">KELAS</span></div>
-    </div>
-    <div class="soal-content">
-        <div class="soal-wrapper" id="soalContainer"></div>
-    </div>
-    <div style="height: 80px; display: flex; justify-content: center; gap: 20px; align-items: center; background: #1e293b;">
-        <button class="btn" style="width: 120px; background: #334155;" onclick="prevSoal()">KEMBALI</button>
-        <div id="soalIndicator" style="font-weight: 800;">1 / 10</div>
-        <button id="btnNext" class="btn" style="width: 120px; background: var(--primary);" onclick="nextSoal()">LANJUT</button>
-        <button id="btnSelesai" class="btn" style="width: 120px; background: var(--success); display: none;" onclick="finishUjian()">SELESAI</button>
-    </div>
-</div>
-
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5nxp2bZzENzuGCjlBMJ2r49JMOSoczCEtLHFilRGlyaCnbJhWGQQ5v5oktT4Upsji/exec";
-    let user, allSoal, activeSoal, currentIdx = 0, answers = {}, timerInterval;
+    // URL SCRIPT_URL HARUS SAMA DENGAN GURU.HTML
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2Q6LgxLl2yYXPqKUj3jSFZ38VT94ZCu-eUfcBGvNQfr_qp_kNNCM-NYL2Xb5gqy6V/exec"; 
 
-    function openModal(title, msg, icon, type = 'alert', onConfirm = null) {
-        document.getElementById('modalTitle').innerText = title;
-        document.getElementById('modalMsg').innerText = msg;
-        document.getElementById('modalIcon').innerText = icon;
-        document.getElementById('btnCancel').style.display = type === 'confirm' ? 'block' : 'none';
-        document.getElementById('btnConfirm').onclick = () => { closeModal(); if(onConfirm) onConfirm(); };
-        document.getElementById('customModal').style.display = 'flex';
-        setTimeout(() => document.getElementById('modalBox').classList.add('active'), 10);
-    }
-    function closeModal() {
-        document.getElementById('modalBox').classList.remove('active');
-        setTimeout(() => document.getElementById('customModal').style.display = 'none', 200);
-    }
+    let dataSiswa = null;
+    let daftarSoal = [];
+    let soalAktif = 0;
+    let jawabanSiswa = {};
+    let cheatCount = 0;
+    let timerInterval;
 
-    // Aktifkan Full Screen
-    function activateFullScreen() {
-        const doc = document.documentElement;
-        if (doc.requestFullscreen) doc.requestFullscreen();
-    }
+    // DETEKSI KECURANGAN (PINDAH TAB)
+    window.onblur = () => {
+        if(dataSiswa) {
+            cheatCount++;
+            alert("Peringatan! Jangan meninggalkan halaman ujian.");
+        }
+    };
 
-    async function loginSiswa() {
-        const nis = document.getElementById('nisInput').value;
-        if(!nis) return openModal("Peringatan", "Masukkan NIS Anda.", "⚠️");
-        const btn = document.getElementById('btnLogin');
-        btn.innerText = "Mengecek..."; btn.disabled = true;
+    async function login() {
+        const nisInput = document.getElementById('nis').value;
+        if(!nisInput) return alert("Isi NIS!");
+        
         try {
             const res = await fetch(`${SCRIPT_URL}?target=dbSiswa`);
-            const students = await res.json();
-            user = students.find(s => s.nis == nis);
-            if(user) {
-                document.getElementById('viewLogin').style.display = 'none';
-                document.getElementById('viewListUjian').style.display = 'block';
-                document.getElementById('txtNamaSiswa').innerText = user.nama.toUpperCase();
-                document.getElementById('txtKelasSiswa').innerText = user.kelas;
-                loadDaftarUjian();
-            } else {
-                openModal("Gagal", "NIS tidak ditemukan.", "❌");
-                btn.innerText = "MASUK UJIAN"; btn.disabled = false;
-            }
-        } catch(e) { openModal("Error", "Koneksi gagal.", "📡"); btn.innerText = "MASUK UJIAN"; btn.disabled = false; }
+            const siswa = await res.json();
+            dataSiswa = siswa.find(s => s.nis == nisInput);
+            
+            if(dataSiswa) {
+                document.getElementById('loginArea').style.display = 'none';
+                loadSoal();
+            } else { alert("NIS tidak terdaftar!"); }
+        } catch(e) { alert("Gagal koneksi ke server."); }
     }
 
-    async function loadDaftarUjian() {
-        const container = document.getElementById('listUjianContainer');
-        container.innerHTML = "<p style='text-align:center'>Memuat...</p>";
-        const res = await fetch(`${SCRIPT_URL}?target=dbSoal`);
-        allSoal = await res.json();
-        container.innerHTML = "";
-        const mapelUnik = [...new Set(allSoal.map(s => s.mapel))];
-        mapelUnik.forEach(m => {
-            const soalTersedia = allSoal.filter(s => s.mapel === m && s.kelas.includes(user.kelas));
-            if(soalTersedia.length > 0) {
-                const div = document.createElement('div');
-                div.innerHTML = `<div style="background:#1e293b; padding:20px; border-radius:18px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border);">
-                    <div><b>${m}</b><br><small>${soalTersedia.length} Soal</small></div>
-                    <button class="btn" style="width:auto; padding:8px 20px;" onclick="konfirmasiMulai('${m}')">MULAI</button>
-                </div>`;
-                container.appendChild(div);
-            }
+    async function loadSoal() {
+        try {
+            const res = await fetch(`${SCRIPT_URL}?target=dbSoal`);
+            const semuaSoal = await res.json();
+            // Filter soal sesuai kelas siswa
+            daftarSoal = semuaSoal.filter(s => s.kelas.includes(dataSiswa.kelas) && s.status === "AKTIF");
+            
+            if(daftarSoal.length > 0) {
+                document.getElementById('ujianArea').style.display = 'block';
+                tampilkanSoal();
+                startTimer(daftarSoal[0].durasi);
+            } else { alert("Tidak ada ujian aktif untuk kelas Anda."); }
+        } catch(e) { alert("Gagal memuat soal."); }
+    }
+
+    function tampilkanSoal() {
+        const s = daftarSoal[soalAktif];
+        document.getElementById('noSoal').innerText = `SOAL ${soalAktif + 1} DARI ${daftarSoal.length}`;
+        document.getElementById('teksSoal').innerText = s.pertanyaan;
+        
+        // Render Gambar jika ada
+        const boxGambar = document.getElementById('gambarSoal');
+        boxGambar.innerHTML = s.gambar ? `<img src="${s.gambar}" class="soal-img">` : "";
+
+        const areaOpsi = document.getElementById('opsiArea');
+        areaOpsi.innerHTML = "";
+        ['opta', 'optb', 'optc', 'optd'].forEach((key, idx) => {
+            const label = String.fromCharCode(65 + idx); // A, B, C, D
+            const btn = document.createElement('div');
+            btn.className = `opsi-btn ${jawabanSiswa[soalAktif] === label ? 'selected' : ''}`;
+            btn.innerHTML = `<b>${label}.</b> ${s[key]}`;
+            btn.onclick = () => pilihJawaban(label);
+            areaOpsi.appendChild(btn);
         });
+
+        document.getElementById('btnNext').innerText = soalAktif === daftarSoal.length - 1 ? "SELESAI" : "LANJUT";
     }
 
-    function konfirmasiMulai(m) {
-        openModal("Mulai Ujian?", `Ujian ${m} akan segera dimulai dalam mode Full Screen.`, "📝", "confirm", () => {
-            activateFullScreen();
-            startUjian(m);
-        });
+    function pilihJawaban(label) {
+        jawabanSiswa[soalAktif] = label;
+        tampilkanSoal();
     }
 
-    function startUjian(mapel) {
-        activeSoal = allSoal.filter(s => s.mapel === mapel && s.kelas.includes(user.kelas));
-        document.getElementById('viewListUjian').style.display = 'none';
-        document.getElementById('viewSoal').style.display = 'flex';
-        document.getElementById('txtMapel').innerText = mapel.toUpperCase();
-        renderSoal();
-        startTimer(activeSoal[0].durasi);
+    function navigasi(arah) {
+        if(arah === 1 && soalAktif === daftarSoal.length - 1) return selesaiUjian();
+        soalAktif += arah;
+        if(soalAktif < 0) soalAktif = 0;
+        tampilkanSoal();
     }
 
-    function renderSoal() {
-        const s = activeSoal[currentIdx];
-        document.getElementById('soalIndicator').innerText = `${currentIdx + 1} / ${activeSoal.length}`;
-        // Gambar sejajar dengan opsi
-        let imgHtml = s.gambar ? `<div class="soal-img-container"><img src="${s.gambar}" class="soal-img"></div>` : '';
-        document.getElementById('soalContainer').innerHTML = `
-            <div class="soal-text">${s.pertanyaan}</div>
-            ${imgHtml}
-            <div class="opsi ${answers[currentIdx] === 'A' ? 'selected' : ''}" onclick="pilih('A')"><span>A.</span> ${s.opta}</div>
-            <div class="opsi ${answers[currentIdx] === 'B' ? 'selected' : ''}" onclick="pilih('B')"><span>B.</span> ${s.optb}</div>
-            <div class="opsi ${answers[currentIdx] === 'C' ? 'selected' : ''}" onclick="pilih('C')"><span>C.</span> ${s.optc}</div>
-            <div class="opsi ${answers[currentIdx] === 'D' ? 'selected' : ''}" onclick="pilih('D')"><span>D.</span> ${s.optd}</div>
-        `;
-        document.getElementById('btnNext').style.display = currentIdx === activeSoal.length - 1 ? 'none' : 'block';
-        document.getElementById('btnSelesai').style.display = currentIdx === activeSoal.length - 1 ? 'block' : 'none';
-    }
-
-    function pilih(v) { answers[currentIdx] = v; renderSoal(); }
-    function nextSoal() { if(currentIdx < activeSoal.length - 1) { currentIdx++; renderSoal(); } }
-    function prevSoal() { if(currentIdx > 0) { currentIdx--; renderSoal(); } }
-
-    function startTimer(mnt) {
-        let sec = mnt * 60;
+    function startTimer(menit) {
+        let detik = menit * 60;
         timerInterval = setInterval(() => {
-            let m = Math.floor(sec / 60); let s = sec % 60;
-            document.getElementById('timerBox').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-            if(sec-- <= 0) { clearInterval(timerInterval); finishUjian(true); }
+            let m = Math.floor(detik / 60);
+            let s = detik % 60;
+            document.getElementById('timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            if(detik <= 0) selesaiUjian();
+            detik--;
         }, 1000);
     }
 
-    async function finishUjian(auto = false) {
-        const kirim = async () => {
-            clearInterval(timerInterval);
-            document.getElementById('viewSoal').innerHTML = "<h3>Mengirim hasil...</h3>";
-            let benar = 0; activeSoal.forEach((s, i) => { if(answers[i] === s.kunci) benar++; });
-            const skor = Math.round((benar / activeSoal.length) * 100);
-            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ target: "simpanNilai", values: [new Date().toLocaleString('id-ID'), user.nama, user.kelas, activeSoal[0].mapel, skor, 0] }) });
-            location.reload();
+    async function selesaiUjian() {
+        clearInterval(timerInterval);
+        document.getElementById('ujianArea').style.display = 'none';
+        document.getElementById('hasilArea').style.display = 'block';
+
+        let benar = 0;
+        daftarSoal.forEach((s, i) => { if(jawabanSiswa[i] === s.kunci) benar++; });
+        const skor = Math.round((benar / daftarSoal.length) * 100);
+        document.getElementById('skorDisplay').innerText = skor;
+
+        // PENGIRIMAN DATA KE GOOGLE SHEETS (TARGET: simpanNilai)
+        const payload = {
+            target: "simpanNilai",
+            values: [
+                new Date().toLocaleString('id-ID'), // Waktu
+                dataSiswa.nama,                    // Nama
+                dataSiswa.kelas,                   // Kelas
+                daftarSoal[0].mapel,               // Mapel
+                skor,                              // Skor
+                cheatCount                         // Pelanggaran ESC
+            ]
         };
-        if(auto) kirim();
-        else openModal("Kirim Jawaban?", "Pastikan semua sudah terisi.", "🚀", "confirm", kirim);
+
+        try {
+            await fetch(SCRIPT_URL, { 
+                method: "POST", 
+                mode: "no-cors", 
+                body: JSON.stringify(payload) 
+            });
+            document.getElementById('statusKirim').innerText = "Data berhasil disimpan!";
+        } catch(e) {
+            document.getElementById('statusKirim').innerText = "Gagal kirim data, hubungi pengawas.";
+        }
     }
 </script>
 </body>
