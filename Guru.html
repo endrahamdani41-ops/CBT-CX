@@ -12,38 +12,49 @@
         .card { background: var(--bg-card); padding: 25px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; }
         h3 { margin-top: 0; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
         
-        /* TABS */
         .tabs { display: flex; gap: 10px; margin-bottom: 25px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 15px; }
         .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: var(--text-sub); cursor: pointer; border-radius: 10px; font-weight: 600; transition: 0.3s; }
         .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
 
-        /* TABLE */
+        .form-box { max-width: 700px; margin: auto; }
+        select, input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: #0f172a; color: white; text-align: center; font-family: inherit; box-sizing: border-box; outline: none; }
+        textarea { text-align: left; height: 100px; padding: 15px; }
+
+        .kelas-container { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; border: 2px dashed var(--border); margin: 15px 0; display: none; }
+        
+        /* Gaya Judul Ceklis yang Bisa Di-klik */
+        .group-title { 
+            display: inline-block; font-weight: 800; color: var(--primary); 
+            margin-bottom: 15px; font-size: 0.9rem; text-align: center; 
+            cursor: pointer; padding: 5px 15px; border-radius: 20px;
+            transition: 0.2s; border: 1px solid transparent;
+        }
+        .group-title:hover { background: rgba(37, 99, 235, 0.1); border-color: var(--primary); }
+        .group-title:active { transform: scale(0.95); }
+
+        .checkbox-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; justify-items: center; align-items: center; }
+        .checkbox-item { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; cursor: pointer; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 8px; width: 80px; transition: 0.2s; }
+        .checkbox-item:hover { background: rgba(37, 99, 235, 0.2); }
+        .checkbox-item input { width: 20px !important; height: 20px !important; margin: 0 !important; cursor: pointer; accent-color: var(--primary); }
+
         .table-container { overflow-x: auto; margin-top: 20px; border-radius: 15px; border: 1px solid var(--border); }
         table { width: 100%; border-collapse: collapse; text-align: center; background: rgba(0,0,0,0.1); }
         th { background: var(--primary); color: white; padding: 15px; font-size: 0.75rem; text-transform: uppercase; }
-        td { padding: 14px; border-bottom: 1px solid var(--border); font-size: 0.85rem; vertical-align: middle; }
-        tr:hover { background: rgba(255,255,255,0.03); }
+        td { padding: 14px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        .btn-table { padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; color: white; font-weight: bold; transition: 0.2s; }
 
-        /* BUTTONS */
-        .btn { padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; color: white; display: inline-flex; align-items: center; justify-content: center; }
-        .btn-status { width: 95px; font-size: 0.65rem; text-transform: uppercase; }
-        .btn-danger { background: var(--danger); }
-        .btn-success { background: var(--success); }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        /* FORM */
-        .form-box { max-width: 650px; margin: auto; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: #0f172a; color: white; text-align: center; font-family: inherit; box-sizing: border-box; outline: none; }
-        input:focus { border-color: var(--primary); }
+        .opsi-list { display: block; font-size: 0.8rem; color: var(--text-sub); margin-top: 10px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; }
+        .opsi-item { display: block; margin-bottom: 3px; padding: 2px 5px; border-radius: 4px; }
+        .kunci-true { color: var(--success); font-weight: 800; background: rgba(16, 185, 129, 0.1); }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('rekap')">📊 Rekap Nilai</button>
-        <button class="tab-btn" onclick="openTab('input')">📝 Buat Soal</button>
-        <button class="tab-btn" onclick="openTab('bank')">📚 Bank Soal</button>
+        <button id="btn-rekap" class="tab-btn active" onclick="openTab('rekap')">📊 Rekap Nilai</button>
+        <button id="btn-input" class="tab-btn" onclick="openTab('input')">📝 Buat Soal</button>
+        <button id="btn-bank" class="tab-btn" onclick="openTab('bank')">📚 Bank Soal</button>
     </div>
 
     <div id="rekap" class="tab-content">
@@ -52,18 +63,9 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>NIS</th>
-                            <th>Nama Siswa</th>
-                            <th>Kelas</th>
-                            <th>Mapel</th>
-                            <th>Skor</th>
-                        </tr>
+                        <tr><th>No</th><th>NIS</th><th>Nama</th><th>Kelas</th><th>Mapel</th><th>Skor</th></tr>
                     </thead>
-                    <tbody id="tabelNilai">
-                        <tr><td colspan="6">⏳ Memuat data siswa...</td></tr>
-                    </tbody>
+                    <tbody id="tabelNilai"><tr><td colspan="6">⏳ Memuat data...</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -71,25 +73,77 @@
 
     <div id="input" class="tab-content" style="display:none;">
         <div class="card">
-            <h3>📝 Input Soal Baru</h3>
+            <h3>📝 Buat Soal Baru</h3>
             <div class="form-box">
-                <input type="text" id="mapel" placeholder="Mata Pelajaran (Contoh: IPA)">
-                <input type="text" id="kelas" placeholder="Target Kelas (Contoh: 8A, 8B)">
-                <textarea id="tanya" placeholder="Tulis Pertanyaan Di Sini..." style="height: 100px; text-align: left;"></textarea>
+                <select id="mapel">
+                   <option value="" disabled selected>Pilih Mapel</option>
+                    <option value="PAI">Pendidikan Agama</option>
+                    <option value="PP">Pendidikan Pancasila</option>
+                    <option value="B.Indo">Bahasa Indonesia</option>                     
+                    <option value="Matematika">Matematika</option>
+                    <option value="IPA">IPA</option>
+                    <option value="IPS">IPS</option>
+                    <option value="B.Inggris">Bahasa Inggris</option>
+                    <option value="PJOK">PJOK</option>
+                    <option value="Seni Budaya">Seni Budaya</option>
+                    <option value="Informatika">Informatika</option>
+                </select>
+
+                <select id="tingkatKelas" onchange="filterCheckboxKelas()">
+                    <option value="" disabled selected>Pilih Tingkat Kelas</option>
+                    <option value="7">Kelas 7</option>
+                    <option value="8">Kelas 8</option>
+                    <option value="9">Kelas 9</option>
+                </select>
+
+                <div id="boxKelas7" class="kelas-container">
+                    <label class="group-title" onclick="toggleCeklis('boxKelas7')">👉 CEKLIS SEMUA KELAS 7</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7A"> 7A</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7B"> 7B</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7C"> 7C</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7D"> 7D</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7E"> 7E</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7F"> 7F</label>
+                    </div>
+                </div>
+
+                <div id="boxKelas8" class="kelas-container">
+                    <label class="group-title" onclick="toggleCeklis('boxKelas8')">👉 CEKLIS SEMUA KELAS 8</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8A"> 8A</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8B"> 8B</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8C"> 8C</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8D"> 8D</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8E"> 8E</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8F"> 8F</label>
+                    </div>
+                </div>
+
+                <div id="boxKelas9" class="kelas-container">
+                    <label class="group-title" onclick="toggleCeklis('boxKelas9')">👉 CEKLIS SEMUA KELAS 9</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9A"> 9A</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9B"> 9B</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9C"> 9C</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9D"> 9D</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9E"> 9E</label>
+                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9F"> 9F</label>
+                    </div>
+                </div>
+
+                <textarea id="tanya" placeholder="Tuliskan Pertanyaan..."></textarea>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                    <input type="text" id="opta" placeholder="Opsi A">
-                    <input type="text" id="optb" placeholder="Opsi B">
-                    <input type="text" id="optc" placeholder="Opsi C">
-                    <input type="text" id="optd" placeholder="Opsi D">
+                    <input type="text" id="opta" placeholder="Pilihan A">
+                    <input type="text" id="optb" placeholder="Pilihan B">
+                    <input type="text" id="optc" placeholder="Pilihan C">
+                    <input type="text" id="optd" placeholder="Pilihan D">
                 </div>
                 <select id="kunci">
                     <option value="" disabled selected>Pilih Kunci Jawaban</option>
-                    <option value="A">A</option><option value="B">B</option>
-                    <option value="C">C</option><option value="D">D</option>
+                    <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
                 </select>
-                <button class="btn btn-success" style="width: 100%; padding: 15px; margin-top: 10px;" onclick="simpanSoal()">
-                    💾 Simpan Soal
-                </button>
+                <button class="btn-table" style="background:var(--success); width:100%; padding:15px; margin-top:10px;" onclick="simpanSoal()">💾 SIMPAN SOAL</button>
             </div>
         </div>
     </div>
@@ -100,16 +154,9 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Mapel/Kelas</th>
-                            <th>Pertanyaan & Opsi</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
+                        <tr><th>Mapel/Kelas</th><th>Pertanyaan & Opsi</th><th>Status</th><th>Aksi</th></tr>
                     </thead>
-                    <tbody id="tabelBank">
-                        <tr><td colspan="4">⏳ Memuat bank soal...</td></tr>
-                    </tbody>
+                    <tbody id="tabelBank"></tbody>
                 </table>
             </div>
         </div>
@@ -117,120 +164,110 @@
 </div>
 
 <script>
-    // GANTI URL DI BAWAH INI DENGAN URL WEB APP ANDA DARI GOOGLE APPS SCRIPT
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6dnRL3lyVyPRrpXP6B4pENE9tVIvmd2hatRJytSQRhcI2VLnrUjVSmz8OEU3qbfqm/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3eO59ouj3-okVJfW75i_p2974i-QzGlk_xj8DXl5k_r-3oD3xkioXbATAaUVS-vB3/exec"; 
 
-    function openTab(id) {
-        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).style.display = 'block';
-        event.currentTarget.classList.add('active');
-        if(id === 'rekap') loadNilai();
-        if(id === 'bank') loadBank();
+    // FUNGSI BARU: TOGGLE CEKLIS SEMUA KELAS
+    function toggleCeklis(boxId) {
+        const container = document.getElementById(boxId);
+        const checkboxes = container.querySelectorAll('input[name="chkKelas"]');
+        
+        // Cek apakah ada yang belum diceklis
+        const isAllChecked = Array.from(checkboxes).every(cb => cb.checked);
+        
+        // Jika semua sudah diceklis, maka kosongkan. Jika belum, ceklis semua.
+        checkboxes.forEach(cb => cb.checked = !isAllChecked);
     }
 
-    // --- LOAD REKAP NILAI (OTOMATIS) ---
+    function openTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).style.display = 'block';
+        if (event) event.currentTarget.classList.add('active');
+        if(tabId === 'rekap') loadNilai();
+        if(tabId === 'bank') loadBank();
+    }
+
+    function filterCheckboxKelas() {
+        const t = document.getElementById('tingkatKelas').value;
+        document.querySelectorAll('.kelas-container').forEach(el => el.style.display = 'none');
+        document.getElementById('boxKelas' + t).style.display = 'block';
+    }
+
     async function loadNilai() {
         const tbody = document.getElementById('tabelNilai');
         try {
-            const res = await fetch(`${SCRIPT_URL}?target=dbNilai`);
+            const res = await fetch(SCRIPT_URL + "?target=dbNilai");
             const data = await res.json();
             tbody.innerHTML = data.reverse().map((r, i) => `
                 <tr>
-                    <td>${i + 1}</td>
-                    <td style="color:var(--success); font-weight:bold;">${r.nis || '-'}</td>
-                    <td style="text-align:left;">${r.nama}</td>
+                    <td>${i+1}</td>
+                    <td>${r.nis}</td>
+                    <td style="text-align:left">${r.nama}</td>
                     <td>${r.kelas}</td>
                     <td>${r.mapel}</td>
-                    <td><b style="color:var(--primary); font-size:1.1rem;">${r.skor}</b></td>
-                </tr>
-            `).join('');
-        } catch (e) {
-            tbody.innerHTML = "<tr><td colspan='6'>Gagal memuat data rekap.</td></tr>";
-        }
+                    <td><b style="color:var(--primary)">${r.skor}</b></td>
+                </tr>`).join('');
+        } catch (e) { tbody.innerHTML = "<tr><td colspan='6'>Gagal memuat data.</td></tr>"; }
     }
 
-    // --- LOAD BANK SOAL & TOGGLE ---
     async function loadBank() {
         const tbody = document.getElementById('tabelBank');
+        tbody.innerHTML = "<tr><td colspan='4'>⏳ Memuat...</td></tr>";
         try {
-            const res = await fetch(`${SCRIPT_URL}?target=dbSoal`);
+            const res = await fetch(SCRIPT_URL + "?target=dbSoal");
             const data = await res.json();
             tbody.innerHTML = data.map((r, i) => {
-                const statusStr = (r.status || 'AKTIF').toUpperCase();
-                const isAktif = statusStr === 'AKTIF';
+                const isAktif = (r.status || 'AKTIF').toUpperCase() === 'AKTIF';
                 return `
                 <tr>
                     <td><b>${r.mapel}</b><br><small>${r.kelas}</small></td>
-                    <td style="text-align:left;">
-                        <b>${r.pertanyaan}</b><br>
-                        <small style="color:var(--text-sub)">A: ${r.a} | B: ${r.b} | C: ${r.c} | D: ${r.d}</small>
+                    <td style="text-align:left">
+                        <div style="font-weight:800; margin-bottom:5px;">${r.pertanyaan}</div>
+                        <div class="opsi-list">
+                            <span class="opsi-item ${r.kunci === 'A' ? 'kunci-true' : ''}">A. ${r.a}</span>
+                            <span class="opsi-item ${r.kunci === 'B' ? 'kunci-true' : ''}">B. ${r.b}</span>
+                            <span class="opsi-item ${r.kunci === 'C' ? 'kunci-true' : ''}">C. ${r.c}</span>
+                            <span class="opsi-item ${r.kunci === 'D' ? 'kunci-true' : ''}">D. ${r.d}</span>
+                        </div>
                     </td>
-                    <td>
-                        <button class="btn btn-status" style="background:${isAktif ? 'var(--success)' : 'var(--danger)'}" 
-                        onclick="toggleStatus(${i}, '${statusStr}')">
-                            ${statusStr}
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger" style="padding:5px 10px;" onclick="hapusSoal(${i})">🗑️</button>
-                    </td>
+                    <td><button class="btn-table" style="background:${isAktif?'var(--success)':'var(--danger)'}" onclick="toggleStatus(${i},'${r.status||'AKTIF'}')">${r.status||'AKTIF'}</button></td>
+                    <td><button class="btn-table" style="background:var(--danger)" onclick="hapusSoal(${i})">🗑️</button></td>
                 </tr>`;
             }).join('');
-        } catch (e) {
-            tbody.innerHTML = "<tr><td colspan='4'>Gagal memuat bank soal.</td></tr>";
-        }
-    }
-
-    async function toggleStatus(idx, current) {
-        const next = (current === 'AKTIF') ? 'NONAKTIF' : 'AKTIF';
-        const btn = event.target;
-        btn.innerText = "⏳...";
-        btn.disabled = true;
-
-        try {
-            await fetch(SCRIPT_URL, {
-                method: "POST",
-                mode: "no-cors",
-                body: JSON.stringify({ action: "updateStatus", index: idx, status: next })
-            });
-            // Beri jeda sebentar agar Google Sheet selesai proses
-            setTimeout(loadBank, 800);
-        } catch (e) {
-            alert("Terjadi kesalahan.");
-            loadBank();
-        }
-    }
-
-    async function hapusSoal(idx) {
-        if(!confirm("Hapus soal ini secara permanen?")) return;
-        await fetch(SCRIPT_URL, { 
-            method: "POST", 
-            mode: "no-cors",
-            body: JSON.stringify({ action: "hapusSoal", index: idx }) 
-        });
-        setTimeout(loadBank, 800);
+        } catch (e) { tbody.innerHTML = "<tr><td colspan='4'>Gagal memuat.</td></tr>"; }
     }
 
     async function simpanSoal() {
-        const btn = event.target;
+        const checked = document.querySelectorAll('input[name="chkKelas"]:checked');
+        if (checked.length === 0) return alert("Pilih minimal satu kelas!");
+        const daftarKelas = Array.from(checked).map(c => c.value).join(', ');
         const p = {
             action: "tambahSoal",
             mapel: document.getElementById('mapel').value,
-            kelas: document.getElementById('kelas').value,
+            kelas: daftarKelas,
             pertanyaan: document.getElementById('tanya').value,
-            a: document.getElementById('opta').value,
-            b: document.getElementById('optb').value,
-            c: document.getElementById('optc').value,
-            d: document.getElementById('optd').value,
+            a: document.getElementById('opta').value, b: document.getElementById('optb').value,
+            c: document.getElementById('optc').value, d: document.getElementById('optd').value,
             kunci: document.getElementById('kunci').value
         };
-        if(!p.mapel || !p.pertanyaan) return alert("Lengkapi data!");
-        btn.innerText = "⏳ Menyimpan..."; btn.disabled = true;
+        if(!p.mapel || !p.pertanyaan || !p.kunci) return alert("Lengkapi semua data!");
         
+        event.target.innerText = "⏳ Menyimpan...";
         await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(p) });
-        alert("Soal berhasil ditambah!");
+        alert("Berhasil disimpan!");
         location.reload();
+    }
+
+    async function toggleStatus(idx, current) {
+        const next = current === 'AKTIF' ? 'NONAKTIF' : 'AKTIF';
+        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({action:"updateStatus", index:idx, status:next}) });
+        setTimeout(loadBank, 800);
+    }
+
+    async function hapusSoal(idx) {
+        if(!confirm("Hapus soal?")) return;
+        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({action:"hapusSoal", index:idx}) });
+        setTimeout(loadBank, 800);
     }
 
     window.onload = loadNilai;
