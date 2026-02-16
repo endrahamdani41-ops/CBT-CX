@@ -3,80 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart CBT - Dashboard Guru</title>
+    <title>Panel Guru - Smart CBT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        :root { --bg-body: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8; --border: #334155; --primary: #2563eb; --success: #10b981; --danger: #ef4444; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 20px; }
-        .container { max-width: 1100px; margin: auto; }
-        .card { background: var(--bg-card); padding: 25px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; }
-        h3 { margin-top: 0; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
-        
-        .tabs { display: flex; gap: 10px; margin-bottom: 25px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 15px; }
-        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: var(--text-sub); cursor: pointer; border-radius: 10px; font-weight: 600; transition: 0.3s; }
-        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-
-        .form-box { max-width: 700px; margin: auto; }
-        select, input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: #0f172a; color: white; text-align: center; font-family: inherit; box-sizing: border-box; outline: none; }
-        textarea { text-align: left; height: 100px; padding: 15px; }
-
-        .kelas-container { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; border: 2px dashed var(--border); margin: 15px 0; display: none; }
-        
-        /* Gaya Judul Ceklis yang Bisa Di-klik */
-        .group-title { 
-            display: inline-block; font-weight: 800; color: var(--primary); 
-            margin-bottom: 15px; font-size: 0.9rem; text-align: center; 
-            cursor: pointer; padding: 5px 15px; border-radius: 20px;
-            transition: 0.2s; border: 1px solid transparent;
+        :root { 
+            --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; 
+            --primary: #2563eb; --border: #334155; --success: #10b981; 
+            --danger: #ef4444; --edit: #f59e0b;
         }
-        .group-title:hover { background: rgba(37, 99, 235, 0.1); border-color: var(--primary); }
-        .group-title:active { transform: scale(0.95); }
-
-        .checkbox-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; justify-items: center; align-items: center; }
-        .checkbox-item { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; cursor: pointer; background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 8px; width: 80px; transition: 0.2s; }
-        .checkbox-item:hover { background: rgba(37, 99, 235, 0.2); }
-        .checkbox-item input { width: 20px !important; height: 20px !important; margin: 0 !important; cursor: pointer; accent-color: var(--primary); }
-
-        .table-container { overflow-x: auto; margin-top: 20px; border-radius: 15px; border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; text-align: center; background: rgba(0,0,0,0.1); }
-        th { background: var(--primary); color: white; padding: 15px; font-size: 0.75rem; text-transform: uppercase; }
-        td { padding: 14px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
-        .btn-table { padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; color: white; font-weight: bold; transition: 0.2s; }
-
-        .opsi-list { display: block; font-size: 0.8rem; color: var(--text-sub); margin-top: 10px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; }
-        .opsi-item { display: block; margin-bottom: 3px; padding: 2px 5px; border-radius: 4px; }
-        .kunci-true { color: var(--success); font-weight: 800; background: rgba(16, 185, 129, 0.1); }
+        
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+        
+        .navbar { display: flex; background: var(--card); padding: 10px; border-bottom: 1px solid var(--border); justify-content: center; gap: 10px; position: sticky; top: 0; z-index: 100; }
+        .nav-btn { padding: 10px 20px; border-radius: 10px; border: none; background: transparent; color: var(--text); cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .nav-btn.active { background: var(--primary); color: white; }
+        
+        .container { max-width: 1300px; margin: 30px auto; padding: 0 20px; }
+        .card { background: var(--card); padding: 25px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .section { display: none; }
+        .section.active { display: block; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; background: rgba(0,0,0,0.2); }
+        th, td { padding: 12px; border: 1px solid var(--border); vertical-align: top; }
+        th { background: rgba(37, 99, 235, 0.1); color: var(--primary); font-weight: 800; text-transform: uppercase; font-size: 0.7rem; }
+        
+        .col-check { width: 40px; text-align: center; }
+        .col-mapel { width: 150px; } 
+        .col-kecil { width: 80px; text-align: center; }
+        
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: white; margin-bottom: 15px; box-sizing: border-box; }
+        .btn-main { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--primary); color: white; font-weight: bold; cursor: pointer; }
+        .btn-action { border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; color: white; margin: 2px; }
+        
+        .floating-bar { 
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); 
+            background: var(--success); color: white; padding: 15px 35px; 
+            border-radius: 50px; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); 
+            display: none; cursor: pointer; font-weight: 800; z-index: 1000; transition: 0.3s; 
+        }
+        .floating-bar:hover { transform: translateX(-50%) translateY(-5px); }
+        
+        .editing-mode { border: 2px solid var(--edit) !important; background: rgba(245, 158, 11, 0.05) !important; }
+        .q-text { font-weight: 600; color: var(--text); display: block; margin-bottom: 5px; }
+        .opt-list { font-size: 0.8rem; color: #94a3b8; }
     </style>
 </head>
 <body>
 
+<div class="navbar">
+    <button class="nav-btn active" onclick="showSection('buat-soal', this)">✍️ Buat Soal</button>
+    <button class="nav-btn" onclick="showSection('daftar-soal', this)">📚 Bank Soal</button>
+    <button class="nav-btn" onclick="showSection('rekap-nilai', this)">📊 Rekap Nilai</button>
+</div>
+
 <div class="container">
-    <div class="tabs">
-        <button id="btn-rekap" class="tab-btn active" onclick="openTab('rekap')">📊 Rekap Nilai</button>
-        <button id="btn-input" class="tab-btn" onclick="openTab('input')">📝 Buat Soal</button>
-        <button id="btn-bank" class="tab-btn" onclick="openTab('bank')">📚 Bank Soal</button>
+    <div id="publish-bar" class="floating-bar" onclick="terbitkanUjian()">
+        🚀 Terbitkan <span id="count-soal">0</span> Soal Pilihan ke Siswa
     </div>
 
-    <div id="rekap" class="tab-content">
-        <div class="card">
-            <h3>📊 Hasil Ujian Siswa</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr><th>No</th><th>NIS</th><th>Nama</th><th>Kelas</th><th>Mapel</th><th>Skor</th></tr>
-                    </thead>
-                    <tbody id="tabelNilai"><tr><td colspan="6">⏳ Memuat data...</td></tr></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div id="input" class="tab-content" style="display:none;">
-        <div class="card">
-            <h3>📝 Buat Soal Baru</h3>
-            <div class="form-box">
-                <select id="mapel">
-                   <option value="" disabled selected>Pilih Mapel</option>
+    <div id="buat-soal" class="section active card">
+        <h2 id="form-title">Input Soal Baru</h2>
+        <input type="hidden" id="old-question">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <select id="soal-mapel">
+					<option value="" disabled selected>Pilih Mata Pelajaran</option>
                     <option value="PAI">Pendidikan Agama</option>
                     <option value="PP">Pendidikan Pancasila</option>
                     <option value="B.Indo">Bahasa Indonesia</option>                     
@@ -87,190 +78,200 @@
                     <option value="PJOK">PJOK</option>
                     <option value="Seni Budaya">Seni Budaya</option>
                     <option value="Informatika">Informatika</option>
-                </select>
 
-                <select id="tingkatKelas" onchange="filterCheckboxKelas()">
-                    <option value="" disabled selected>Pilih Tingkat Kelas</option>
-                    <option value="7">Kelas 7</option>
-                    <option value="8">Kelas 8</option>
-                    <option value="9">Kelas 9</option>
-                </select>
+            </select>
+            <select id="soal-kelas">
+                <option value="" disabled selected>Kelas</option>
+                <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+            </select>
+        </div>
+        <textarea id="pertanyaan" placeholder="Tulis pertanyaan..." rows="3"></textarea>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <input type="text" id="opsi-a" placeholder="Opsi A">
+            <input type="text" id="opsi-b" placeholder="Opsi B">
+            <input type="text" id="opsi-c" placeholder="Opsi C">
+            <input type="text" id="opsi-d" placeholder="Opsi D">
+        </div>
+        <select id="kunci-jawaban">
+            <option value="" disabled selected>Kunci Jawaban</option>
+            <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+        </select>
+        <button class="btn-main" id="btn-simpan" onclick="simpanSoal()">💾 Simpan ke Bank Soal</button>
+        <button id="btn-batal" class="btn-main" style="background:var(--border); margin-top:10px; display:none;" onclick="cancelEdit()">❌ Batal Edit</button>
+    </div>
 
-                <div id="boxKelas7" class="kelas-container">
-                    <label class="group-title" onclick="toggleCeklis('boxKelas7')">👉 CEKLIS SEMUA KELAS 7</label>
-                    <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7A"> 7A</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7B"> 7B</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7C"> 7C</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7D"> 7D</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7E"> 7E</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="7F"> 7F</label>
-                    </div>
-                </div>
-
-                <div id="boxKelas8" class="kelas-container">
-                    <label class="group-title" onclick="toggleCeklis('boxKelas8')">👉 CEKLIS SEMUA KELAS 8</label>
-                    <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8A"> 8A</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8B"> 8B</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8C"> 8C</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8D"> 8D</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8E"> 8E</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="8F"> 8F</label>
-                    </div>
-                </div>
-
-                <div id="boxKelas9" class="kelas-container">
-                    <label class="group-title" onclick="toggleCeklis('boxKelas9')">👉 CEKLIS SEMUA KELAS 9</label>
-                    <div class="checkbox-grid">
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9A"> 9A</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9B"> 9B</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9C"> 9C</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9D"> 9D</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9E"> 9E</label>
-                        <label class="checkbox-item"><input type="checkbox" name="chkKelas" value="9F"> 9F</label>
-                    </div>
-                </div>
-
-                <textarea id="tanya" placeholder="Tuliskan Pertanyaan..."></textarea>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                    <input type="text" id="opta" placeholder="Pilihan A">
-                    <input type="text" id="optb" placeholder="Pilihan B">
-                    <input type="text" id="optc" placeholder="Pilihan C">
-                    <input type="text" id="optd" placeholder="Pilihan D">
-                </div>
-                <select id="kunci">
-                    <option value="" disabled selected>Pilih Kunci Jawaban</option>
-                    <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
-                </select>
-                <button class="btn-table" style="background:var(--success); width:100%; padding:15px; margin-top:10px;" onclick="simpanSoal()">💾 SIMPAN SOAL</button>
+    <div id="daftar-soal" class="section card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h2>📚 Bank Soal (Gudang)</h2>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="toggleSelectAll()" class="nav-btn" style="border:1px solid var(--border); font-size: 0.8rem;">✔️ Pilih Semua</button>
+                <button onclick="muatDaftarSoal()" class="nav-btn" style="border:1px solid var(--border)">🔄 Refresh</button>
             </div>
+        </div>
+        <div style="overflow-x:auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-check">Pilih</th>
+                        <th class="col-mapel">Mapel</th>
+                        <th class="col-kecil">Kelas</th>
+                        <th>Pertanyaan & Opsi</th>
+                        <th class="col-kecil">Kunci</th>
+                        <th class="col-kecil">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="body-soal"></tbody>
+            </table>
         </div>
     </div>
 
-    <div id="bank" class="tab-content" style="display:none;">
-        <div class="card">
-            <h3>📚 Bank Soal</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr><th>Mapel/Kelas</th><th>Pertanyaan & Opsi</th><th>Status</th><th>Aksi</th></tr>
-                    </thead>
-                    <tbody id="tabelBank"></tbody>
-                </table>
-            </div>
+    <div id="rekap-nilai" class="section card">
+        <h2>📊 Hasil Ujian Siswa</h2>
+        <div style="overflow-x:auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Waktu</th><th>NIS</th><th>Nama</th><th>Kelas</th><th>Mapel</th><th>Skor</th><th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="body-nilai"></tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3eO59ouj3-okVJfW75i_p2974i-QzGlk_xj8DXl5k_r-3oD3xkioXbATAaUVS-vB3/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwIrgRGQadp68Qz1wtVM9xbUNAMkov2T-_eSG44MjM10lkouGvHcRt71Hf3Z_aOjRim/exec";
+    const swalDark = Swal.mixin({ background: '#1e293b', color: '#f1f5f9', confirmButtonColor: '#2563eb', cancelButtonColor: '#334155' });
+    let daftarSoalLokal = [];
 
-    // FUNGSI BARU: TOGGLE CEKLIS SEMUA KELAS
-    function toggleCeklis(boxId) {
-        const container = document.getElementById(boxId);
-        const checkboxes = container.querySelectorAll('input[name="chkKelas"]');
-        
-        // Cek apakah ada yang belum diceklis
-        const isAllChecked = Array.from(checkboxes).every(cb => cb.checked);
-        
-        // Jika semua sudah diceklis, maka kosongkan. Jika belum, ceklis semua.
-        checkboxes.forEach(cb => cb.checked = !isAllChecked);
+    // Tampilkan Section
+    function showSection(id, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+        if(id === 'daftar-soal') muatDaftarSoal();
+        if(id === 'rekap-nilai') muatRekapNilai();
+        document.getElementById('publish-bar').style.display = 'none';
     }
 
-    function openTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).style.display = 'block';
-        if (event) event.currentTarget.classList.add('active');
-        if(tabId === 'rekap') loadNilai();
-        if(tabId === 'bank') loadBank();
-    }
-
-    function filterCheckboxKelas() {
-        const t = document.getElementById('tingkatKelas').value;
-        document.querySelectorAll('.kelas-container').forEach(el => el.style.display = 'none');
-        document.getElementById('boxKelas' + t).style.display = 'block';
-    }
-
-    async function loadNilai() {
-        const tbody = document.getElementById('tabelNilai');
-        try {
-            const res = await fetch(SCRIPT_URL + "?target=dbNilai");
-            const data = await res.json();
-            tbody.innerHTML = data.reverse().map((r, i) => `
-                <tr>
-                    <td>${i+1}</td>
-                    <td>${r.nis}</td>
-                    <td style="text-align:left">${r.nama}</td>
-                    <td>${r.kelas}</td>
-                    <td>${r.mapel}</td>
-                    <td><b style="color:var(--primary)">${r.skor}</b></td>
-                </tr>`).join('');
-        } catch (e) { tbody.innerHTML = "<tr><td colspan='6'>Gagal memuat data.</td></tr>"; }
-    }
-
-    async function loadBank() {
-        const tbody = document.getElementById('tabelBank');
-        tbody.innerHTML = "<tr><td colspan='4'>⏳ Memuat...</td></tr>";
-        try {
-            const res = await fetch(SCRIPT_URL + "?target=dbSoal");
-            const data = await res.json();
-            tbody.innerHTML = data.map((r, i) => {
-                const isAktif = (r.status || 'AKTIF').toUpperCase() === 'AKTIF';
-                return `
-                <tr>
-                    <td><b>${r.mapel}</b><br><small>${r.kelas}</small></td>
-                    <td style="text-align:left">
-                        <div style="font-weight:800; margin-bottom:5px;">${r.pertanyaan}</div>
-                        <div class="opsi-list">
-                            <span class="opsi-item ${r.kunci === 'A' ? 'kunci-true' : ''}">A. ${r.a}</span>
-                            <span class="opsi-item ${r.kunci === 'B' ? 'kunci-true' : ''}">B. ${r.b}</span>
-                            <span class="opsi-item ${r.kunci === 'C' ? 'kunci-true' : ''}">C. ${r.c}</span>
-                            <span class="opsi-item ${r.kunci === 'D' ? 'kunci-true' : ''}">D. ${r.d}</span>
-                        </div>
-                    </td>
-                    <td><button class="btn-table" style="background:${isAktif?'var(--success)':'var(--danger)'}" onclick="toggleStatus(${i},'${r.status||'AKTIF'}')">${r.status||'AKTIF'}</button></td>
-                    <td><button class="btn-table" style="background:var(--danger)" onclick="hapusSoal(${i})">🗑️</button></td>
-                </tr>`;
-            }).join('');
-        } catch (e) { tbody.innerHTML = "<tr><td colspan='4'>Gagal memuat.</td></tr>"; }
-    }
-
+    // CRUD: Simpan & Update
     async function simpanSoal() {
-        const checked = document.querySelectorAll('input[name="chkKelas"]:checked');
-        if (checked.length === 0) return alert("Pilih minimal satu kelas!");
-        const daftarKelas = Array.from(checked).map(c => c.value).join(', ');
-        const p = {
-            action: "tambahSoal",
-            mapel: document.getElementById('mapel').value,
-            kelas: daftarKelas,
-            pertanyaan: document.getElementById('tanya').value,
-            a: document.getElementById('opta').value, b: document.getElementById('optb').value,
-            c: document.getElementById('optc').value, d: document.getElementById('optd').value,
-            kunci: document.getElementById('kunci').value
+        const data = {
+            target: "simpanSoal",
+            old_pertanyaan: document.getElementById('old-question').value,
+            mapel: document.getElementById('soal-mapel').value,
+            kelas: document.getElementById('soal-kelas').value,
+            pertanyaan: document.getElementById('pertanyaan').value,
+            a: document.getElementById('opsi-a').value,
+            b: document.getElementById('opsi-b').value,
+            c: document.getElementById('opsi-c').value,
+            d: document.getElementById('opsi-d').value,
+            kunci: document.getElementById('kunci-jawaban').value
         };
-        if(!p.mapel || !p.pertanyaan || !p.kunci) return alert("Lengkapi semua data!");
+
+        if(!data.pertanyaan || !data.mapel || !data.kunci) return swalDark.fire('Lengkapi form!', '', 'warning');
         
-        event.target.innerText = "⏳ Menyimpan...";
-        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(p) });
-        alert("Berhasil disimpan!");
-        location.reload();
+        swalDark.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading() });
+        try {
+            await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(data) });
+            swalDark.fire('Berhasil!', 'Soal tersimpan di Bank Soal.', 'success').then(() => location.reload());
+        } catch (e) { swalDark.fire('Gagal!', 'Cek koneksi internet.', 'error'); }
     }
 
-    async function toggleStatus(idx, current) {
-        const next = current === 'AKTIF' ? 'NONAKTIF' : 'AKTIF';
-        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({action:"updateStatus", index:idx, status:next}) });
-        setTimeout(loadBank, 800);
+    // Load Data Bank Soal
+    async function muatDaftarSoal() {
+        const body = document.getElementById('body-soal');
+        body.innerHTML = "<tr><td colspan='6' style='text-align:center'>Memuat Gudang Soal...</td></tr>";
+        try {
+            const res = await fetch(SCRIPT_URL + "?target=listSemuaSoal");
+            let data = await res.json();
+            // Urutkan berdasarkan kelas
+            data.sort((a, b) => a.kelas - b.kelas);
+            daftarSoalLokal = data;
+            renderTabelSoal();
+        } catch (e) { body.innerHTML = "Gagal memuat data."; }
     }
 
-    async function hapusSoal(idx) {
-        if(!confirm("Hapus soal?")) return;
-        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({action:"hapusSoal", index:idx}) });
-        setTimeout(loadBank, 800);
+    function renderTabelSoal() {
+        const body = document.getElementById('body-soal');
+        body.innerHTML = daftarSoalLokal.map((s, i) => `
+            <tr>
+                <td class="col-check"><input type="checkbox" class="soal-checkbox" value="${i}" onchange="updateSelection()"></td>
+                <td>${s.mapel}</td>
+                <td class="text-center">${s.kelas}</td>
+                <td>
+                    <span class="q-text">${s.soal}</span>
+                    <div class="opt-list">A: ${s.a} | B: ${s.b} | C: ${s.c} | D: ${s.d}</div>
+                </td>
+                <td class="text-center"><b style="color:var(--success)">${s.kunci}</b></td>
+                <td class="text-center">
+                    <button class="btn-action" style="background:var(--edit)" onclick="prepareEdit(${i})">✏️</button>
+                    <button class="btn-action" style="background:var(--danger)" onclick="hapusSoal('${s.soal}')">🗑️</button>
+                </td>
+            </tr>
+        `).join('');
     }
 
-    window.onload = loadNilai;
+    // Fungsi Terbitkan (Ke DB_SOAL)
+    async function terbitkanUjian() {
+        const checked = document.querySelectorAll('.soal-checkbox:checked');
+        const soalPilihan = Array.from(checked).map(cb => daftarSoalLokal[cb.value]);
+
+        const konfirmasi = await swalDark.fire({
+            title: 'Terbitkan Ujian?',
+            text: `Kirim ${soalPilihan.length} soal ke etalase ujian siswa?`,
+            icon: 'question',
+            showCancelButton: true, confirmButtonText: 'Ya, Terbitkan!'
+        });
+
+        if (konfirmasi.isConfirmed) {
+            swalDark.fire({ title: 'Menerbitkan...', didOpen: () => Swal.showLoading() });
+            try {
+                await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ target: "terbitkanUjian", soal: soalPilihan }) });
+                swalDark.fire('Berhasil!', 'Soal sudah aktif di layar siswa.', 'success');
+                document.querySelectorAll('.soal-checkbox').forEach(c => c.checked = false);
+                updateSelection();
+            } catch (e) { swalDark.fire('Gagal!', '', 'error'); }
+        }
+    }
+
+    // Helper: Edit & Delete (Sama seperti kode sebelumnya...)
+    function prepareEdit(idx) {
+        const s = daftarSoalLokal[idx];
+        document.getElementById('old-question').value = s.soal;
+        document.getElementById('soal-mapel').value = s.mapel;
+        document.getElementById('soal-kelas').value = s.kelas;
+        document.getElementById('pertanyaan').value = s.soal;
+        document.getElementById('opsi-a').value = s.a;
+        document.getElementById('opsi-b').value = s.b;
+        document.getElementById('opsi-c').value = s.c;
+        document.getElementById('opsi-d').value = s.d;
+        document.getElementById('kunci-jawaban').value = s.kunci;
+        document.getElementById('form-title').innerText = "✏️ Mode Edit Soal";
+        document.getElementById('btn-simpan').innerText = "🆙 Update Soal";
+        document.getElementById('btn-batal').style.display = "block";
+        document.getElementById('buat-soal').classList.add('editing-mode');
+        showSection('buat-soal', document.querySelector('.nav-btn'));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelEdit() { location.reload(); }
+
+    function updateSelection() {
+        const n = document.querySelectorAll('.soal-checkbox:checked').length;
+        const bar = document.getElementById('publish-bar');
+        document.getElementById('count-soal').innerText = n;
+        bar.style.display = n > 0 ? 'block' : 'none';
+    }
+
+    function toggleSelectAll() {
+        const cbs = document.querySelectorAll('.soal-checkbox');
+        const any = Array.from(cbs).some(c => !c.checked);
+        cbs.forEach(c => c.checked = any);
+        updateSelection();
+    }
 </script>
 </body>
 </html>
