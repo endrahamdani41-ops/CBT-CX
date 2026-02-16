@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart CBT v3 - Glowing UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root { 
+            --bg: #050a18; --card: #1e293b; --text: #f8fafc; 
+            --primary: #3b82f6; --border: rgba(59, 130, 246, 0.3); 
+            --success: #10b981; --danger: #ef4444; --text-sub: #94a3b8;
+            --glow: 0 0 15px rgba(59, 130, 246, 0.4); /* Variabel cahaya */
+        }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: radial-gradient(circle at top right, #1e293b, #050a18);
+            color: var(--text); margin: 0; min-height: 100vh;
+        }
+
+        /* --- LAYOUT & GLOW EFFECT --- */
+        .container { max-width: 850px; margin: 30px auto; padding: 0 20px; display: none; }
+        
+        .card { 
+            background: var(--card); 
+            padding: 25px; 
+            border-radius: 20px; 
+            border: 1px solid var(--border); 
+            margin-bottom: 20px; 
+            box-shadow: var(--glow); /* Efek bercahaya pada kartu */
+            transition: 0.3s;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* --- FORM ELEMENTS GLOW --- */
+        input, select, textarea { 
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; 
+            border: 1px solid var(--border); 
+            background: rgba(15, 23, 42, 0.8); 
+            color: white; 
+            box-sizing: border-box;
+            font-family: inherit; font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); /* Cahaya saat diklik */
+        }
+        
+        .btn-main { 
+            width: 100%; padding: 18px; border-radius: 15px; border: none; 
+            background: var(--primary); color: white; font-weight: 800; 
+            cursor: pointer; transition: 0.3s; margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+        .btn-main:hover { 
+            transform: translateY(-2px); 
+            filter: brightness(1.2);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.7);
+        }
+
+        /* --- NAVBAR GURU --- */
+        .navbar { display: none; background: var(--card); padding: 10px; border-bottom: 1px solid var(--border); justify-content: center; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .nav-btn { padding: 10px 20px; border-radius: 10px; border: none; background: transparent; color: var(--text); cursor: pointer; font-weight: 600; }
+        .nav-btn.active { background: var(--primary); color: white; box-shadow: var(--glow); }
+
+        /* --- OPSI JAWABAN SISWA --- */
+        .opsi-label { 
+            display: flex; align-items: center; justify-content: flex-start; 
+            background: rgba(255,255,255,0.05); padding: 18px 20px; border-radius: 12px; 
+            margin-bottom: 12px; cursor: pointer; border: 1px solid var(--border); transition: 0.3s;
+        }
+        .opsi-label:hover { 
+            border-color: var(--primary); 
+            background: rgba(59, 130, 246, 0.1); 
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+        .opsi-label input[type="radio"] { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); margin-right: 15px; flex-shrink: 0; }
+
+        /* --- STYLING LOGIN & PREP --- */
+        .login-card input#access-code {
+            text-align: center;
+            max-width: 280px;
+            margin: 10px auto;
+            display: block;
+        }
+        
+        #mapel-pilih {
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+            text-align: center;
+            text-align-last: center;
+        }
+
+        .login-card .btn-main {
+            max-width: 300px;
+            margin: auto;
+            display: block;
+        }
+
+        /* --- ACCESS GATE --- */
+        #access-gate { display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .login-card { 
+            background: rgba(30, 41, 59, 0.7); 
+            padding: 40px; 
+            border-radius: 30px; 
+            border: 1px solid var(--border); 
+            backdrop-filter: blur(10px); 
+            text-align: center; 
+            width: 100%; 
+            max-width: 400px; 
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3); /* Cahaya luar login */
+        }
+        
+        .floating-bar { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 15px 35px; border-radius: 50px; display: none; cursor: pointer; font-weight: 800; z-index: 1000; border: none; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5); }
+        
+        table { width: 100%; border-collapse: collapse; background: rgba(15, 23, 42, 0.3); border-radius: 15px; overflow: hidden; font-size: 0.9rem; }
+        th, td { padding: 15px; border: 1px solid var(--border); text-align: left; }
+        th { background: rgba(59, 130, 246, 0.1); color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div id="access-gate">
+        <div class="login-card">
+            <h1 style="margin-bottom: 20px;">SMART <span style="color:var(--primary)">CBT</span></h1>
+            <input type="text" id="access-code" placeholder="Masukkan Kode Akses">
+            <button class="btn-main" onclick="verifikasiAkses()">MASUK SISTEM 🚀</button>
+        </div>
+    </div>
+
+    <div id="guru-nav" class="navbar">
+        <button id="nav-buat" class="nav-btn active" onclick="showSection('buat-soal', this)">✍️ Input Soal</button>
+        <button id="nav-bank" class="nav-btn" onclick="showSection('daftar-soal', this)">📚 Bank Soal</button>
+        <button class="nav-btn" style="color:var(--danger)" onclick="location.reload()">KELUAR</button>
+    </div>
+
+    <div id="guru-container" class="container">
+        <button id="publish-bar" class="floating-bar" onclick="terbitkanUjian()">🚀 TERBITKAN <span id="count-soal">0</span> SOAL</button>
+        
+        <div id="buat-soal" class="section active card">
+            <h3 id="form-title">Buat Soal Ujian</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <select id="soal-mapel">
+                    <option value="" disabled selected>Pilih Mata Pelajaran</option>
+                    <option value="PAI">Pendidikan Agama</option>
+                    <option value="PP">Pendidikan Pancasila</option>
+                    <option value="B.Indo">Bahasa Indonesia</option>                     
+                    <option value="Matematika">Matematika</option>
+                    <option value="IPA">IPA</option>
+                    <option value="IPS">IPS</option>
+                    <option value="B.Inggris">Bahasa Inggris</option>
+                    <option value="PJOK">PJOK</option>
+                    <option value="Seni Budaya">Seni Budaya</option>
+                    <option value="Informatika">Informatika</option>
+                </select>
+                <select id="soal-kelas"><option value="" disabled selected>Kelas</option><option value="7">7</option><option value="8">8</option><option value="9">9</option></select>
+            </div>
+            <textarea id="pertanyaan" placeholder="Ketik Pertanyaan..." rows="4"></textarea>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <input type="text" id="opsi-a" placeholder="A">
+                <input type="text" id="opsi-b" placeholder="B">
+                <input type="text" id="opsi-c" placeholder="C">
+                <input type="text" id="opsi-d" placeholder="D">
+            </div>
+            <select id="kunci-jawaban">
+                <option value="" disabled selected>Pilih Kunci Jawaban</option>
+                <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+            </select>
+            <button id="btn-save-soal" class="btn-main" onclick="simpanSoal()">💾 SIMPAN KE BANK</button>
+            <button id="btn-cancel-edit" class="btn-main" style="background:var(--danger); display:none;" onclick="resetForm()">BATAL EDIT</button>
+        </div>
+
+        <div id="daftar-soal" class="section card">
+            <h3>📚 Bank Soal Anda</h3>
+            <div style="overflow-x:auto">
+                <table>
+                    <thead><tr><th>Pilih</th><th>Mapel/Kls</th><th>Soal</th><th>Kunci</th><th>Aksi</th></tr></thead>
+                    <tbody id="body-soal"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="siswa-prep" class="container">
+        <div class="login-card" style="max-width: 100%;">
+            <h2 id="nama-siswa-head" style="margin:0">Nama</h2>
+            <p id="kelas-siswa-head" style="color:var(--success); font-weight:800; margin-bottom: 20px;">KELAS</p>
+            <select id="mapel-pilih">
+                <option value="" disabled selected>-- Pilih Mata Pelajaran --</option>
+                <option value="PAI">Pendidikan Agama</option>
+                <option value="PP">Pendidikan Pancasila</option>
+                <option value="B.Indo">Bahasa Indonesia</option>                     
+                <option value="Matematika">Matematika</option>
+                <option value="IPA">IPA</option>
+                <option value="IPS">IPS</option>
+                <option value="B.Inggris">Bahasa Inggris</option>
+                <option value="PJOK">PJOK</option>
+                <option value="Seni Budaya">Seni Budaya</option>
+                <option value="Informatika">Informatika</option>
+            </select>
+            <button class="btn-main" onclick="mulaiUjianSiswa()">MULAI UJIAN SEKARANG 🚀</button>
+        </div>
+    </div>
+
+    <div id="ujian-running" class="container">
+        <div id="wadah-soal"></div>
+    </div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTffavwxDgDrqyVdwsZi4ZX7r9YVZcr21DYtf4zP1DAHgR9ZxAIa9wc7reUDE6AJ5dZw/exec"; 
+    const KODE_GURU = "GURU110"; 
+    let userData = {}, currentEditId = null, dataSoalSiswa = [];
+
+    async function verifikasiAkses() {
+        const code = document.getElementById('access-code').value;
+        if(!code) return;
+        if(code.toUpperCase() === KODE_GURU) {
+            document.getElementById('access-gate').style.display = 'none';
+            document.getElementById('guru-nav').style.display = 'flex';
+            document.getElementById('guru-container').style.display = 'block';
+            muatDaftarSoal();
+            return;
+        }
+        Swal.fire({ title: 'Memverifikasi...', didOpen: () => Swal.showLoading() });
+        try {
+            const res = await fetch(`${SCRIPT_URL}?target=getNama&nis=${code}`);
+            const data = await res.json();
+            if(data.status === "success") {
+                userData = { nis: code, nama: data.NAMA, kelas: data.KELAS };
+                document.getElementById('access-gate').style.display = 'none';
+                document.getElementById('siswa-prep').style.display = 'flex';
+                document.getElementById('nama-siswa-head').innerText = data.NAMA;
+                document.getElementById('kelas-siswa-head').innerText = "KELAS " + data.KELAS;
+                Swal.close();
+            } else { Swal.fire("Gagal", "Akses ditolak!", "error"); }
+        } catch (e) { Swal.fire("Error", "Server Error", "error"); }
+    }
+
+    async function muatDaftarSoal() {
+        const res = await fetch(SCRIPT_URL + "?target=listSemuaSoal");
+        const data = await res.json();
+        document.getElementById('body-soal').innerHTML = data.map((s, i) => {
+            return `<tr>
+                <td><input type="checkbox" class="soal-checkbox" value='${JSON.stringify(s)}' onchange="updateCount()"></td>
+                <td><small>${s.mapel}</small><br><b>Kls ${s.kelas}</b></td>
+                <td>${s.soal}</td>
+                <td><b style="color:var(--success)">${s.kunci}</b></td>
+                <td><div style="display:flex"><button class="btn-action" style="background:var(--primary)" onclick='editSoal(${JSON.stringify(s)})'>✏️</button></div></td>
+            </tr>`;
+        }).join('');
+    }
+
+    async function simpanSoal() {
+        const p = {
+            target: "simpanSoal", id: currentEditId,
+            mapel: document.getElementById('soal-mapel').value, kelas: document.getElementById('soal-kelas').value,
+            pertanyaan: document.getElementById('pertanyaan').value, a: document.getElementById('opsi-a').value,
+            b: document.getElementById('opsi-b').value, c: document.getElementById('opsi-c').value,
+            d: document.getElementById('opsi-d').value, kunci: document.getElementById('kunci-jawaban').value
+        };
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(p) });
+        resetForm(); muatDaftarSoal(); Swal.fire("Berhasil", "Data tersimpan", "success");
+    }
+
+    function resetForm() {
+        currentEditId = null; document.getElementById('form-title').innerText = "Buat Soal Ujian";
+        document.getElementById('pertanyaan').value = ""; document.getElementById('btn-cancel-edit').style.display = 'none';
+    }
+
+    function updateCount() {
+        const n = document.querySelectorAll('.soal-checkbox:checked').length;
+        document.getElementById('publish-bar').style.display = n > 0 ? 'block' : 'none';
+        document.getElementById('count-soal').innerText = n;
+    }
+
+    async function terbitkanUjian() {
+        const terpilih = Array.from(document.querySelectorAll('.soal-checkbox:checked')).map(cb => JSON.parse(cb.value));
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({target:"terbitkanUjian", soal:terpilih}) });
+        Swal.fire("Sukses", "Soal diterbitkan!", "success");
+    }
+
+    async function mulaiUjianSiswa() {
+        const m = document.getElementById('mapel-pilih').value;
+        if(!m) return Swal.fire("Pilih Mapel", "Mata pelajaran wajib dipilih", "warning");
+        const res = await fetch(`${SCRIPT_URL}?target=dbSoal&mapel=${m}&kelas=${userData.kelas}`);
+        dataSoalSiswa = await res.json();
+        if(dataSoalSiswa.length === 0) return Swal.fire("Kosong", "Tidak ada soal aktif", "info");
+        document.getElementById('siswa-prep').style.display = 'none';
+        document.getElementById('ujian-running').style.display = 'block';
+        
+        let h = `<div class="card" style="border-left: 5px solid var(--primary)"><h2>${m}</h2><p>${userData.nama}</p></div>`;
+        dataSoalSiswa.forEach((s, i) => {
+            h += `<div class="card">
+                <p><b>${i + 1}.</b> ${s.soal}</p>
+                ${['a','b','c','d'].map(o => `
+                    <label class="opsi-label"><input type="radio" name="q${i}" value="${o.toUpperCase()}"> <span>${s[o]}</span></label>
+                `).join('')}
+            </div>`;
+        });
+        h += `<button class="btn-main" style="background:var(--success); margin-bottom:80px" onclick="kirimJawaban()">KIRIM JAWABAN SEKARANG ✅</button>`;
+        document.getElementById('wadah-soal').innerHTML = h;
+        window.scrollTo(0,0);
+    }
+
+    async function kirimJawaban() {
+        let benar = 0;
+        dataSoalSiswa.forEach((s, i) => {
+            const ans = document.querySelector(`input[name="q${i}"]:checked`)?.value;
+            if(ans === s.kunci) benar++;
+        });
+        const skor = (benar / dataSoalSiswa.length) * 100;
+        const rekap = { waktu: new Date().toLocaleString(), nis: userData.nis, nama: userData.nama, kelas: userData.kelas, mapel: document.querySelector('#ujian-running h2').innerText, skor: skor.toFixed(2) };
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({target:"REKAP", data:rekap}) });
+        Swal.fire("Selesai!", `Skor: ${skor.toFixed(2)}`, "success").then(() => location.reload());
+    }
+
+    function showSection(id, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); btn.classList.add('active');
+    }
+</script>
+</body>
+</html>
