@@ -11,7 +11,7 @@
             --bg: #050a18; --card: #1e293b; --text: #f8fafc; 
             --primary: #3b82f6; --border: rgba(59, 130, 246, 0.3); 
             --success: #10b981; --danger: #ef4444; --text-sub: #94a3b8;
-            --glow: 0 0 15px rgba(59, 130, 246, 0.4); /* Variabel cahaya */
+            --glow: 0 0 15px rgba(59, 130, 246, 0.4); 
         }
         
         body { 
@@ -20,7 +20,6 @@
             color: var(--text); margin: 0; min-height: 100vh;
         }
 
-        /* --- LAYOUT & GLOW EFFECT --- */
         .container { max-width: 850px; margin: 30px auto; padding: 0 20px; display: none; }
         
         .card { 
@@ -29,14 +28,13 @@
             border-radius: 20px; 
             border: 1px solid var(--border); 
             margin-bottom: 20px; 
-            box-shadow: var(--glow); /* Efek bercahaya pada kartu */
+            box-shadow: var(--glow); 
             transition: 0.3s;
         }
 
         .section { display: none; }
         .section.active { display: block; }
 
-        /* --- FORM ELEMENTS GLOW --- */
         input, select, textarea { 
             width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; 
             border: 1px solid var(--border); 
@@ -50,7 +48,7 @@
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); /* Cahaya saat diklik */
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
         }
         
         .btn-main { 
@@ -65,12 +63,10 @@
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.7);
         }
 
-        /* --- NAVBAR GURU --- */
         .navbar { display: none; background: var(--card); padding: 10px; border-bottom: 1px solid var(--border); justify-content: center; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .nav-btn { padding: 10px 20px; border-radius: 10px; border: none; background: transparent; color: var(--text); cursor: pointer; font-weight: 600; }
         .nav-btn.active { background: var(--primary); color: white; box-shadow: var(--glow); }
 
-        /* --- OPSI JAWABAN SISWA --- */
         .opsi-label { 
             display: flex; align-items: center; justify-content: flex-start; 
             background: rgba(255,255,255,0.05); padding: 18px 20px; border-radius: 12px; 
@@ -83,29 +79,6 @@
         }
         .opsi-label input[type="radio"] { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); margin-right: 15px; flex-shrink: 0; }
 
-        /* --- STYLING LOGIN & PREP --- */
-        .login-card input#access-code {
-            text-align: center;
-            max-width: 280px;
-            margin: 10px auto;
-            display: block;
-        }
-        
-        #mapel-pilih {
-            max-width: 300px;
-            margin: 20px auto;
-            display: block;
-            text-align: center;
-            text-align-last: center;
-        }
-
-        .login-card .btn-main {
-            max-width: 300px;
-            margin: auto;
-            display: block;
-        }
-
-        /* --- ACCESS GATE --- */
         #access-gate { display: flex; align-items: center; justify-content: center; height: 100vh; }
         .login-card { 
             background: rgba(30, 41, 59, 0.7); 
@@ -116,7 +89,7 @@
             text-align: center; 
             width: 100%; 
             max-width: 400px; 
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3); /* Cahaya luar login */
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
         }
         
         .floating-bar { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 15px 35px; border-radius: 50px; display: none; cursor: pointer; font-weight: 800; z-index: 1000; border: none; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5); }
@@ -124,6 +97,9 @@
         table { width: 100%; border-collapse: collapse; background: rgba(15, 23, 42, 0.3); border-radius: 15px; overflow: hidden; font-size: 0.9rem; }
         th, td { padding: 15px; border: 1px solid var(--border); text-align: left; }
         th { background: rgba(59, 130, 246, 0.1); color: var(--primary); }
+
+        .btn-action { padding: 8px; border-radius: 8px; border: none; cursor: pointer; color: white; transition: 0.2s; }
+        .badge-skor { background: var(--success); padding: 4px 8px; border-radius: 6px; font-weight: 800; }
     </style>
 </head>
 <body>
@@ -139,6 +115,7 @@
     <div id="guru-nav" class="navbar">
         <button id="nav-buat" class="nav-btn active" onclick="showSection('buat-soal', this)">✍️ Input Soal</button>
         <button id="nav-bank" class="nav-btn" onclick="showSection('daftar-soal', this)">📚 Bank Soal</button>
+        <button id="nav-rekap" class="nav-btn" onclick="showSection('rekap-nilai', this); muatRekapNilai()">📊 Rekap Nilai</button>
         <button class="nav-btn" style="color:var(--danger)" onclick="location.reload()">KELUAR</button>
     </div>
 
@@ -187,6 +164,18 @@
                 </table>
             </div>
         </div>
+
+        <div id="rekap-nilai" class="section card">
+            <h3>📊 Rekap Nilai Siswa</h3>
+            <div style="overflow-x:auto">
+                <table>
+                    <thead>
+                        <tr><th>Waktu</th><th>Nama/NIS</th><th>Kelas</th><th>Mapel</th><th>Skor</th></tr>
+                    </thead>
+                    <tbody id="body-rekap"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <div id="siswa-prep" class="container">
@@ -215,7 +204,7 @@
     </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTffavwxDgDrqyVdwsZi4ZX7r9YVZcr21DYtf4zP1DAHgR9ZxAIa9wc7reUDE6AJ5dZw/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx52Ju8FO2qM4NqE0JOLqPY0uML5WmvJKEA0ESujW2zsz7BQ-65N4Nq6OXCoTGIPCPVHw/exec"; 
     const KODE_GURU = "GURU110"; 
     let userData = {}, currentEditId = null, dataSoalSiswa = [];
 
@@ -236,7 +225,7 @@
             if(data.status === "success") {
                 userData = { nis: code, nama: data.NAMA, kelas: data.KELAS };
                 document.getElementById('access-gate').style.display = 'none';
-                document.getElementById('siswa-prep').style.display = 'flex';
+                document.getElementById('siswa-prep').style.display = 'block';
                 document.getElementById('nama-siswa-head').innerText = data.NAMA;
                 document.getElementById('kelas-siswa-head').innerText = "KELAS " + data.KELAS;
                 Swal.close();
@@ -266,13 +255,53 @@
             b: document.getElementById('opsi-b').value, c: document.getElementById('opsi-c').value,
             d: document.getElementById('opsi-d').value, kunci: document.getElementById('kunci-jawaban').value
         };
-        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(p) });
-        resetForm(); muatDaftarSoal(); Swal.fire("Berhasil", "Data tersimpan", "success");
+        Swal.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading() });
+        try {
+            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(p) });
+            resetForm(); muatDaftarSoal(); Swal.fire("Berhasil", "Data tersimpan", "success");
+        } catch(e) { Swal.fire("Error", "Gagal menyimpan", "error"); }
+    }
+
+    // FUNGSI MUAT REKAP (SUDAH DITAMBAHKAN)
+    async function muatRekapNilai() {
+        const body = document.getElementById('body-rekap');
+        body.innerHTML = '<tr><td colspan="5" align="center">Memuat data...</td></tr>';
+        try {
+            const res = await fetch(SCRIPT_URL + "?target=getRekap");
+            const data = await res.json();
+            body.innerHTML = data.length ? data.map(r => `
+                <tr>
+                    <td><small>${r.waktu}</small></td>
+                    <td><b>${r.nama}</b><br><small>${r.nis}</small></td>
+                    <td>${r.kelas}</td>
+                    <td>${r.mapel}</td>
+                    <td align="center"><span class="badge-skor">${r.skor}</span></td>
+                </tr>`).join('') : '<tr><td colspan="5" align="center">Belum ada data nilai</td></tr>';
+        } catch(e) { body.innerHTML = '<tr><td colspan="5" align="center">Gagal memuat rekap</td></tr>'; }
+    }
+
+    function editSoal(s) {
+        currentEditId = s.id;
+        document.getElementById('form-title').innerText = "Edit Soal Ujian";
+        document.getElementById('soal-mapel').value = s.mapel;
+        document.getElementById('soal-kelas').value = s.kelas;
+        document.getElementById('pertanyaan').value = s.soal;
+        document.getElementById('opsi-a').value = s.a;
+        document.getElementById('opsi-b').value = s.b;
+        document.getElementById('opsi-c').value = s.c;
+        document.getElementById('opsi-d').value = s.d;
+        document.getElementById('kunci-jawaban').value = s.kunci;
+        document.getElementById('btn-cancel-edit').style.display = 'block';
+        showSection('buat-soal', document.getElementById('nav-buat'));
     }
 
     function resetForm() {
-        currentEditId = null; document.getElementById('form-title').innerText = "Buat Soal Ujian";
-        document.getElementById('pertanyaan').value = ""; document.getElementById('btn-cancel-edit').style.display = 'none';
+        currentEditId = null; 
+        document.getElementById('form-title').innerText = "Buat Soal Ujian";
+        document.getElementById('pertanyaan').value = ""; 
+        document.getElementById('opsi-a').value = ""; document.getElementById('opsi-b').value = "";
+        document.getElementById('opsi-c').value = ""; document.getElementById('opsi-d').value = "";
+        document.getElementById('btn-cancel-edit').style.display = 'none';
     }
 
     function updateCount() {
@@ -283,31 +312,38 @@
 
     async function terbitkanUjian() {
         const terpilih = Array.from(document.querySelectorAll('.soal-checkbox:checked')).map(cb => JSON.parse(cb.value));
-        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({target:"terbitkanUjian", soal:terpilih}) });
-        Swal.fire("Sukses", "Soal diterbitkan!", "success");
+        Swal.fire({ title: 'Menerbitkan...', didOpen: () => Swal.showLoading() });
+        try {
+            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({target:"terbitkanUjian", soal:terpilih}) });
+            Swal.fire("Sukses", "Soal diterbitkan!", "success");
+        } catch(e) { Swal.fire("Error", "Gagal menerbitkan", "error"); }
     }
 
     async function mulaiUjianSiswa() {
         const m = document.getElementById('mapel-pilih').value;
         if(!m) return Swal.fire("Pilih Mapel", "Mata pelajaran wajib dipilih", "warning");
-        const res = await fetch(`${SCRIPT_URL}?target=dbSoal&mapel=${m}&kelas=${userData.kelas}`);
-        dataSoalSiswa = await res.json();
-        if(dataSoalSiswa.length === 0) return Swal.fire("Kosong", "Tidak ada soal aktif", "info");
-        document.getElementById('siswa-prep').style.display = 'none';
-        document.getElementById('ujian-running').style.display = 'block';
-        
-        let h = `<div class="card" style="border-left: 5px solid var(--primary)"><h2>${m}</h2><p>${userData.nama}</p></div>`;
-        dataSoalSiswa.forEach((s, i) => {
-            h += `<div class="card">
-                <p><b>${i + 1}.</b> ${s.soal}</p>
-                ${['a','b','c','d'].map(o => `
-                    <label class="opsi-label"><input type="radio" name="q${i}" value="${o.toUpperCase()}"> <span>${s[o]}</span></label>
-                `).join('')}
-            </div>`;
-        });
-        h += `<button class="btn-main" style="background:var(--success); margin-bottom:80px" onclick="kirimJawaban()">KIRIM JAWABAN SEKARANG ✅</button>`;
-        document.getElementById('wadah-soal').innerHTML = h;
-        window.scrollTo(0,0);
+        Swal.fire({ title: 'Memuat Soal...', didOpen: () => Swal.showLoading() });
+        try {
+            const res = await fetch(`${SCRIPT_URL}?target=dbSoal&mapel=${m}&kelas=${userData.kelas}`);
+            dataSoalSiswa = await res.json();
+            if(dataSoalSiswa.length === 0) return Swal.fire("Kosong", "Tidak ada soal aktif untuk mapel ini", "info");
+            document.getElementById('siswa-prep').style.display = 'none';
+            document.getElementById('ujian-running').style.display = 'block';
+            
+            let h = `<div class="card" style="border-left: 5px solid var(--primary)"><h2>${m}</h2><p>${userData.nama}</p></div>`;
+            dataSoalSiswa.forEach((s, i) => {
+                h += `<div class="card">
+                    <p><b>${i + 1}.</b> ${s.soal}</p>
+                    ${['a','b','c','d'].map(o => `
+                        <label class="opsi-label"><input type="radio" name="q${i}" value="${o.toUpperCase()}"> <span>${s[o]}</span></label>
+                    `).join('')}
+                </div>`;
+            });
+            h += `<button class="btn-main" style="background:var(--success); margin-bottom:80px" onclick="kirimJawaban()">KIRIM JAWABAN SEKARANG ✅</button>`;
+            document.getElementById('wadah-soal').innerHTML = h;
+            Swal.close();
+            window.scrollTo(0,0);
+        } catch(e) { Swal.fire("Error", "Gagal memuat soal", "error"); }
     }
 
     async function kirimJawaban() {
@@ -317,9 +353,19 @@
             if(ans === s.kunci) benar++;
         });
         const skor = (benar / dataSoalSiswa.length) * 100;
-        const rekap = { waktu: new Date().toLocaleString(), nis: userData.nis, nama: userData.nama, kelas: userData.kelas, mapel: document.querySelector('#ujian-running h2').innerText, skor: skor.toFixed(2) };
-        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({target:"REKAP", data:rekap}) });
-        Swal.fire("Selesai!", `Skor: ${skor.toFixed(2)}`, "success").then(() => location.reload());
+        const rekap = { 
+            waktu: new Date().toLocaleString(), 
+            nis: userData.nis, 
+            nama: userData.nama, 
+            kelas: userData.kelas, 
+            mapel: document.querySelector('#ujian-running h2').innerText, 
+            skor: skor.toFixed(2) 
+        };
+        Swal.fire({ title: 'Mengirim...', didOpen: () => Swal.showLoading() });
+        try {
+            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({target:"REKAP", data:rekap}) });
+            Swal.fire("Selesai!", `Ujian berakhir. Skor Anda: ${skor.toFixed(2)}`, "success").then(() => location.reload());
+        } catch(e) { Swal.fire("Error", "Gagal mengirim rekap", "error"); }
     }
 
     function showSection(id, btn) {
