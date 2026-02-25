@@ -28,18 +28,18 @@
 
         .card { 
             background: var(--card); padding: 40px; border-radius: 24px; 
-            width: 90%; max-width: 600px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            width: 90%; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
             border: 1px solid var(--border); text-align: center; margin: auto;
         }
         
-        h2 { margin: 0 0 10px 0; font-weight: 800; font-size: 1.8rem; color: #fff; }
-        .subtitle { color: var(--primary); font-size: 1rem; margin-bottom: 30px; display: block; font-weight: 600; }
+        h3 { margin: 0 0 10px 0; font-weight: 800; color: #fff; }
+        .subtitle { color: var(--primary); font-size: 0.9rem; margin-bottom: 30px; display: block; font-weight: 600; letter-spacing: 1px; }
 
-        label { display: block; margin-top: 20px; font-weight: 700; font-size: 0.8rem; color: var(--primary); text-transform: uppercase; margin-bottom: 8px; }
+        label { display: block; margin-top: 20px; font-weight: 700; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 8px; text-align: left; }
         
         input, select, .display-box { 
             width: 100%; padding: 0 20px; height: 56px; border-radius: 12px; border: 1px solid #334155; 
-            background: #0f172a; color: white; box-sizing: border-box; font-size: 1.1rem; text-align: center;
+            background: #0f172a; color: white; box-sizing: border-box; font-size: 1.1rem; text-align: center; outline: none;
         }
 
         .display-box { 
@@ -47,40 +47,42 @@
             color: #94a3b8; border-style: dashed; line-height: 1;
         }
 
-        #quiz-container { display: none; width: 95%; max-width: 850px; margin: 0 auto; padding-bottom: 100px; }
+        #quiz-container { display: none; width: 95%; max-width: 800px; margin: 0 auto; padding-bottom: 100px; }
 
         #header-siswa { 
-            position: sticky; top: 10px; z-index: 1000;
-            margin-bottom: 25px; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            background: rgba(30, 41, 59, 0.95); 
-            backdrop-filter: blur(10px);
-            padding: 15px; 
-            border-radius: 24px; 
-            border: 1px solid var(--primary);
-            gap: 5px;
+            position: sticky; top: 10px; z-index: 1000; margin-bottom: 25px; 
+            display: flex; flex-direction: column; align-items: center; 
+            background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px);
+            padding: 15px; border-radius: 24px; border: 1px solid var(--primary); 
+            gap: 8px; text-align: center;
         }
 
-        .timer-box {
-            background: #0f172a; padding: 5px 25px; border-radius: 12px;
-            border: 1px solid var(--border); text-align: center;
-        }
-        #timer-text { font-size: 1.8rem; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; line-height: 1.2; }
+        .timer-box { background: #0f172a; padding: 5px 25px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+        #timer-text { font-size: 1.8rem; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
         .timer-label { font-size: 0.6rem; color: var(--primary); font-weight: 800; letter-spacing: 1px; }
 
-        #disp-nama { color: white; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; }
-        #disp-info { color: #94a3b8; font-size: 0.85rem; font-weight: 700; }
-        #pelanggaran-text { font-size: 0.85rem; font-weight: 700; margin-top: 2px; }
-
-        .soal-card { background: var(--card); padding: 30px; border-radius: 24px; margin-bottom: 25px; border: 1px solid var(--border); }
-        .soal-teks { font-size: 1.15rem; line-height: 1.6; margin-bottom: 20px; color: #fff; font-weight: 600; text-align: left; }
+        .soal-card { background: var(--card); padding: 25px; border-radius: 20px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .soal-teks { font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px; color: #fff; font-weight: 600; text-align: left; }
+        
         .img-wrapper { width: 100%; text-align: center; margin-bottom: 20px; }
-        .img-wrapper img { max-width: 100%; border-radius: 12px; border: 1px solid #334155; max-height: 350px; }
-        .opsi-label { display: block; background: #0f172a; padding: 18px 25px; margin: 12px 0; border-radius: 15px; cursor: pointer; border: 1px solid #334155; transition: 0.2s; text-align: left; }
-        .opsi-label input { display: none; }
-        .opsi-text { font-size: 1.05rem; color: var(--text); font-weight: 500; text-transform: none; }
+        .img-wrapper img { max-width: 100%; border-radius: 12px; border: 1px solid #334155; max-height: 300px; }
+
+        .opsi-label { 
+            display: flex; align-items: center; background: #0f172a; 
+            padding: 15px 20px; margin: 10px 0; border-radius: 12px; 
+            cursor: pointer; border: 1px solid #334155; transition: 0.2s; text-align: left; 
+        }
+        .opsi-label input { margin-right: 15px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; }
+        
+        .opsi-text { 
+            font-size: 1rem; 
+            color: var(--text); 
+            font-weight: 500; 
+            line-height: 1.4;
+            text-transform: none; 
+        }
+
+        .opsi-label:hover { border-color: var(--primary); }
         .opsi-label:has(input:checked) { border-color: var(--success); background: rgba(16, 185, 129, 0.1); }
 
         .btn-start { width: 100%; padding: 18px; border-radius: 12px; border: none; background: var(--success); color: white; font-weight: 800; cursor: pointer; margin-top: 30px; font-size: 1.1rem; }
@@ -91,26 +93,25 @@
 
     <div id="main-wrapper">
         <div id="login-area" class="card">
-		            <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
-            <h2>SMPN 110 JAKARTA</h2>
-            <span class="subtitle">COMPUTER BASED TEST SYSTEM</span>           
-            <input type="number" id="nis-siswa" placeholder="Ketik NIS Anda" onchange="cekSiswa()">
-
-
-
-
-
+            <i class="fas fa-graduation-cap" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+            <h3>SMPN 110 JAKARTA</h3>
+            <span class="subtitle">COMPUTER BASED TEST</span>           
+            
+            <label></label>
+            <input type="number" id="nis-siswa" placeholder="Ketik NIS & Tekan Enter" 
+                   onkeydown="if(event.key === 'Enter') { event.preventDefault(); cekSiswa(); }">
+            
             <div id="detail-siswa" style="display:none;">
-                <label>Nama Siswa</label>
+                <label></label>
                 <div id="nama-siswa-display" class="display-box">---</div>
                 <input type="hidden" id="nama-siswa">
                 
-                <label>Kelas</label>
+                <label></label>
                 <div id="kelas-siswa-display" class="display-box">---</div>
                 <input type="hidden" id="kelas-siswa">
                 
-                <label>Pilih Mata Pelajaran</label>
-                <select id="mapel-siswa">
+                <label></label>
+                <select id="mapel-siswa" onkeydown="if(event.key === 'Enter') { event.preventDefault(); jalankanUjian(); }">
                     <option value="">-- Pilih Mata Pelajaran --</option>
                     <option value="PAI">Pendidikan Agama</option>
                     <option value="PP">Pendidikan Pancasila</option>
@@ -123,7 +124,7 @@
                     <option value="Seni Budaya">Seni Budaya</option>
                     <option value="Informatika">Informatika</option>
                 </select>
-                <button class="btn-start" onclick="jalankanUjian()">MULAI UJIAN SEKARANG</button>
+                <button class="btn-start" onclick="jalankanUjian()">MULAI UJIAN</button>
             </div>
         </div>
 
@@ -133,14 +134,10 @@
                     <div class="timer-label">SISA WAKTU</div>
                     <div id="timer-text">00:00:00</div>
                 </div>
-
-                <b id="disp-nama">NAMA SISWA</b>
-                <span id="disp-info">MAPEL | KELAS</span>
-                <b id="pelanggaran-text" style="color: var(--success);">Pelanggaran: 0/3</b>
             </div>
             
             <div id="wadah-soal"></div>
-            <button class="btn-start btn-finish" onclick="finishQuiz(true)">KIRIM SEMUA JAWABAN</button>
+            <button class="btn-start btn-finish" onclick="finishQuiz(true)">KIRIM JAWABAN</button>
         </div>
     </div>
 
@@ -151,6 +148,22 @@
     let pelanggaran = 0;
     let totalDetik = 0; 
     let timerInterval;
+
+    // Fungsi format agar tidak kapital semua
+    function formatTeksJawaban(str) {
+        if (!str) return "";
+        let text = str.toString().toLowerCase();
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    // Fungsi pengacak array (Fisher-Yates)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 
     function startTimer() {
         timerInterval = setInterval(() => {
@@ -165,28 +178,24 @@
             let s = totalDetik % 60;
             document.getElementById('timer-text').innerText = 
                 `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-            
             if(totalDetik < 300) document.getElementById('timer-text').style.color = "#ef4444";
         }, 1000);
     }
 
     function activateFullscreen() {
         const elem = document.documentElement;
-        if (elem.requestFullscreen) { elem.requestFullscreen(); }
-        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+        if (elem.requestFullscreen) elem.requestFullscreen();
+        else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
     }
 
     function catatPelanggaran(pesan) {
         if (!isExamActive) return;
         pelanggaran++;
-        const pText = document.getElementById('pelanggaran-text');
-        pText.innerText = `Pelanggaran: ${pelanggaran}/3`;
-        pText.style.color = "#ef4444";
 
         if (pelanggaran >= 3) {
             isExamActive = false;
             clearInterval(timerInterval);
-            Swal.fire({ title: 'DISKUALIFIKASI!', text: 'Batas toleransi habis.', icon: 'error', allowOutsideClick: false }).then(() => {
+            Swal.fire({ title: 'DISKUALIFIKASI!', text: 'Batas pelanggaran terlampaui.', icon: 'error', allowOutsideClick: false }).then(() => {
                 finishQuiz(false);
             });
         } else {
@@ -201,60 +210,72 @@
     });
 
     document.addEventListener("fullscreenchange", () => {
-        if (isExamActive && !document.fullscreenElement) catatPelanggaran("Jangan tekan ESC!");
+        if (isExamActive && !document.fullscreenElement) catatPelanggaran("Mode layar penuh wajib aktif!");
     });
 
     async function cekSiswa() {
         const nis = document.getElementById('nis-siswa');
         if(!nis.value) return;
-        Swal.fire({title: 'Memverifikasi...', didOpen: () => Swal.showLoading()});
+
+        Swal.fire({
+            title: 'Memverifikasi NIS...',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => Swal.showLoading()
+        });
+
         try {
             const res = await fetch(`${SCRIPT_URL}?target=cekSiswa&nis=${nis.value}`);
             const data = await res.json();
+            
             if(data.status === "success") {
                 document.getElementById('nama-siswa-display').innerText = data.nama;
                 document.getElementById('nama-siswa').value = data.nama;
                 document.getElementById('kelas-siswa-display').innerText = data.kelas;
                 document.getElementById('kelas-siswa').value = data.kelas;
+                
                 nis.disabled = true;
                 document.getElementById('detail-siswa').style.display = 'block';
-                Swal.close();
-            } else { Swal.fire("Gagal", "NIS Tidak Ditemukan", "error"); }
-        } catch(e) { Swal.fire("Error", "Koneksi Bermasalah", "error"); }
+                
+                Swal.close(); 
+                setTimeout(() => document.getElementById('mapel-siswa').focus(), 300);
+            } else { 
+                Swal.fire({ title: "Gagal", text: "NIS Tidak Terdaftar", icon: "error" }); 
+            }
+        } catch(e) { 
+            Swal.fire({ title: "Error", text: "Koneksi Bermasalah", icon: "error" }); 
+        }
     }
 
     async function jalankanUjian() {
         const mapel = document.getElementById('mapel-siswa').value;
-        if(!mapel) return Swal.fire("Pilih Mapel!", "", "warning");
+        if(!mapel) return Swal.fire("Pilih Mata Pelajaran!", "", "warning");
         
-        Swal.fire({title: 'Memuat Soal...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+        Swal.fire({title: 'Memuat Soal...', allowOutsideClick: false, showConfirmButton: false, didOpen: () => Swal.showLoading()});
         
         try {
             const res = await fetch(`${SCRIPT_URL}?target=getSoalSiswa&kelas=${document.getElementById('kelas-siswa').value}&mapel=${mapel}`);
             const rawData = await res.json();
             
             if (!rawData || rawData.length === 0) {
-                return Swal.fire("Kosong", "Belum ada soal untuk mapel/kelas ini.", "info");
+                return Swal.fire("Kosong", "Belum ada soal untuk kategori ini.", "info");
             }
 
-            // Ambil durasi dari soal pertama (asumsi durasi sama per mapel)
-            const durasiMenit = rawData[0].durasi || 60;
-            totalDetik = durasiMenit * 60;
-
-            dataSoal = rawData.sort(() => Math.random() - 0.5);
+            totalDetik = (rawData[0].durasi || 60) * 60;
+            
+            // ACAK URUTAN SOAL
+            dataSoal = shuffleArray([...rawData]);
             
             activateFullscreen();
             document.getElementById('login-area').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'block';
-            document.getElementById('disp-nama').innerText = document.getElementById('nama-siswa').value;
-            document.getElementById('disp-info').innerText = `${mapel} | ${document.getElementById('kelas-siswa').value}`;
             
             renderSoal();
             startTimer();
             setTimeout(() => { isExamActive = true; }, 2000);
             Swal.close();
         } catch(e) { 
-            Swal.fire("Error", "Gagal memuat soal. Pastikan koneksi internet aktif.", "error"); 
+            Swal.fire("Error", "Gagal memuat soal.", "error"); 
         }
     }
 
@@ -264,28 +285,30 @@
         dataSoal.forEach((s, i) => {
             let imgPart = (s.gambar && s.gambar.trim().length > 50) ? `<div class="img-wrapper"><img src="${s.gambar}"></div>` : "";
             
-            // Acak opsi jawaban (A, B, C, D)
+            // Kumpulkan opsi dalam array
             let opsi = [
-                {k: 'A', v: s.a}, 
-                {k: 'B', v: s.b}, 
-                {k: 'C', v: s.c}, 
-                {k: 'D', v: s.d}
-            ].sort(() => Math.random() - 0.5);
+                {k: 'A', v: s.a}, {k: 'B', v: s.b}, 
+                {k: 'C', v: s.c}, {k: 'D', v: s.d}
+            ];
+
+            // ACAK OPSI JAWABAN UNTUK SETIAP SOAL
+            opsi = shuffleArray(opsi);
 
             let opsiHtml = '';
             opsi.forEach(o => {
+                let textBersih = formatTeksJawaban(o.v);
                 opsiHtml += `
                     <label class="opsi-label">
                         <input type="radio" name="soal-${i}" value="${o.k}">
-                        <span class="opsi-text">${o.v}</span>
+                        <span class="opsi-text">${textBersih}</span>
                     </label>`;
             });
 
             html += `
                 <div class="soal-card">
-                    <div class="soal-teks">${i+1}. ${s.soal}</div>
+                    <div class="soal-teks"><b>Soal ${i+1}</b><br>${s.soal}</div>
                     ${imgPart}
-                    ${opsiHtml}
+                    <div class="opsi-container">${opsiHtml}</div>
                 </div>`;
         });
         wadah.innerHTML = html;
@@ -296,11 +319,9 @@
         if(confirm) {
             const r = await Swal.fire({
                 title: 'Selesai Ujian?', 
-                text: "Pastikan semua soal sudah terjawab.",
-                icon: 'question', 
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Kirim!',
-                cancelButtonText: 'Periksa Lagi'
+                text: "Pastikan semua sudah terisi.",
+                icon: 'question', showCancelButton: true,
+                confirmButtonText: 'Kirim Sekarang', cancelButtonText: 'Cek Lagi'
             });
             if(!r.isConfirmed) return;
         }
@@ -311,12 +332,13 @@
         let benar = 0;
         dataSoal.forEach((s, i) => {
             const sel = document.querySelector(`input[name="soal-${i}"]:checked`);
+            // o.k menyimpan kunci asli (A/B/C/D), sehingga pengecekan tetap akurat walau posisi diacak
             if(sel && sel.value === s.kunci) benar++;
         });
         
         const skor = dataSoal.length > 0 ? Math.round((benar/dataSoal.length)*100) : 0;
         
-        Swal.fire({title: 'Menyimpan Nilai...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+        Swal.fire({title: 'Menyimpan Nilai...', allowOutsideClick: false, showConfirmButton: false, didOpen: () => Swal.showLoading()});
         
         try {
             await fetch(SCRIPT_URL, { 
@@ -329,14 +351,10 @@
                     skor: skor 
                 }) 
             });
-            await Swal.fire({ 
-                title: "Terima Kasih!", 
-                text: `Jawaban berhasil dikirim.`, 
-                icon: "success" 
-            });
+            await Swal.fire({ title: "Berhasil!", text: "Data ujian Anda telah terkirim.", icon: "success" });
             location.reload();
         } catch (e) { 
-            Swal.fire("Koneksi Error", "Nilai gagal terkirim secara otomatis. Silakan lapor ke pengawas.", "error"); 
+            Swal.fire("Error", "Nilai gagal terkirim otomatis. Hubungi Guru!", "error"); 
         }
     }
 </script>
