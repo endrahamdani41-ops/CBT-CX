@@ -3,112 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart CBT - Ujian Siswa</title>
+    <title>Smart CBT - SMPN 110 Jakarta</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root { 
-            --bg: #050a18; 
-            --card: #1e293b; 
-            --primary: #3b82f6; 
-            --text: #f8fafc; 
-            --success: #10b981; 
+            --bg: #050a18; --card: #1e293b; --primary: #3b82f6; 
+            --text: #f8fafc; --success: #10b981; --danger: #ef4444;
             --border: rgba(59, 130, 246, 0.2);
         }
         
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            user-select: none;
-        }
-
-        #main-wrapper:fullscreen {
-            background: var(--bg);
-            width: 100vw;
-            height: 100vh;
-            overflow-y: auto;
-            display: block;
-            padding: 40px 0;
-        }
-        
-        .card { 
-            background: var(--card); 
-            padding: 30px; 
-            border-radius: 24px; 
-            width: 90%; 
-            max-width: 450px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
-            border: 1px solid var(--border); 
-            text-align: center;
-            margin: auto;
-        }
-        
-        h2 { margin: 0 0 10px 0; letter-spacing: -1px; font-weight: 800; }
-        .subtitle { color: var(--primary); font-size: 0.9rem; margin-bottom: 25px; display: block; font-weight: 600; }
-
-        label { 
-            display: block; margin-top: 15px; font-weight: 600; font-size: 0.75rem; 
-            color: var(--primary); text-transform: uppercase; text-align: center;
-        }
-        
-        input, select { 
-            width: 100%; padding: 0 14px; height: 52px; border-radius: 12px; border: 1px solid #334155; 
-            background: #0f172a; color: white; box-sizing: border-box; font-family: inherit; 
-            font-size: 1rem; text-align: center; text-align-last: center;
+            font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); 
+            color: var(--text); margin: 0; display: flex; justify-content: center; 
+            align-items: center; min-height: 100vh; user-select: none;
         }
 
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
+        #main-wrapper:fullscreen {
+            background: var(--bg); width: 100vw; height: 100vh;
+            overflow-y: auto; display: block; padding: 40px 0;
+        }
+        
+        .card { 
+            background: var(--card); padding: 30px; border-radius: 24px; 
+            width: 90%; max-width: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            border: 1px solid var(--border); text-align: center; margin: auto;
+        }
+        
+        h2 { margin: 0 0 10px 0; letter-spacing: -1px; font-weight: 800; }
+        .subtitle { color: var(--primary); font-size: 0.9rem; margin-bottom: 25px; display: block; font-weight: 600; }
+
+        label { display: block; margin-top: 15px; font-weight: 600; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; text-align: center; }
+        
+        input, select { 
+            width: 100%; padding: 0 14px; height: 52px; border-radius: 12px; border: 1px solid #334155; 
+            background: #0f172a; color: white; box-sizing: border-box; font-family: inherit; 
+            font-size: 1rem; text-align: center;
+        }
+
         #nis-siswa { font-weight: 800; font-size: 1.3rem; letter-spacing: 4px; }
+        #quiz-container { display: none; width: 95%; max-width: 1000px; margin: 0 auto; }
 
-        .input-group { display: flex; gap: 10px; margin-top: 10px; align-items: stretch; }
-        
-        .btn-cek { 
-            width: 60px; border-radius: 12px; border: none; background: var(--primary); 
-            color: white; cursor: pointer; transition: 0.3s; flex-shrink: 0;
-        }
+        .soal-card { background: var(--card); padding: 35px; border-radius: 20px; margin-bottom: 25px; border: 1px solid var(--border); text-align: left; }
 
-        .btn-start { 
-            width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--success); 
-            color: white; font-weight: 800; cursor: pointer; margin-top: 20px; font-size: 1rem;
-        }
+        .img-soal-wrapper { width: 100%; text-align: center; margin: 20px 0; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid #334155; }
+        .img-soal-wrapper img { max-width: 100%; max-height: 400px; display: block; margin: auto; }
 
-        #quiz-container { 
-            display: none; 
-            width: 95%; 
-            max-width: 1200px; 
-            margin: 0 auto;
-        }
-
-        .soal-card { 
-            background: var(--card); 
-            padding: 30px; 
-            border-radius: 20px; 
-            margin-bottom: 25px; 
-            border: 1px solid var(--border); 
-            text-align: left; 
-        }
-
-        .soal-teks { font-size: 1.15rem; line-height: 1.6; margin-bottom: 25px; font-weight: 600; }
-        
-        .opsi-label { 
-            display: flex; align-items: flex-start; background: #0f172a; padding: 16px; margin: 12px 0; 
-            border-radius: 12px; cursor: pointer; border: 1px solid #334155; transition: 0.2s; 
-        }
-        .opsi-label:hover { border-color: var(--primary); }
+        .opsi-label { display: flex; align-items: flex-start; background: #0f172a; padding: 18px; margin: 12px 0; border-radius: 12px; cursor: pointer; border: 1px solid #334155; transition: 0.2s; }
         .opsi-label:has(input:checked) { border-color: var(--success); background: rgba(16, 185, 129, 0.1); }
-
-        input[type="radio"] { width: 20px; height: 20px; margin-right: 15px; margin-top: 3px; accent-color: var(--primary); flex-shrink: 0; }
-        .opsi-text { font-size: 1rem; color: var(--text); line-height: 1.4; }
+        input[type="radio"] { width: 22px; height: 22px; margin-right: 15px; accent-color: var(--primary); }
+        
+        .btn-start { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--success); color: white; font-weight: 800; cursor: pointer; margin-top: 20px; font-size: 1rem; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -117,13 +67,7 @@
         <div id="login-area" class="card">
             <h2>SMPN 110 JAKARTA</h2>
             <span class="subtitle">COMPUTER BASED TEST SYSTEM</span>
-            
-            <div class="input-group">
-                <input type="number" id="nis-siswa" placeholder="MASUKKAN NIS">
-                <button id="btn-cek" onclick="cekSiswa()" class="btn-cek">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <input type="number" id="nis-siswa" placeholder="Masukkan NIS" onchange="cekSiswa()">
 
             <div id="detail-siswa" style="display:none;">
                 <label>NAMA LENGKAP</label>
@@ -132,7 +76,7 @@
                 <input type="text" id="kelas-siswa" readonly>
                 <label>MATA PELAJARAN</label>
                 <select id="mapel-siswa">
-                    <option value="">-- PILIH MATA PELAJARAN --</option>
+                    <option value="">-- Pilih Mata Pelajaran --</option>
                     <option value="PAI">Pendidikan Agama</option>
                     <option value="PP">Pendidikan Pancasila</option>
                     <option value="B.Indo">Bahasa Indonesia</option>                    
@@ -144,55 +88,84 @@
                     <option value="Seni Budaya">Seni Budaya</option>
                     <option value="Informatika">Informatika</option>
                 </select>
-
-                <button class="btn-start" onclick="initiateExam()">
-                    <i class="fas fa-expand"></i> MULAI UJIAN
-                </button>
+                <button class="btn-start" onclick="initiateExam()">MULAI UJIAN</button>
             </div>
         </div>
 
         <div id="quiz-container">
-            <div id="header-siswa" style="margin-bottom: 30px; display: flex; justify-content: space-between; background: var(--card); padding: 25px; border-radius: 20px; border: 1px solid var(--primary); align-items: center;">
+            <div id="header-siswa" style="margin-bottom: 30px; display: flex; justify-content: space-between; background: var(--card); padding: 25px 35px; border-radius: 20px; border: 1px solid var(--primary); align-items: center;">
                 <div style="text-align: left;">
-                    <b id="disp-nama" style="font-size: 1.2rem; display: block; color: white;">NAMA SISWA</b>
-                    <span id="disp-info" style="color: var(--primary); font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">MAPEL | KELAS</span>
+                    <b id="disp-nama" style="font-size: 1.3rem; display: block; color: white;">NAMA SISWA</b>
+                    <span id="disp-info" style="color: var(--primary); font-size: 0.9rem; font-weight: 700; text-transform: uppercase;">MAPEL | KELAS</span>
                 </div>
                 <div style="text-align: right;">
-                    <b style="color: var(--success); font-size: 0.9rem;"><i class="fas fa-circle-dot"></i> UJIAN AKTIF</b>
+                    <b id="pelanggaran-text" style="color: var(--success); font-size: 1.1rem; display: block;">Keluar: 0/3</b>
+                    <span style="color: var(--success); font-size: 0.7rem; font-weight: 800;"><i class="fas fa-circle-dot"></i> UJIAN AKTIF</span>
                 </div>
             </div>
-            
             <div id="wadah-soal"></div>
-            
-            <button class="btn-start" style="background: var(--success); margin-bottom: 80px;" onclick="finishQuiz()">SIMPAN & KIRIM JAWABAN</button>
+            <button class="btn-start" style="background: var(--success); margin-bottom: 80px;" onclick="finishQuiz(true)">SIMPAN & KIRIM JAWABAN</button>
         </div>
     </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9jK3q308COcSlnIzqdQrYPwYwyjDscnr6PHsGTIGW3kl7QKjJ0K63Wptv0sOEewdDgg/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzrMt7sqEH3CtiIIwc6fzUcxnVIy5wd80_Oj_0QN3KcwQ7z8JeasswymF-v32IZn2vYAA/exec";
     let dataSoal = [];
     let isExamActive = false;
+    let keluarCount = 0; 
 
-    document.onkeydown = function(e) {
-        if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 'i')) return false;
-        if (e.key === 'F12') return false;
-    };
+    // Fungsi Pengacak (Fisher-Yates Shuffle)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    document.onkeydown = (e) => { if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 'i') || e.key === 'F12') return false; };
+
+    document.addEventListener("visibilitychange", () => {
+        if (isExamActive) {
+            if (document.hidden) {
+                keluarCount++;
+                updateVisualCounter();
+            } else {
+                tampilkanPeringatan();
+            }
+        }
+    });
+
+    function updateVisualCounter() {
+        const el = document.getElementById('pelanggaran-text');
+        if (el) {
+            el.innerText = `Keluar: ${keluarCount}/3`;
+            el.style.color = "var(--danger)";
+        }
+    }
+
+    function tampilkanPeringatan() {
+        if (keluarCount >= 3) {
+            isExamActive = false;
+            Swal.fire({ title: "OTOMATIS SELESAI", text: "Pelanggaran maksimal tercapai!", icon: "error", allowOutsideClick: false }).then(() => finishQuiz(false));
+        } else {
+            Swal.fire({ title: "PERINGATAN!", text: `Jangan keluar halaman! (${keluarCount}/3)`, icon: "warning", confirmButtonText: "KEMBALI", allowOutsideClick: false })
+            .then(() => { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); });
+        }
+    }
 
     document.addEventListener('fullscreenchange', () => {
         if (!document.fullscreenElement && isExamActive) {
-            Swal.fire("Layar Penuh Terputus", "Kembali ke mode layar penuh!", "warning").then(() => {
-                document.documentElement.requestFullscreen();
-            });
+            keluarCount++;
+            updateVisualCounter();
+            tampilkanPeringatan();
         }
     });
 
     async function cekSiswa() {
-        const nisInput = document.getElementById('nis-siswa');
-        const nis = nisInput.value;
-        if(!nis) return Swal.fire("NIS Kosong", "Masukkan NIS Anda", "warning");
-
+        const nis = document.getElementById('nis-siswa').value;
+        if(!nis) return;
         Swal.fire({title: 'Memverifikasi...', didOpen: () => Swal.showLoading()});
-
         try {
             const res = await fetch(`${SCRIPT_URL}?target=cekSiswa&nis=${nis}`);
             const data = await res.json();
@@ -200,19 +173,16 @@
                 document.getElementById('nama-siswa').value = data.nama;
                 document.getElementById('kelas-siswa').value = data.kelas;
                 document.getElementById('detail-siswa').style.display = 'block';
-                document.getElementById('btn-cek').style.display = 'none';
-                nisInput.readOnly = true;
+                document.getElementById('nis-siswa').readOnly = true;
                 Swal.close();
-            } else {
-                Swal.fire("Gagal", "NIS tidak ditemukan!", "error");
-            }
+            } else { Swal.fire("Gagal", "NIS tidak ditemukan!", "error"); }
         } catch(e) { Swal.fire("Error", "Koneksi Bermasalah", "error"); }
     }
 
     function initiateExam() {
         const mapel = document.getElementById('mapel-siswa').value;
         if(!mapel) return Swal.fire("Pilih Mapel", "Pilih mata pelajaran dulu", "warning");
-        document.documentElement.requestFullscreen();
+        document.documentElement.requestFullscreen().catch(() => {});
         mulaiUjian();
     }
 
@@ -220,15 +190,17 @@
         const mapel = document.getElementById('mapel-siswa').value;
         const kelas = document.getElementById('kelas-siswa').value;
         Swal.fire({title: 'Memuat Soal...', didOpen: () => Swal.showLoading()});
-
         try {
             const res = await fetch(`${SCRIPT_URL}?target=getSoalSiswa&kelas=${kelas}&mapel=${mapel}`);
-            dataSoal = await res.json();
-            if(dataSoal.length === 0) return Swal.fire("Info", "Soal tidak tersedia.", "info");
+            let rawData = await res.json();
+            
+            // ACAK URUTAN SOAL
+            dataSoal = shuffleArray(rawData);
 
-            isExamActive = true;
             document.getElementById('login-area').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'block';
+            isExamActive = true; 
+            keluarCount = 0;
             document.getElementById('disp-nama').innerText = document.getElementById('nama-siswa').value;
             document.getElementById('disp-info').innerText = `${mapel} | ${kelas}`;
             renderSoal();
@@ -239,65 +211,67 @@
     function renderSoal() {
         const wadah = document.getElementById('wadah-soal');
         let html = '';
+        
         dataSoal.forEach((s, index) => {
+            let imgTag = (s.gambar && s.gambar.trim().length > 10) ? `<div class="img-soal-wrapper"><img src="${s.gambar}"></div>` : "";
+            
+            // ACAK URUTAN OPSI JAWABAN
+            let listOpsi = [
+                { label: 'A', teks: s.a },
+                { label: 'B', teks: s.b },
+                { label: 'C', teks: s.c },
+                { label: 'D', teks: s.d }
+            ];
+            listOpsi = shuffleArray(listOpsi);
+
+            let opsiHtml = '';
+            listOpsi.forEach(o => {
+                opsiHtml += `
+                    <label class="opsi-label">
+                        <input type="radio" name="soal-${index}" value="${o.label}">
+                        <span>${o.teks}</span>
+                    </label>`;
+            });
+
             html += `
                 <div class="soal-card">
                     <div class="soal-teks"><b>${index + 1}.</b> ${s.soal}</div>
-                    <label class="opsi-label">
-                        <input type="radio" name="soal-${index}" value="A">
-                        <span class="opsi-text">${s.a}</span>
-                    </label>
-                    <label class="opsi-label">
-                        <input type="radio" name="soal-${index}" value="B">
-                        <span class="opsi-text">${s.b}</span>
-                    </label>
-                    <label class="opsi-label">
-                        <input type="radio" name="soal-${index}" value="C">
-                        <span class="opsi-text">${s.c}</span>
-                    </label>
-                    <label class="opsi-label">
-                        <input type="radio" name="soal-${index}" value="D">
-                        <span class="opsi-text">${s.d}</span>
-                    </label>
+                    ${imgTag}
+                    ${opsiHtml}
                 </div>`;
         });
         wadah.innerHTML = html;
         window.scrollTo(0,0);
     }
 
-    async function finishQuiz() {
-        const confirm = await Swal.fire({ 
-            title: 'Kirim Jawaban?', 
-            icon: 'question', 
-            showCancelButton: true,
-            confirmButtonText: 'Ya, Kirim!'
-        });
-        if(!confirm.isConfirmed) return;
-
+    async function finishQuiz(withConfirm) {
+        if (withConfirm) {
+            const res = await Swal.fire({ title: 'Kirim Jawaban?', icon: 'question', showCancelButton: true });
+            if(!res.isConfirmed) return;
+        }
         isExamActive = false;
         let benar = 0;
         dataSoal.forEach((s, index) => {
             const terpilih = document.querySelector(`input[name="soal-${index}"]:checked`);
+            // Karena value input tetap A, B, C, D (sesuai kunci asli), logika penilaian tidak berubah
             if(terpilih && terpilih.value === s.kunci) benar++;
         });
-
         const skor = Math.round((benar / dataSoal.length) * 100);
-        Swal.fire({title: 'Menyimpan...', didOpen: () => Swal.showLoading()});
-
-        const payload = {
-            target: "simpanNilai",
-            nama: document.getElementById('nama-siswa').value,
-            kelas: document.getElementById('kelas-siswa').value,
-            mapel: document.getElementById('mapel-siswa').value,
-            skor: skor
-        };
-
+        Swal.fire({title: 'Menyimpan...', didOpen: () => Swal.showLoading(), allowOutsideClick: false});
         try {
-            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+            await fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                body: JSON.stringify({
+                    target: "simpanNilai",
+                    nama: document.getElementById('nama-siswa').value,
+                    kelas: document.getElementById('kelas-siswa').value,
+                    mapel: document.getElementById('mapel-siswa').value,
+                    skor: skor
+                }) 
+            });
             await Swal.fire("Berhasil", `Jawaban terkirim. Skor: ${skor}`, "success");
-            if (document.exitFullscreen) document.exitFullscreen();
             location.reload();
-        } catch (e) { Swal.fire("Error", "Gagal menyimpan nilai", "error"); }
+        } catch (e) { Swal.fire("Error", "Gagal menyimpan", "error"); }
     }
 </script>
 </body>
