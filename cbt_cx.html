@@ -49,30 +49,38 @@
 
         #quiz-container { display: none; width: 95%; max-width: 850px; margin: 0 auto; padding-bottom: 100px; }
 
-        /* HEADER STICKY */
+        /* --- HEADER VERTIKAL BARU --- */
         #header-siswa { 
             position: sticky; top: 10px; z-index: 1000;
-            margin-bottom: 25px; display: flex; justify-content: space-between; 
-            background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px);
-            padding: 15px 30px; border-radius: 20px; border: 1px solid var(--primary); align-items: center;
+            margin-bottom: 25px; 
+            display: flex; 
+            flex-direction: column; /* Mengatur urutan ke bawah */
+            align-items: center;    /* Mengetengahkan semua elemen */
+            background: rgba(30, 41, 59, 0.95); 
+            backdrop-filter: blur(10px);
+            padding: 15px; 
+            border-radius: 24px; 
+            border: 1px solid var(--primary);
+            gap: 5px; /* Jarak antar elemen */
         }
 
         .timer-box {
-            background: #0f172a; padding: 8px 20px; border-radius: 12px;
+            background: #0f172a; padding: 5px 25px; border-radius: 12px;
             border: 1px solid var(--border); text-align: center;
         }
-        #timer-text { font-size: 1.3rem; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+        #timer-text { font-size: 1.8rem; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; line-height: 1.2; }
+        .timer-label { font-size: 0.6rem; color: var(--primary); font-weight: 800; letter-spacing: 1px; }
 
+        #disp-nama { color: white; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; }
+        #disp-info { color: #94a3b8; font-size: 0.85rem; font-weight: 700; }
+        #pelanggaran-text { font-size: 0.85rem; font-weight: 700; margin-top: 2px; }
+
+        /* --- STYLE SOAL --- */
         .soal-card { background: var(--card); padding: 30px; border-radius: 24px; margin-bottom: 25px; border: 1px solid var(--border); }
         .soal-teks { font-size: 1.15rem; line-height: 1.6; margin-bottom: 20px; color: #fff; font-weight: 600; text-align: left; }
-
         .img-wrapper { width: 100%; text-align: center; margin-bottom: 20px; }
         .img-wrapper img { max-width: 100%; border-radius: 12px; border: 1px solid #334155; max-height: 350px; }
-
-        .opsi-label { 
-            display: block; background: #0f172a; padding: 18px 25px; margin: 12px 0; border-radius: 15px; 
-            cursor: pointer; border: 1px solid #334155; transition: 0.2s; text-align: left; 
-        }
+        .opsi-label { display: block; background: #0f172a; padding: 18px 25px; margin: 12px 0; border-radius: 15px; cursor: pointer; border: 1px solid #334155; transition: 0.2s; text-align: left; }
         .opsi-label input { display: none; }
         .opsi-text { font-size: 1.05rem; color: var(--text); font-weight: 500; text-transform: none; }
         .opsi-label:has(input:checked) { border-color: var(--success); background: rgba(16, 185, 129, 0.1); }
@@ -118,19 +126,14 @@
 
         <div id="quiz-container">
             <div id="header-siswa">
-                <div style="text-align: left; flex: 1;">
-                    <b id="disp-nama" style="color: white; font-size: 1.1rem; display: block;">NAMA SISWA</b>
-                    <span id="disp-info" style="color: var(--primary); font-size: 0.75rem; font-weight: 700;">MAPEL | KELAS</span>
-                </div>
-                
-                <div class="timer-box" style="flex: 0;">
-                    <div style="font-size: 0.6rem; color: var(--primary); font-weight: 800; margin-bottom: 2px;">SISA WAKTU</div>
+                <div class="timer-box">
+                    <div class="timer-label">SISA WAKTU</div>
                     <div id="timer-text">00:00:00</div>
                 </div>
 
-                <div style="text-align: right; flex: 1;">
-                    <b id="pelanggaran-text" style="color: var(--success); font-size: 1.1rem; display: block;">Pelanggaran: 0/3</b>
-                </div>
+                <b id="disp-nama">NAMA SISWA</b>
+                <span id="disp-info">MAPEL | KELAS</span>
+                <b id="pelanggaran-text" style="color: var(--success);">Pelanggaran: 0/3</b>
             </div>
             
             <div id="wadah-soal"></div>
@@ -143,17 +146,14 @@
     let dataSoal = [];
     let isExamActive = false;
     let pelanggaran = 0;
-    let totalDetik = 60 * 60; // DEFAULT 60 MENIT
+    let totalDetik = 60 * 60; // 60 Menit
     let timerInterval;
 
     function startTimer() {
         timerInterval = setInterval(() => {
             if (totalDetik <= 0) {
                 clearInterval(timerInterval);
-                isExamActive = false;
-                Swal.fire({ title: 'Waktu Habis!', text: 'Jawaban Anda akan dikirim otomatis.', icon: 'info', allowOutsideClick: false }).then(() => {
-                    finishQuiz(false);
-                });
+                finishQuiz(false);
                 return;
             }
             totalDetik--;
@@ -163,7 +163,7 @@
             document.getElementById('timer-text').innerText = 
                 `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
             
-            if(totalDetik < 300) document.getElementById('timer-text').style.color = "#ef4444"; // Merah jika < 5 menit
+            if(totalDetik < 300) document.getElementById('timer-text').style.color = "#ef4444";
         }, 1000);
     }
 
@@ -176,8 +176,9 @@
     function catatPelanggaran(pesan) {
         if (!isExamActive) return;
         pelanggaran++;
-        document.getElementById('pelanggaran-text').innerText = `Pelanggaran: ${pelanggaran}/3`;
-        document.getElementById('pelanggaran-text').style.color = "#ef4444";
+        const pText = document.getElementById('pelanggaran-text');
+        pText.innerText = `Pelanggaran: ${pelanggaran}/3`;
+        pText.style.color = "#ef4444";
 
         if (pelanggaran >= 3) {
             isExamActive = false;
@@ -222,19 +223,15 @@
     async function jalankanUjian() {
         const mapel = document.getElementById('mapel-siswa').value;
         if(!mapel) return Swal.fire("Pilih Mapel!", "", "warning");
-        
         activateFullscreen();
         Swal.fire({title: 'Memuat Soal...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
-        
         try {
             const res = await fetch(`${SCRIPT_URL}?target=getSoalSiswa&kelas=${document.getElementById('kelas-siswa').value}&mapel=${mapel}`);
             dataSoal = (await res.json()).sort(() => Math.random() - 0.5);
-
             document.getElementById('login-area').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'block';
             document.getElementById('disp-nama').innerText = document.getElementById('nama-siswa').value;
             document.getElementById('disp-info').innerText = `${mapel} | ${document.getElementById('kelas-siswa').value}`;
-            
             renderSoal();
             startTimer();
             setTimeout(() => { isExamActive = true; }, 2000);
@@ -246,9 +243,7 @@
         const wadah = document.getElementById('wadah-soal');
         let html = '';
         dataSoal.forEach((s, i) => {
-            let imgPart = (s.gambar && s.gambar.trim().length > 5) ? 
-                `<div class="img-wrapper"><img src="${s.gambar}"></div>` : "";
-            
+            let imgPart = (s.gambar && s.gambar.trim().length > 5) ? `<div class="img-wrapper"><img src="${s.gambar}"></div>` : "";
             let opsi = [{l:'A', t:s.a}, {l:'B', t:s.b}, {l:'C', t:s.c}, {l:'D', t:s.d}].sort(() => Math.random() - 0.5);
             let opsiHtml = '';
             opsi.forEach(o => {
@@ -265,19 +260,15 @@
             const r = await Swal.fire({title: 'Kirim Jawaban?', icon: 'question', showCancelButton: true});
             if(!r.isConfirmed) return;
         }
-        
         isExamActive = false;
         clearInterval(timerInterval);
-        
         let benar = 0;
         dataSoal.forEach((s, i) => {
             const sel = document.querySelector(`input[name="soal-${i}"]:checked`);
             if(sel && sel.value === s.kunci) benar++;
         });
-
         const skor = Math.round((benar/dataSoal.length)*100);
         Swal.fire({title: 'Menyimpan...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
-
         try {
             await fetch(SCRIPT_URL, { 
                 method: 'POST', 
@@ -289,12 +280,9 @@
                     skor: skor 
                 }) 
             });
-
             await Swal.fire({ title: "Berhasil!", text: `Skor: ${skor}`, icon: "success" });
             location.reload();
-        } catch (e) { 
-            Swal.fire("Error", "Gagal mengirim. Lapor ke pengawas!", "error"); 
-        }
+        } catch (e) { Swal.fire("Error", "Gagal mengirim!", "error"); }
     }
 </script>
 </body>
