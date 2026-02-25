@@ -23,44 +23,32 @@
 
         h2, h3 { color: var(--primary); font-weight: 800; margin-top: 0; }
         label { display: block; margin-top: 15px; font-weight: 600; color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--border); background: #0f172a; color: white; box-sizing: border-box; font-family: inherit; font-size: 1rem; }
+        
+        input, select, textarea { 
+            width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; 
+            border: 1px solid var(--border); background: #0f172a; color: white; 
+            box-sizing: border-box; font-family: inherit; font-size: 1rem; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
 
-        /* MULTISELECT KELAS */
+        .navbar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--border); padding: 10px; justify-content: space-around; z-index: 1000; }
+        .nav-btn { background: none; border: none; color: #94a3b8; font-size: 0.7rem; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
+        .nav-btn.active { color: var(--primary); }
+
+        .btn-main { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 800; cursor: pointer; margin-top: 15px; }
+        #preview-box { margin-top: 10px; position: relative; display: none; text-align: center; background: #000; border-radius: 12px; padding: 10px; border: 1px dashed var(--primary); }
+        #img-preview { max-width: 100%; max-height: 200px; border-radius: 8px; }
+        .btn-del-img { position: absolute; top: -10px; right: -10px; background: var(--danger); border: none; color: white; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; }
+        .soal-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 15px; position: relative; }
+        .badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; font-weight: 700; margin-right: 5px; }
+        .badge-mapel { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
+        .badge-kelas { background: var(--primary); color: white; }
+        .action-icon-btn { width: 35px; height: 35px; border-radius: 8px; border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .select-box { background: #0f172a; border: 1px solid var(--border); padding: 12px; border-radius: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .checkbox-wrapper { display: none; background: #1e293b; border: 1px solid var(--primary); border-radius: 12px; padding: 15px; margin-top: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .kelas-group-title { background: rgba(59, 130, 246, 0.1); padding: 8px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; color: var(--primary); margin-top: 10px; cursor: pointer; display: flex; justify-content: space-between; }
         .kelas-grid-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 5px; }
         .kelas-grid-mini label { display: flex; align-items: center; gap: 8px; color: #fff; text-transform: none; margin: 0; font-size: 0.85rem; cursor: pointer; }
-
-        /* PREVIEW GAMBAR */
-        #preview-box { margin-top: 10px; position: relative; display: none; text-align: center; background: #000; border-radius: 12px; padding: 10px; border: 1px dashed var(--primary); }
-        #img-preview { max-width: 100%; max-height: 200px; border-radius: 8px; }
-        .btn-del-img { position: absolute; top: -10px; right: -10px; background: var(--danger); border: none; color: white; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; }
-
-        /* BANK SOAL ITEM */
-        .soal-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 15px; position: relative; }
-        .soal-img-v { width: 100%; max-height: 180px; object-fit: contain; background: #000; border-radius: 10px; margin: 10px 0; border: 1px solid #334155; }
-        .badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; font-weight: 700; margin-right: 5px; }
-        .badge-mapel { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
-        .badge-kelas { background: var(--primary); color: white; }
-        
-        /* OPSI JAWABAN */
-        .opsi-container { margin-top: 10px; font-size: 0.85rem; color: #94a3b8; }
-        .opsi-item { padding: 4px 0; display: flex; gap: 8px; }
-        .opsi-item.kunci { color: var(--success); font-weight: bold; }
-
-        /* NAVIGATION */
-        .navbar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--border); padding: 10px; justify-content: space-around; z-index: 1000; }
-        .nav-btn { background: none; border: none; color: #94a3b8; font-size: 0.7rem; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: 0.3s; }
-        .nav-btn i { font-size: 1.2rem; }
-        .nav-btn.active { color: var(--primary); }
-
-        .btn-main { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 800; cursor: pointer; margin-top: 15px; transition: 0.3s; }
-        .btn-main:active { transform: scale(0.98); }
-        
-        /* ICON BUTTONS */
-        .action-icon-btn { width: 35px; height: 35px; border-radius: 8px; border: none; color: white; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-        .action-icon-btn:active { transform: scale(0.85); }
     </style>
 </head>
 <body>
@@ -68,10 +56,10 @@
     <div id="login-gate" style="display: flex; height: 100vh; align-items: center; justify-content: center; padding: 20px;">
         <div class="card" style="width: 100%; max-width: 350px; text-align: center;">
             <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
-            <h2>GURU LOGIN</h2>
-            <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 20px;">Masukkan Kode Akses Anda</p>
-            <input type="password" id="access-code" placeholder="••••••••" style="text-align: center; letter-spacing: 5px;">
-            <button class="btn-main" onclick="cekLogin()">MASUK PANEL</button>
+			<h2>SMPN 110 JAKARTA</h2>
+            <span class="subtitle">COMPUTER BASED TEST SYSTEM</span>
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 20px;"></p>
+            <input type="password" id="access-code" placeholder="Masukkan Password" style="text-align: center; letter-spacing: 5px;" onkeydown="if(event.key === 'Enter') cekLogin()">
         </div>
     </div>
 
@@ -91,7 +79,6 @@
     </div>
 
     <div class="container" id="main-container">
-        
         <div id="buat-soal" class="section active">
             <div class="card">
                 <h3 id="form-title">📝 Buat Soal Baru</h3>
@@ -102,7 +89,7 @@
                     <option value="" disabled selected>Pilih Mata Pelajaran</option>
                     <option value="PAI">Pendidikan Agama</option>
                     <option value="PP">Pendidikan Pancasila</option>
-                    <option value="B.Indo">Bahasa Indonesia</option>                     
+                    <option value="B.Indo">Bahasa Indonesia</option>                      
                     <option value="Matematika">Matematika</option>
                     <option value="IPA">IPA</option>
                     <option value="IPS">IPS</option>
@@ -134,7 +121,7 @@
                         <label><input type="checkbox" class="kelas-opt" value="8C"> 8C</label>
                         <label><input type="checkbox" class="kelas-opt" value="8D"> 8D</label>
                         <label><input type="checkbox" class="kelas-opt" value="8E"> 8E</label>
-                        <label><input type="checkbox" class="kelas-opt" value="8F"> 8F</label>                        
+                        <label><input type="checkbox" class="kelas-opt" value="8F"> 8F</label>
                     </div>
                     <div class="kelas-group-title" onclick="pilihSemuaTingkat('9')">Kelas 9 <i class="fas fa-check-double"></i></div>
                     <div class="kelas-grid-mini" id="grup-9">
@@ -143,9 +130,15 @@
                         <label><input type="checkbox" class="kelas-opt" value="9C"> 9C</label>
                         <label><input type="checkbox" class="kelas-opt" value="9D"> 9D</label>
                         <label><input type="checkbox" class="kelas-opt" value="9E"> 9E</label>
-                        <label><input type="checkbox" class="kelas-opt" value="9F"> 9F</label>                        
+                        <label><input type="checkbox" class="kelas-opt" value="9F"> 9F</label>
                     </div>
                 </div>
+
+                <label>Durasi Ujian (Menit)</label>
+                <input type="number" id="durasi" placeholder="60" value="60">
+
+                <label>Isi Pertanyaan</label>
+                <textarea id="soal-teks" rows="4" placeholder="Ketik soal di sini..."></textarea>
 
                 <label>Gambar (Opsional)</label>
                 <input type="file" id="inp-file" accept="image/*" onchange="previewImg(this)">
@@ -154,35 +147,27 @@
                     <button class="btn-del-img" onclick="hapusImg()">&times;</button>
                 </div>
 
-                <label>Isi Pertanyaan</label>
-                <textarea id="soal-teks" rows="4" placeholder="Ketik soal di sini..."></textarea>
-
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div><label>A</label><input type="text" id="opt-a"></div>
-                    <div><label>B</label><input type="text" id="opt-b"></div>
-                    <div><label>C</label><input type="text" id="opt-c"></div>
-                    <div><label>D</label><input type="text" id="opt-d"></div>
+                    <div><label>Opsi A</label><input type="text" id="opt-a"></div>
+                    <div><label>Opsi B</label><input type="text" id="opt-b"></div>
+                    <div><label>Opsi C</label><input type="text" id="opt-c"></div>
+                    <div><label>Opsi D</label><input type="text" id="opt-d"></div>
                 </div>
 
                 <label>Kunci Jawaban</label>
                 <select id="kunci">
-                    <option value="" disabled selected>Pilih Jawaban Anda</option>				
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
+                    <option value="" disabled selected>Pilih Jawaban Benar</option>                
+                    <option value="A">A</option><option value="B">B</option>
+                    <option value="C">C</option><option value="D">D</option>
                 </select>
 
                 <button class="btn-main" id="btn-save" onclick="kirimData()">SIMPAN KE CLOUD</button>
-                <button class="btn-main" id="btn-batal" onclick="resetForm()" style="background: #475569; display: none;">BATALKAN EDIT</button>
+                <button class="btn-main" id="btn-batal" onclick="resetForm()" style="background: #475569; display: none; margin-top: 10px;">BATALKAN EDIT</button>
             </div>
         </div>
 
         <div id="daftar-soal" class="section">
-            <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                📂 Bank Soal Cloud 
-                <button onclick="muatSoal()" style="font-size: 0.8rem; background: var(--primary); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;"><i class="fas fa-sync"></i></button>
-            </h3>
+            <h3 style="display: flex; justify-content: space-between; align-items: center;">📂 Bank Soal <button onclick="muatSoal()" style="font-size: 0.8rem; background: var(--primary); color: white; border: none; padding: 5px 10px; border-radius: 5px;"><i class="fas fa-sync"></i></button></h3>
             <div id="wadah-soal"></div>
         </div>
 
@@ -190,21 +175,22 @@
             <h3>📊 Hasil Ujian Siswa</h3>
             <div id="wadah-nilai"></div>
         </div>
-
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzrMt7sqEH3CtiIIwc6fzUcxnVIy5wd80_Oj_0QN3KcwQ7z8JeasswymF-v32IZn2vYAA/exec"; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8Hn8tnidc87vKNPJKoO2gWQEEeYBbdkodhvkJIk8o4Pi5neWBBFgT-MP1ph6QHcUsTQ/exec"; 
         const KODE_GURU = "GURU110";
         let base64Img = "";
 
         function cekLogin() {
-            if(document.getElementById('access-code').value === KODE_GURU) {
+            const code = document.getElementById('access-code').value;
+            if(code === KODE_GURU) {
                 document.getElementById('login-gate').style.display = 'none';
                 document.getElementById('main-nav').style.display = 'flex';
                 document.getElementById('main-container').style.display = 'block';
-            } else {
-                Swal.fire("Gagal", "Kode Akses Salah!", "error");
+            } else { 
+                Swal.fire("Gagal", "Kode Akses Salah!", "error"); 
+                document.getElementById('access-code').value = "";
             }
         }
 
@@ -232,10 +218,7 @@
             const checked = Array.from(document.querySelectorAll('.kelas-opt:checked')).map(i => i.value);
             document.getElementById('label-kelas').innerText = checked.length ? checked.join(', ') : 'Pilih Kelas...';
         }
-
-        document.querySelectorAll('.kelas-opt').forEach(c => {
-            c.onchange = updateLabelKelas;
-        });
+        document.querySelectorAll('.kelas-opt').forEach(c => c.onchange = updateLabelKelas);
 
         function previewImg(input) {
             if (input.files && input.files[0]) {
@@ -250,8 +233,7 @@
         }
 
         function hapusImg() {
-            base64Img = "";
-            document.getElementById('inp-file').value = "";
+            base64Img = ""; document.getElementById('inp-file').value = "";
             document.getElementById('preview-box').style.display = 'none';
         }
 
@@ -262,6 +244,7 @@
                 id: document.getElementById('edit-id').value,
                 mapel: document.getElementById('mapel').value,
                 kelas: kls,
+                durasi: document.getElementById('durasi').value,
                 soal: document.getElementById('soal-teks').value,
                 a: document.getElementById('opt-a').value,
                 b: document.getElementById('opt-b').value,
@@ -270,26 +253,19 @@
                 kunci: document.getElementById('kunci').value,
                 gambar: base64Img
             };
-
-            if(!kls || !payload.soal || !payload.mapel) return Swal.fire("Peringatan", "Lengkapi Mapel, Kelas, dan Soal!", "warning");
-
+            if(!kls || !payload.soal) return Swal.fire("Peringatan", "Lengkapi Kelas dan Soal!", "warning");
             Swal.fire({title: 'Menyimpan...', didOpen: () => Swal.showLoading(), allowOutsideClick: false});
-            
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
                 Swal.fire("Berhasil", "Data disinkronkan!", "success").then(() => resetForm());
-            } catch(e) {
-                Swal.fire("Error", "Gagal kirim data!", "error");
-            }
+            } catch(e) { Swal.fire("Error", "Gagal kirim data!", "error"); }
         }
 
         function resetForm() {
             document.getElementById('edit-id').value = "";
             document.getElementById('soal-teks').value = "";
-            document.getElementById('opt-a').value = "";
-            document.getElementById('opt-b').value = "";
-            document.getElementById('opt-c').value = "";
-            document.getElementById('opt-d').value = "";
+            document.getElementById('opt-a').value = ""; document.getElementById('opt-b').value = "";
+            document.getElementById('opt-c').value = ""; document.getElementById('opt-d').value = "";
             hapusImg();
             document.querySelectorAll('.kelas-opt').forEach(c => c.checked = false);
             updateLabelKelas();
@@ -300,58 +276,47 @@
 
         async function muatSoal() {
             const wadah = document.getElementById('wadah-soal');
-            wadah.innerHTML = "<p>Memuat data...</p>";
+            wadah.innerHTML = "<p style='text-align:center;'>⏳ Memuat data...</p>";
             try {
                 const res = await fetch(SCRIPT_URL + "?target=listSemuaSoal");
                 const data = await res.json();
                 let html = "";
                 data.forEach(s => {
-                    let imgTag = s.gambar ? `<img src="${s.gambar}" class="soal-img-v">` : "";
+                    let imgHtml = (s.gambar && s.gambar.length > 50) ? `<img src="${s.gambar}" style="max-height:80px; margin:10px 0; border-radius:5px; border:1px solid #334155;">` : "";
                     html += `
                     <div class="soal-item">
-                        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                            <div>
-                                <span class="badge badge-mapel">${s.mapel}</span>
-                                <span class="badge badge-kelas">${s.kelas}</span>
-                            </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span class="badge badge-mapel">${s.mapel}</span>
                             <div style="display:flex; gap:8px;">
                                 <button class="action-icon-btn" style="background:var(--warning)" onclick='siapkanEdit(${JSON.stringify(s)})'><i class="fas fa-edit"></i></button>
                                 <button class="action-icon-btn" style="background:var(--danger)" onclick="hapus('${s.id}','hapusSoal')"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
-                        <p style="margin:10px 0; font-size:0.95rem; font-weight:600;">${s.soal}</p>
-                        ${imgTag}
-                        <div class="opsi-container">
-                            <div class="opsi-item ${s.kunci === 'A' ? 'kunci' : ''}">A. ${s.a} ${s.kunci === 'A' ? '✓' : ''}</div>
-                            <div class="opsi-item ${s.kunci === 'B' ? 'kunci' : ''}">B. ${s.b} ${s.kunci === 'B' ? '✓' : ''}</div>
-                            <div class="opsi-item ${s.kunci === 'C' ? 'kunci' : ''}">C. ${s.c} ${s.kunci === 'C' ? '✓' : ''}</div>
-                            <div class="opsi-item ${s.kunci === 'D' ? 'kunci' : ''}">D. ${s.d} ${s.kunci === 'D' ? '✓' : ''}</div>
-                        </div>
+                        <p><b>${s.soal}</b></p>
+                        ${imgHtml}
+                        <div style="font-size:0.8rem; opacity:0.7">Kunci: ${s.kunci} | Kelas: ${s.kelas}</div>
                     </div>`;
                 });
-                wadah.innerHTML = html || "<p>Belum ada soal.</p>";
-            } catch(e) { wadah.innerHTML = "Gagal muat soal."; }
+                wadah.innerHTML = html || "<p style='text-align:center;'>Belum ada soal.</p>";
+            } catch(e) { wadah.innerHTML = "Gagal muat."; }
         }
 
         function siapkanEdit(s) {
             document.getElementById('edit-id').value = s.id;
             document.getElementById('mapel').value = s.mapel;
+            document.getElementById('durasi').value = s.durasi || 60;
             document.getElementById('soal-teks').value = s.soal;
-            document.getElementById('opt-a').value = s.a;
-            document.getElementById('opt-b').value = s.b;
-            document.getElementById('opt-c').value = s.c;
-            document.getElementById('opt-d').value = s.d;
+            document.getElementById('opt-a').value = s.a; document.getElementById('opt-b').value = s.b;
+            document.getElementById('opt-c').value = s.c; document.getElementById('opt-d').value = s.d;
             document.getElementById('kunci').value = s.kunci;
-            if(s.gambar) {
+            if(s.gambar && s.gambar.length > 50) {
                 base64Img = s.gambar;
                 document.getElementById('img-preview').src = s.gambar;
-                document.getElementById('preview-box').style.display = "block";
-            } else { hapusImg(); }
-
+                document.getElementById('preview-box').style.display = 'block';
+            }
             const kArr = s.kelas.split(',');
             document.querySelectorAll('.kelas-opt').forEach(c => c.checked = kArr.includes(c.value));
             updateLabelKelas();
-            
             document.getElementById('btn-save').innerText = "PERBARUI SOAL";
             document.getElementById('btn-batal').style.display = "block";
             document.getElementById('form-title').innerText = "✏️ Edit Soal";
@@ -366,20 +331,10 @@
                 const data = await res.json();
                 let html = "";
                 data.reverse().forEach(n => {
-                    html += `
-                    <div class="soal-item" style="border-left: 5px solid var(--success);">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <b>${n.nama}</b>
-                            <span style="color:var(--success); font-weight:800; font-size:1.2rem;">${n.skor}</span>
-                        </div>
-                        <div style="font-size:0.75rem; color:#94a3b8; margin-top:5px;">
-                            ${n.mapel} | ${n.kelas} | ${n.waktu}
-                        </div>
-                        <button class="btn-main" style="background:var(--danger); padding:5px; font-size:0.7rem;" onclick="hapus('${n.id}','hapusNilai')">HAPUS NILAI</button>
-                    </div>`;
+                    html += `<div class="soal-item"><b>${n.nama}</b>: ${n.skor} (${n.mapel}) <button style="background:var(--danger); border:none; color:white; padding:2px 5px; border-radius:4px; font-size:0.6rem; float:right;" onclick="hapus('${n.id}','hapusNilai')">HAPUS</button></div>`;
                 });
                 wadah.innerHTML = html || "<p>Belum ada nilai.</p>";
-            } catch(e) { wadah.innerHTML = "Gagal muat nilai."; }
+            } catch(e) { wadah.innerHTML = "Gagal."; }
         }
 
         async function hapus(id, target) {
